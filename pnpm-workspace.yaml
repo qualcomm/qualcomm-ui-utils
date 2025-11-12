@@ -1,0 +1,22 @@
+packages:
+  - packages/*
+
+minimumReleaseAge: 4320
+
+onlyBuiltDependencies:
+  - '@bundled-es-modules/glob'
+  - '@parcel/watcher'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - '@tailwindcss/oxide'
+  - '@tree-sitter-grammars/tree-sitter-yaml'
+  - aws-sdk
+  - core-js-pure
+  - esbuild
+  - lmdb
+  - msgpackr-extract
+  - nx
+  - style-dictionary
+  - tree-sitter
+  - tree-sitter-json
+  - unrs-resolver
