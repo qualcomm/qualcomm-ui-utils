@@ -1,0 +1,47 @@
+{
+  "name": "@qualcomm-ui-utils/root",
+  "version": "0.0.0",
+  "description": "@qui utils monorepo",
+  "private": true,
+  "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint --continue",
+    "lint:ci": "turbo run lint --concurrency 6"
+  },
+  "devDependencies": {
+    "@commander-js/extra-typings": "^14.0.0",
+    "@eslint/js": "9.37.0",
+    "@nx/angular": "^21.6.8",
+    "@types/node": "~24.9.2",
+    "commander": "^14.0.2",
+    "cross-env": "^10.1.0",
+    "eslint": "9.37.0",
+    "execa": "^9.6.0",
+    "ignore": "^7.0.5",
+    "npm-run-all2": "^8.0.4",
+    "playwright": "1.53.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "pretty-ms": "^9.3.0",
+    "shx": "^0.4.0",
+    "stylelint": "^16.23.1",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-order": "^7.0.0",
+    "stylelint-prettier": "^5.0.3",
+    "syncpack": "14.0.0-alpha.19",
+    "tsx": "^4.20.6",
+    "turbo": "2.6.0",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.42.0"
+  },
+  "resolutions": {
+    "playwright": "1.53.2",
+    "typescript": "5.8.3"
+  },
+  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
+}
