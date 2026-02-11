@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "eslint.config.js"
+  ],
+  "cacheDir": ".turbo/cache",
+  "concurrency": "30",
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": ["dist"],
+      "outputLogs": "new-only"
+    },
+    "test": {
+      "inputs": [
+        "*.{html,cjs,css,js,json,md,mdx,mjs,scss,ts,tsx,yaml}",
+        "components/**/*",
+        "lib/**/*",
+        "pages/**/*",
+        "public/**/*",
+        "src/**/*",
+        "styles/**/*"
+      ]
+    },
+    "test:ci": {
+      "outputLogs": "new-only"
+    },
+    "test:unit:ci": {
+      "outputLogs": "new-only"
+    },
+    "lint": {
+      "inputs": [
+        "**/*.{html,cjs,js,md,mdx,mjs,ts,tsx,mts}",
+        "!node_modules/**",
+        "!dist/**"
+      ],
+      "outputLogs": "new-only"
+    }
+  }
+}

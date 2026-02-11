@@ -1,0 +1,47 @@
+{
+  "$schema": "./node_modules/syncpack/schema.json",
+  "versionGroups": [
+    {
+      "label": "Ignore workspace dependencies",
+      "isIgnored": true,
+      "dependencies": ["$LOCAL"],
+      "dependencyTypes": ["prod", "dev"]
+    },
+    {
+      "label": "Ignore peerDependencies",
+      "dependencyTypes": ["peer"],
+      "isIgnored": true
+    },
+    {
+      "label": "No wildcards",
+      "preferVersion": "highestSemver",
+      "dependencyTypes": ["dev", "prod"]
+    }
+  ],
+  "sortAz": [],
+  "sortFirst": [
+    "name",
+    "version",
+    "description",
+    "author",
+    "license",
+    "repository",
+    "private",
+    "publishConfig",
+    "type",
+    "bin",
+    "sideEffects",
+    "files",
+    "main",
+    "module",
+    "typings",
+    "types",
+    "exports",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "optionalDependencies",
+    "resolutions"
+  ]
+}

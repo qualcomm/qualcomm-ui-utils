@@ -1,0 +1,57 @@
+name: "Code Quality Checks"
+env:
+  IS_CI: true
+  TURBO_API: "http://127.0.0.1:8585"
+  TURBO_TEAM: "qualcomm-ui"
+  TURBO_TOKEN: "turbo-cache-token"
+on:
+  pull_request:
+    # Run every time a PR to origin/main is created or updated
+    types: [ opened, synchronize ]
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: PR Lint - ${{github.head_ref}}
+      cancel-in-progress: true
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - run: pnpm lint:ci
+
+  build:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: PR Build - ${{github.head_ref}}
+      cancel-in-progress: true
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - run: pnpm run build
+
+  copyright-license-check:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: PR copyright-license-check - ${{github.head_ref}}
+      cancel-in-progress: true
+    steps:
+    - name: Checkout PR head
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - name: Run copyright/license checker
+      run: node --import=tsx scripts/license-checker.ts lint
