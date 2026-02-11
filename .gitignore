@@ -28,7 +28,12 @@ packages/**/stats.yml
 packages/**/meta.json
 packages/**/build-metafile.json
 packages/docs/*/public/*.js
+packages/docs/*/public/*.js.map
+packages/docs/*/public/llms-full.txt
+packages/docs/*/knowledge/
+packages/docs/*/public/exports
 .wireit
+.lint-cache
 
 ###############################################################################
 # Framework-specific outputs
@@ -103,6 +108,7 @@ tsconfig.*.tsbuildinfo
 .fleet/
 .idea/
 .webstorm/backup
+.ai
 
 ###############################################################################
 # Keep-tracked placeholder
