@@ -48,7 +48,7 @@ export function addPublishCommands() {
     .summary(
       "Prepare this module for publishing. Removes devDependencies and scripts.",
     )
-    .action(async ({backup, pkg}) => {
+    .action(({backup, pkg}) => {
       prePublish(resolve(pkg), resolve(backup))
     })
 
@@ -63,7 +63,7 @@ export function addPublishCommands() {
     .summary(
       `Restore the package.json from the ${Commands.PRE_PUBLISH} command. Run this after ${Commands.PRE_PUBLISH}.`,
     )
-    .action(async ({backup, pkg}) => {
+    .action(({backup, pkg}) => {
       postPublish(resolve(pkg), resolve(backup))
     })
 }

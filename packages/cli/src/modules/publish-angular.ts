@@ -11,9 +11,7 @@ interface PublishAngularOpts {
   flatModuleId: string
 }
 
-export async function publishAngular({
-  flatModuleId,
-}: PublishAngularOpts): Promise<any> {
+export function publishAngular({flatModuleId}: PublishAngularOpts): void {
   let notYetPublished = false
   const outDir = resolve("./dist")
   if (!existsSync(outDir)) {
@@ -64,6 +62,7 @@ export async function publishAngular({
 
   console.group(`Starting pre-publish for ${pkgJson.name}`)
   pkgJson.private = false
+  pkgJson.publishConfig = {access: "public"}
   pkgJson.types = "./index.d.ts"
   pkgJson.main = `./esm2022/${flatModuleId}.mjs`
   const peerDeps = {...pkgJson.peerDependencies}
@@ -90,7 +89,7 @@ export async function publishAngular({
   try {
     const res = execaCommandSync("npm publish", {
       cwd: outDir,
-      stderr: "ignore",
+      stderr: "pipe",
       stdin: "ignore",
     })
     if (res.stdout && res.stdout.includes(`+ ${pkgJson.name}`)) {
@@ -98,10 +97,15 @@ export async function publishAngular({
       console.debug(res.stdout)
     } else if (res.stderr) {
       console.debug(`${chalk.red("✖")} Failed to publish ${pkgJson.name}.`)
-      console.debug(res.stderr)
+      console.debug(res)
+      process.exit(1)
     }
   } catch (e) {
-    console.debug(`${chalk.red("✖")} Failed to publish ${pkgJson.name}.`)
+    console.debug(
+      `${chalk.red("✖")} Critical error encountered while publishing. Failed to publish ${pkgJson.name}.`,
+    )
+    console.debug(e)
+    process.exit(1)
   }
   console.groupEnd()
 }
@@ -115,12 +119,12 @@ export function addPublishAngularCommands() {
     .command(Commands.PUBLISH_ANGULAR)
     .argument("<flatModuleId>")
     .summary("Prepare a built Angular library for publishing to npm.")
-    .action(async (flatModuleId): Promise<any> => {
+    .action((flatModuleId) => {
       if (!flatModuleId) {
         // can't use requiredOption because it applies to every command.
         console.log("flatModuleId is required")
         return
       }
-      return publishAngular({flatModuleId})
+      publishAngular({flatModuleId})
     })
 }

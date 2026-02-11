@@ -184,7 +184,7 @@ class LicenseHeaderManager {
     const header =
       config.type === "original"
         ? QUALCOMM_HEADER
-        : this.createModifiedHeader(config.sourceUrl!, config.sourceLicense!)
+        : this.createModifiedHeader(config.sourceUrl, config.sourceLicense)
 
     const {body, prefix} = this.parseFileForInsertion(strippedContent)
 
@@ -315,156 +315,164 @@ class LicenseHeaderManager {
   }
 }
 
-export function addLicenseCheckerCommands() {
-  const program = new Command()
-    .name("license-headers")
-    .description("Manage copyright headers in source files")
+const program = new Command()
+  .name("license-headers")
+  .description("Manage copyright headers in source files")
 
-  program
-    .command("fix")
-    .description("Add copyright headers to source files")
-    .argument("<directory>", "Directory to scan")
-    .option("--modified <source-url>", "Source URL for modified files")
-    .option(
-      "--license <license>",
-      'License of source for modified files (e.g., "MIT License")',
-    )
-    .option("--interactive", "Interactively select files")
-    .action(async (directory, options) => {
-      const manager = await LicenseHeaderManager.create(cwd())
-      if (options.interactive) {
-        intro("License Header Manager")
-        const invalidFiles = await manager.getFilesWithoutHeaders(directory)
-        if (invalidFiles.length === 0) {
-          outro("All files already have headers")
-          return
-        }
-        const selected = await multiselect({
-          message: "Select files to add headers:",
-          options: invalidFiles.map((file) => ({
-            label: relative(directory, file),
-            value: file,
-          })),
-          required: false,
+program
+  .command("fix")
+  .description("Add copyright headers to source files")
+  .option("--directory <directory>", "Directory to scan", ".")
+  .option("--modified <source-url>", "Source URL for modified files")
+  .option(
+    "--license <license>",
+    'License of source for modified files (e.g., "MIT License")',
+  )
+  .option("--interactive", "Interactively select files")
+  .action(async (options) => {
+    const manager = await LicenseHeaderManager.create(cwd())
+    if (options.interactive) {
+      intro("License Header Manager")
+      const invalidFiles = await manager.getFilesWithoutHeaders(
+        options.directory,
+      )
+      if (invalidFiles.length === 0) {
+        outro("All files already have headers")
+        return
+      }
+      const selected = await multiselect({
+        message: "Select files to add headers:",
+        options: invalidFiles.map((file) => ({
+          label: relative(options.directory, file),
+          value: file,
+        })),
+        required: false,
+      })
+      if (isCancel(selected) || selected.length === 0) {
+        cancel("Operation cancelled")
+        process.exit(0)
+      }
+      let isModified: boolean | symbol = !!options.modified
+      if (!isModified) {
+        isModified = await confirm({
+          initialValue: options.modified !== undefined,
+          message: "Is this modified from another source?",
         })
-        if (isCancel(selected) || selected.length === 0) {
+        if (isCancel(isModified)) {
           cancel("Operation cancelled")
           process.exit(0)
         }
-        let isModified: boolean | symbol = !!options.modified
-        if (!isModified) {
-          isModified = await confirm({
-            initialValue: options.modified !== undefined,
-            message: "Is this modified from another source?",
-          })
-          if (isCancel(isModified)) {
-            cancel("Operation cancelled")
-            process.exit(0)
-          }
-        }
-        const config: AddHeadersConfig = {directory, type: "original"}
-        if (isModified) {
-          const sourceUrl = await text({
-            initialValue: options.modified,
-            message: "Source URL:",
-            placeholder: "https://github.com/example/repo",
-            validate: (value) => {
-              if (!value?.length) {
-                return "Source URL is required"
-              }
-              try {
-                new URL(value)
-                return undefined
-              } catch {
-                return "Invalid URL format"
-              }
-            },
-          })
-          if (isCancel(sourceUrl)) {
-            cancel("Operation cancelled")
-            process.exit(0)
-          }
-          const urlSpinner = spinner()
-          urlSpinner.start("Verifying source URL")
-          try {
-            const response = await fetch(sourceUrl, {
-              method: "HEAD",
-              signal: AbortSignal.timeout(5000),
-            })
-            if (!response.ok) {
-              urlSpinner.stop(`Warning: Source URL returned ${response.status}`)
-            } else {
-              urlSpinner.stop("Source URL verified")
+      }
+      const config: AddHeadersConfig = {
+        directory: options.directory,
+        type: "original",
+      }
+      if (isModified) {
+        const sourceUrl = await text({
+          initialValue: options.modified,
+          message: "Source URL:",
+          placeholder: "https://github.com/example/repo",
+          validate: (value) => {
+            if (value.length === 0) {
+              return "Source URL is required"
             }
-          } catch (error) {
-            urlSpinner.stop(
-              `Warning: Could not verify source URL (${error instanceof Error ? error.message : "unknown error"})`,
-            )
-          }
-          const license = await text({
-            initialValue: options.license,
-            message: "Source license:",
-            placeholder: "MIT License",
-            validate: (value) =>
-              !value ? "License is required" : undefined,
+            try {
+              new URL(value)
+              return undefined
+            } catch {
+              return "Invalid URL format"
+            }
+          },
+        })
+        if (isCancel(sourceUrl)) {
+          cancel("Operation cancelled")
+          process.exit(0)
+        }
+        const urlSpinner = spinner()
+        urlSpinner.start("Verifying source URL")
+        try {
+          const response = await fetch(sourceUrl, {
+            method: "HEAD",
+            signal: AbortSignal.timeout(5000),
           })
-          if (isCancel(license)) {
-            cancel("Operation cancelled")
-            process.exit(0)
+          if (!response.ok) {
+            urlSpinner.stop(`Warning: Source URL returned ${response.status}`)
+          } else {
+            urlSpinner.stop("Source URL verified")
           }
-          config.type = "modified"
-          config.sourceUrl = sourceUrl
-          config.sourceLicense = license
+        } catch (error) {
+          urlSpinner.stop(
+            `Warning: Could not verify source URL (${error instanceof Error ? error.message : "unknown error"})`,
+          )
         }
-        const clackSpinner = spinner()
-        clackSpinner.start("Adding headers")
-        const count = await manager.addHeadersToFiles(selected, config)
-        clackSpinner.stop("Done")
-        outro(`Modified ${count} file(s)`)
-      } else {
-        const config: AddHeadersConfig = {directory, type: "original"}
-        if (options.modified) {
-          if (!options.license) {
-            console.error("--license is required when using --modified")
-            process.exit(1)
-          }
-          config.type = "modified"
-          config.sourceUrl = options.modified
-          config.sourceLicense = options.license
+        const license = await text({
+          initialValue: options.license,
+          message: "Source license:",
+          placeholder: "MIT License",
+          validate: (value) =>
+            value.length === 0 ? "License is required" : undefined,
+        })
+        if (isCancel(license)) {
+          cancel("Operation cancelled")
+          process.exit(0)
         }
-        const count = await manager.addHeaders(config)
-        console.log(`\nTotal files modified: ${count}`)
+        config.type = "modified"
+        config.sourceUrl = sourceUrl
+        config.sourceLicense = license
       }
-    })
-
-  program
-    .command("lint")
-    .description("Check for missing copyright headers")
-    .argument("<directory>", "Directory to scan")
-    .action(async (directory) => {
-      const manager = await LicenseHeaderManager.create(cwd())
-      const now = performance.mark("Checking headers")
-      const {metrics, results} = await manager.lintFiles(directory)
-      const headerCheckTime = performance.measure(
-        "Checking headers",
-        now,
-      ).duration
-
-      if (
-        metrics.missingCopyrightCount === 0 &&
-        metrics.missingLicenseCount === 0
-      ) {
-        console.log(
-          `✓ Validated ${metrics.fileCount} files in ${prettyMilliseconds(headerCheckTime)}`,
-        )
-        process.exit(0)
-      } else {
-        const invalidFiles = results.filter((res) => !res.passed)
-        console.error(`✗ ${invalidFiles.length} file(s):\n`)
-        invalidFiles.forEach((result) =>
-          console.error(`  ./${relative(directory, result.file)}`),
-        )
-        process.exit(1)
+      const clackSpinner = spinner()
+      clackSpinner.start("Adding headers")
+      const count = await manager.addHeadersToFiles(selected, config)
+      clackSpinner.stop("Done")
+      outro(`Modified ${count} file(s)`)
+    } else {
+      const config: AddHeadersConfig = {
+        directory: options.directory,
+        type: "original",
       }
-    })
-}
+      if (options.modified) {
+        if (!options.license) {
+          console.error("--license is required when using --modified")
+          process.exit(1)
+        }
+        config.type = "modified"
+        config.sourceUrl = options.modified
+        config.sourceLicense = options.license
+      }
+      const count = await manager.addHeaders(config)
+      console.log(`\nTotal files modified: ${count}`)
+    }
+  })
+
+program
+  .command("lint")
+  .description("Check for missing copyright headers")
+  .option("--directory <directory>", "Directory to scan", ".")
+  .action(async ({directory}) => {
+    const manager = await LicenseHeaderManager.create(cwd())
+    const now = performance.mark("Checking headers")
+    const {metrics, results} = await manager.lintFiles(directory)
+    const headerCheckTime = performance.measure(
+      "Checking headers",
+      now,
+    ).duration
+
+    if (
+      metrics.missingCopyrightCount === 0 &&
+      metrics.missingLicenseCount === 0
+    ) {
+      console.log(
+        `✓ Validated ${metrics.fileCount} files in ${prettyMilliseconds(headerCheckTime)}`,
+      )
+      process.exit(0)
+    } else {
+      const invalidFiles = results.filter((res) => !res.passed)
+      console.error(`✗ ${invalidFiles.length} file(s):\n`)
+      invalidFiles.forEach((result) =>
+        console.error(`  ./${relative(directory, result.file)}`),
+      )
+      process.exit(1)
+    }
+  })
+
+program.parse()

@@ -49,6 +49,7 @@ async function watchEntryPoints(
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const debouncedRebuild = debounce(rebuild, 100)
 
   const watcher = watch(watchGlob)

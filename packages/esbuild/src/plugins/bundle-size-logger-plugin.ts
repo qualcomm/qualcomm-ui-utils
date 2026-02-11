@@ -88,7 +88,7 @@ export function bundleSizeLoggerPlugin(
     name: "exports-size-plugin",
     setup(build) {
       let printed = false
-      build.onEnd(async (buildResult) => {
+      build.onEnd((buildResult) => {
         if (printed || opts.logMode === "none") {
           return
         }

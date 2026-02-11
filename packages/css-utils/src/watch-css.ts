@@ -64,7 +64,7 @@ export async function watchCss(opts: CssBuilderConfig) {
       const files = await glob(group.cssFiles, {ignore: group.ignore})
 
       if (files.length === 0) {
-        console.warn(`No files found matching pattern: ${group.cssFiles}`)
+        console.warn("No files found matching pattern", group.cssFiles)
         continue
       }
 

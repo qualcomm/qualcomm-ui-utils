@@ -1,7 +1,11 @@
 packages:
   - packages/*
 
-minimumReleaseAge: 4320
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@types/node'
+  - turbo
+  - turbo-*
 
 onlyBuiltDependencies:
   - '@bundled-es-modules/glob'
@@ -20,3 +24,21 @@ onlyBuiltDependencies:
   - tree-sitter
   - tree-sitter-json
   - unrs-resolver
+
+catalog:
+  '@eslint/js': 9.39.1
+  '@types/lodash-es': 4.17.12
+  '@types/react': 19.2.7
+  '@types/react-dom': 19.2.3
+  '@typescript-eslint/eslint-plugin': 8.48.1
+  '@typescript-eslint/parser': 8.48.1
+  '@typescript-eslint/utils': 8.48.1
+  esbuild: 0.27.0
+  eslint: 9.39.1
+  glob: 13.0.1
+  lodash-es: 4.17.23
+  react: 19.2.4
+  react-dom: 19.2.4
+  react-router: 7.12.0
+  tsx: 4.21.0
+  typescript-eslint: 8.48.1
