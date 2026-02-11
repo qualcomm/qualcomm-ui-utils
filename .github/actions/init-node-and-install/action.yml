@@ -3,12 +3,15 @@ description: 'Setup Node.js and enable corepack for pnpm'
 runs:
   using: 'composite'
   steps:
+  - uses: pnpm/action-setup@v4
+    name: Install pnpm
+    with:
+      run_install: false
+
   - uses: actions/setup-node@v4
     with:
-      node-version: '22'
-
-  - run: corepack enable
-    shell: bash
+      node-version: 24
+      cache: pnpm
 
   - run: pnpm i --frozen-lockfile
     shell: bash

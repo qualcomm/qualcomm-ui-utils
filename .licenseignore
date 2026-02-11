@@ -24,9 +24,9 @@ scripts/*
 .github/**
 
 # package scripts and configs
-packages/*/*/*.js
-packages/*/*/*.ts
-packages/*/*/scripts/*
+packages/*/*.js
+packages/*/*.ts
+packages/*/scripts/*
 
 # barrel files
 **/index.ts
@@ -34,7 +34,3 @@ packages/*/*/scripts/*
 
 # typescript typedefs
 **/*.d.ts
-
-# documentation and debug sites
-packages/docs/**/*
-packages/debug-apps/**/*
