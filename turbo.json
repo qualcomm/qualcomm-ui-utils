@@ -1,9 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
-    ".eslintrc.cjs"
+    "eslint.config.js"
   ],
-  "cacheDir": ".turbo-cache",
+  "cacheDir": ".turbo/cache",
   "concurrency": "30",
   "tasks": {
     "dev": {
@@ -15,10 +15,6 @@
         "^build"
       ],
       "outputs": ["dist"],
-      "outputLogs": "new-only"
-    },
-    "build:typedoc": {
-      "outputs": ["./.typedoc/*.json", "./src/assets/doc-props/doc-properties.json"],
       "outputLogs": "new-only"
     },
     "test": {
@@ -38,46 +34,11 @@
     "test:unit:ci": {
       "outputLogs": "new-only"
     },
-    "test:angular:ci": {
-      "outputLogs": "new-only"
-    },
-    "test:angular-core:ci": {
-      "outputLogs": "new-only"
-    },
-    "test:react:ci": {
-      "outputLogs": "new-only"
-    },
-    "test:react-core:ci": {
-      "outputLogs": "new-only"
-    },
-    "build:angular:ci": {
-      "inputs": [
-        "*.{json,ts,mts,js,cjs,mjs}",
-        "src/**",
-        "scripts/**",
-        "!src/environments/environment.ts",
-        "!src/environments/environment.ci.ts"
-      ],
-      "outputs": ["dist/**"],
-      "outputLogs": "new-only"
-    },
-    "build:angular:prod": {
-      "inputs": [
-        "*.{json,ts,mts,js,cjs,mjs}",
-        "src/**",
-        "scripts/**",
-        "!src/environments/environment.ts",
-        "!src/environments/environment.ci.ts"
-      ],
-      "outputs": ["dist/**"],
-      "outputLogs": "new-only"
-    },
     "lint": {
       "inputs": [
         "**/*.{html,cjs,js,md,mdx,mjs,ts,tsx,mts}",
         "!node_modules/**",
-        "!dist/**",
-        "!ng-doc/**"
+        "!dist/**"
       ],
       "outputLogs": "new-only"
     }

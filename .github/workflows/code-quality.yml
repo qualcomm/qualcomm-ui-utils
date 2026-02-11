@@ -14,12 +14,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        shardIndex: [ 1, 2, 3, 4 ]
-        shardTotal: [ 4 ]
     concurrency:
-      group: PR Lint - ${{matrix.shardIndex}} - ${{github.head_ref}}
+      group: PR Lint - ${{github.head_ref}}
       cancel-in-progress: true
     timeout-minutes: 10
     steps:
@@ -27,9 +23,7 @@ jobs:
 
     - uses: ./.github/actions/init-node-and-install
 
-    - name: lint
-      run: node --import=tsx scripts/lint/lint-shard.ts --shard=${{matrix.shardIndex}}/${{matrix.shardTotal}}
-
+    - run: pnpm lint:ci
 
   build:
     runs-on: ubuntu-latest
