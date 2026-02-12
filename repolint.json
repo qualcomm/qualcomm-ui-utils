@@ -65,7 +65,7 @@
         "type": "file-existence",
         "options": {
           "globsAny": [
-            "CHANGELOG*"
+            "**/CHANGELOG.md"
           ],
           "nocase": true
         }
@@ -239,8 +239,8 @@
         "type": "file-existence",
         "options": {
           "globsAny": [
-            "ISSUE_TEMPLATE*",
-            ".github/ISSUE_TEMPLATE*"
+            "ISSUE_TEMPLATE/*",
+            ".github/ISSUE_TEMPLATE/*"
           ]
         }
       }
@@ -251,8 +251,8 @@
         "type": "file-existence",
         "options": {
           "globsAny": [
-            "PULL_REQUEST_TEMPLATE*",
-            ".github/PULL_REQUEST_TEMPLATE*"
+            "PULL_REQUEST_TEMPLATE/*",
+            ".github/PULL_REQUEST_TEMPLATE/*"
           ]
         }
       }
