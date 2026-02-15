@@ -4,10 +4,15 @@ import {config} from "dotenv"
 import {readFile} from "node:fs/promises"
 
 import {getPublishablePackages} from "./utils"
+import {cleanEnv, str} from "envalid"
 
 config()
 
-const octokit = new Octokit({auth: process.env.TOKEN})
+const env = cleanEnv(process.env, {
+  GITHUB_TOKEN: str(),
+})
+
+const octokit = new Octokit({auth: env.GITHUB_TOKEN})
 
 /**
  * Parses a changelog file to extract the latest version entry.

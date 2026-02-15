@@ -35,7 +35,7 @@ catalog:
   '@typescript-eslint/utils': 8.48.1
   esbuild: 0.27.0
   eslint: 9.39.1
-  glob: 13.0.1
+  glob: 13.0.3
   lodash-es: 4.17.23
   react: 19.2.4
   react-dom: 19.2.4

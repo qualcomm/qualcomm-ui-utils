@@ -1,0 +1,29 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": [
+    "../scripts/changeset-conventional-commits/changelog-formatter.cjs",
+    { "repo": "qualcomm/qualcomm-ui-utils" }
+  ],
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "changedFilePatterns": [
+    "**",
+    "!dist",
+    "!build",
+    "!CHANGELOG.md",
+    "!node_modules",
+    "!.turbo",
+    "!scripts",
+    "!vite.config.ts",
+    "!vitest.config.ts"
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "updateInternalDependents": "always",
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  },
+  "ignore": []
+}
