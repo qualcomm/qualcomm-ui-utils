@@ -1,5 +1,11 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 2.0.0 (2026/02/14)
+
+### BREAKING CHANGES
+
+- remove legacy tsconfig files
+
 ## 1.0.4 (2025/11/21)
 
 ### Miscellaneous Chores
