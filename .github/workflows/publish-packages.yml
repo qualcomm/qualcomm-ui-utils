@@ -1,0 +1,55 @@
+name: "Publish Packages and Create Releases"
+env:
+  IS_CI: true
+  TURBO_API: "http://127.0.0.1:8585"
+  TURBO_TEAM: "qualcomm-ui"
+  TURBO_TOKEN: "turbo-cache-token"
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should-publish: ${{ steps.check.outputs.should-publish }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - id: check
+      run: pnpm tsx scripts/release/check-versions.ts
+
+  publish:
+    needs: check
+    if: needs.check.outputs.should-publish == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: Publish Packages - ${{github.head_ref}}
+      cancel-in-progress: true
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - run: pnpm build
+
+    - name: update npm
+      run: |
+        npm --version
+        npm install -g npm@latest
+        npm --version
+
+    - run: pnpm changeset publish
+
+    - name: create releases
+      run: node --import=tsx scripts/release/create-github-releases.ts
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
