@@ -18,7 +18,8 @@ jobs:
         repolinter: true                   # default: true
         # This is run daily on a cron. See: semgrep.yml
         semgrep: false                     # default: true
-        copyright-license-detector: true   # default: true
+        # This is handled from code-quality.yml using a faster local script
+        copyright-license-detector: false  # default: true
         pr-check-emails: true              # default: true
         dependency-review: true            # default: true
     secrets:
