@@ -54,4 +54,4 @@ jobs:
     - name: create releases
       run: node --import=tsx scripts/release/create-github-releases.ts
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -49,7 +49,8 @@ export default defineConfig(
   },
   {
     extends: [...quiEslintTs.configs.recommended],
-    files: ["scripts/*.ts"],
+    files: ["scripts/**/*.ts"],
+    languageOptions,
   },
   {
     extends: [
