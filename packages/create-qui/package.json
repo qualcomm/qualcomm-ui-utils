@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@clack/prompts": "1.0.0-alpha.6",
-    "tiged": "^2.12.7"
+    "tiged": "^3.0.0-rc.0"
   },
   "devDependencies": {
     "@qualcomm-ui/cli": "workspace:*",
