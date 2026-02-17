@@ -1,0 +1,104 @@
+.custom-button {
+  @apply bg-neutral-00 text-neutral-primary border-neutral-01 rounded border px-4 py-2;
+}
+
+.custom-button:hover {
+  @apply bg-neutral-01 border-neutral-02;
+}
+
+.custom-button:focus {
+  @apply border-focus-border;
+}
+
+.custom-card {
+  @apply bg-neutral-01 border-neutral-00 rounded-lg border p-6;
+}
+
+.custom-card-header {
+  @apply font-heading-lg text-neutral-primary mb-4;
+}
+
+.custom-card-body {
+  @apply font-body-md text-neutral-secondary;
+}
+
+.custom-link {
+  color: var(--color-interactive-text-link-default-idle);
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  color: var(--q-text-link-hover);
+}
+
+.custom-error {
+  color: var(--color-text-support-danger);
+  @apply font-body-xs;
+}
+
+.custom-container {
+  background-color: var(--color-background-neutral-02);
+  border-color: var(--color-border-neutral-01);
+}
+
+.custom-elevated {
+  box-shadow: var(--shadow-medium);
+  @apply rounded-xxl;
+}
+
+.custom-code {
+  @apply font-code-md bg-neutral-00 rounded px-2;
+  font-family: var(--type-font-family-tertiary);
+}
+
+.contrast-section {
+  @apply bg-neutral-07 text-neutral-inverse p-8;
+}
+
+.contrast-text {
+  @apply text-neutral-secondary font-body-sm;
+}
+
+.bg-neutral-00 {
+  background-color: var(--color-background-neutral-01);
+}
+
+.bg-neutral-01 {
+  background-color: var(--color-background-neutral-02);
+}
+
+.text-neutral-primary {
+  color: var(--color-text-neutral-primary);
+}
+
+.text-neutral-secondary {
+  color: var(--color-text-neutral-secondary);
+}
+
+.border-neutral-01 {
+  border-color: var(--color-border-neutral-01);
+}
+
+.border-focus-border {
+  border-color: var(--color-utility-focus-border);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-low);
+}
+
+.font-brand {
+  font-family: var(--type-font-family-primary);
+}
+
+.font-mono {
+  font-family: var(--type-font-family-tertiary);
+}
+
+.q-font-body-md {
+  font: var(--q-font-body-md);
+}
+
+.q-font-heading-xl {
+  font: var(--q-font-heading-xl);
+}
