@@ -1,0 +1,104 @@
+.custom-button {
+  @apply bg-1 text-primary border-default rounded border px-4 py-2;
+}
+
+.custom-button:hover {
+  @apply bg-2 border-strong;
+}
+
+.custom-button:focus {
+  @apply border-focus;
+}
+
+.custom-card {
+  @apply bg-2 border-subtle rounded-lg border p-6;
+}
+
+.custom-card-header {
+  @apply q-font-heading-lg text-primary mb-4;
+}
+
+.custom-card-body {
+  @apply q-font-body-md text-secondary;
+}
+
+.custom-link {
+  color: var(--q-text-link);
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  color: var(--q-text-link-hover);
+}
+
+.custom-error {
+  color: var(--q-text-error);
+  @apply q-font-metadata-sm;
+}
+
+.custom-container {
+  background-color: var(--q-background-2);
+  border-color: var(--q-border-1-default);
+}
+
+.custom-elevated {
+  box-shadow: var(--q-elevation-3);
+  @apply rounded-2xl;
+}
+
+.custom-code {
+  @apply q-font-code-md bg-1 rounded px-2;
+  font-family: var(--q-font-mono);
+}
+
+.contrast-section {
+  @apply bg-contrast-4 text-contrast-primary p-8;
+}
+
+.contrast-text {
+  @apply text-contrast-secondary q-font-body-sm;
+}
+
+.bg-1 {
+  background-color: var(--q-background-1);
+}
+
+.bg-2 {
+  background-color: var(--q-background-2);
+}
+
+.text-primary {
+  color: var(--q-text-1-primary);
+}
+
+.text-secondary {
+  color: var(--q-text-1-secondary);
+}
+
+.border-default {
+  border-color: var(--q-border-1-default);
+}
+
+.border-focus {
+  border-color: var(--q-border-focus);
+}
+
+.shadow-card {
+  box-shadow: var(--q-elevation-2);
+}
+
+.font-brand {
+  font-family: var(--q-font-family-brand);
+}
+
+.font-mono {
+  font-family: var(--q-font-mono);
+}
+
+.q-font-body-md {
+  font: var(--q-font-body-md);
+}
+
+.q-font-heading-xl {
+  font: var(--q-font-heading-xl);
+}

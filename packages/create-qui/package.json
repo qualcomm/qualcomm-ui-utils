@@ -1,0 +1,41 @@
+{
+  "name": "create-qui",
+  "version": "0.1.0",
+  "description": "Create a new Qualcomm UI project",
+  "author": "Ryan Bower",
+  "license": "BSD-3-Clause-Clear",
+  "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": "./lib/cli.cjs",
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "scripts": {
+    "build": "run-s clean compile",
+    "clean": "shx rm -rf dist",
+    "compile": "run-p compile:cli compile:types",
+    "compile:cli": "tsx build.ts --mode production",
+    "compile:types": "tsc -b tsconfig.lib.json --force",
+    "dev": "run-p watch:cli watch:types",
+    "watch:cli": "tsx build.ts --mode development --watch",
+    "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
+    "lint": "eslint --quiet",
+    "prepublishOnly": "qui-cli pre-publish",
+    "postpublish": "qui-cli post-publish"
+  },
+  "dependencies": {
+    "@clack/prompts": "1.0.0-alpha.6",
+    "tiged": "^2.12.7"
+  },
+  "devDependencies": {
+    "@qualcomm-ui/cli": "workspace:*",
+    "@qualcomm-ui/esbuild": "workspace:*",
+    "@qualcomm-ui/tsconfig": "workspace:*",
+    "@types/node": "~24.9.2",
+    "esbuild": "^0.25.8"
+  }
+}
