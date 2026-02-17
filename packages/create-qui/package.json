@@ -32,9 +32,9 @@
     "tiged": "^2.12.7"
   },
   "devDependencies": {
-    "@qualcomm-ui/cli": "catalog:",
-    "@qualcomm-ui/esbuild": "catalog:",
-    "@qualcomm-ui/tsconfig": "catalog:",
+    "@qualcomm-ui/cli": "workspace:*",
+    "@qualcomm-ui/esbuild": "workspace:*",
+    "@qualcomm-ui/tsconfig": "workspace:*",
     "@types/node": "~24.9.2",
     "esbuild": "^0.25.8"
   }

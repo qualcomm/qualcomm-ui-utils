@@ -36,9 +36,9 @@
   },
   "devDependencies": {
     "@commander-js/extra-typings": "^14.0.0",
-    "@qualcomm-ui/cli": "catalog:",
-    "@qualcomm-ui/esbuild": "catalog:",
-    "@qualcomm-ui/tsconfig": "catalog:",
+    "@qualcomm-ui/cli": "workspace:*",
+    "@qualcomm-ui/esbuild": "workspace:*",
+    "@qualcomm-ui/tsconfig": "workspace:*",
     "@types/mdast": "^4.0.4",
     "@types/node": "~24.9.2",
     "@vitest/coverage-v8": "^4.0.8",
@@ -66,6 +66,6 @@
     "vitest": "^4.0.8"
   },
   "peerDependencies": {
-    "@qualcomm-ui/utils": "workspace:^1.1.0"
+    "@qualcomm-ui/utils": "^1.1.0"
   }
 }
