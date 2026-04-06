@@ -87,8 +87,9 @@ async function run(options: {
 
     try {
       await step.run()
-    } catch {
+    } catch (e) {
       console.error(`\nStep "${step.name}" failed. Aborting prep-release.`)
+      console.error(e)
       process.exit(1)
     }
 
