@@ -36,6 +36,12 @@ const defaultCommitTypes = [
   {section: "Continuous Integration", type: "ci"},
 ]
 
+/**
+ * Normalizes conventional commit format by removing whitespace between type and
+ * scope. Transforms "fix (scope): message" to "fix(scope): message"
+ * @param commit - The commit message to normalize
+ * @returns Normalized commit message
+ */
 function normalizeConventionalCommit(commit: string): string {
   const normalized = commit.replace(/^(\w+)\s+(\(.*?\))/, "$1$2")
   if (normalized.startsWith("- ")) {
@@ -44,6 +50,11 @@ function normalizeConventionalCommit(commit: string): string {
   return normalized
 }
 
+/**
+ * Checks if a commit message follows conventional commit format
+ * @param commit - The commit message to check
+ * @returns True if the commit follows conventional commit format
+ */
 export function isConventionalCommit(commit: string) {
   const normalized = normalizeConventionalCommit(commit)
   return defaultCommitTypes.some((commitType) =>
@@ -53,6 +64,11 @@ export function isConventionalCommit(commit: string) {
   )
 }
 
+/**
+ * Checks if a commit message indicates a breaking change
+ * @param commit - The commit message to check
+ * @returns True if the commit contains a breaking change indicator
+ */
 export function isBreakingChange(commit: string) {
   const normalized = normalizeConventionalCommit(commit)
   return (
@@ -63,6 +79,11 @@ export function isBreakingChange(commit: string) {
   )
 }
 
+/**
+ * Filters commits to only conventional commits and maps them to changelog format
+ * @param commits - Array of commits to translate
+ * @returns Array of conventional commit messages with their associated commit hashes
+ */
 export function translateCommitsToConventionalCommitMessages(
   commits: Commit[],
 ): ConventionalMessagesToCommits[] {
@@ -74,6 +95,11 @@ export function translateCommitsToConventionalCommitMessages(
     }))
 }
 
+/**
+ * Gets the list of files changed between two git refs
+ * @param opts - Object containing from and to git refs
+ * @returns Array of file paths that changed
+ */
 export function getFilesChangedSince(opts: {from: string; to: string}) {
   return execSync(`git diff --name-only ${opts.from}~1...${opts.to}`)
     .toString()
@@ -81,6 +107,10 @@ export function getFilesChangedSince(opts: {from: string; to: string}) {
     .split("\n")
 }
 
+/**
+ * Gets the absolute path to the git repository root
+ * @returns Absolute path to repository root
+ */
 export function getRepoRoot() {
   return execSync("git rev-parse --show-toplevel")
     .toString()
@@ -88,10 +118,20 @@ export function getRepoRoot() {
     .replace(/\n|\r/g, "")
 }
 
+/**
+ * Gets the full commit message for a given commit hash
+ * @param commitHash - The git commit hash
+ * @returns The full commit message
+ */
 function getCommitMessage(commitHash: string): string {
   return execSync(`git log -1 --pretty=%B ${commitHash}`).toString().trim()
 }
 
+/**
+ * Extracts all conventional commit messages from a multi-line commit message
+ * @param commitMessage - The commit message to parse
+ * @returns Array of conventional commit messages found
+ */
 function extractConventionalCommits(commitMessage: string): string[] {
   const lines = commitMessage.split("\n")
   const conventionalCommits: string[] = []
@@ -104,6 +144,12 @@ function extractConventionalCommits(commitMessage: string): string[] {
   return conventionalCommits
 }
 
+/**
+ * Converts conventional commit messages to changesets based on affected packages
+ * @param conventionalMessagesToCommits - Array of conventional messages with their commit hashes
+ * @param options - Configuration options including ignored files and packages
+ * @returns Array of changesets for affected packages
+ */
 export function conventionalMessagesWithCommitsToChangesets(
   conventionalMessagesToCommits: ConventionalMessagesToCommits[],
   options: {
@@ -165,14 +211,27 @@ export function conventionalMessagesWithCommitsToChangesets(
     .filter(Boolean)
 }
 
+/**
+ * Fetches the latest changes from a remote branch
+ * @param branch - The branch name to fetch
+ */
 export function gitFetch(branch: string) {
   execSync(`git fetch origin ${branch}`)
 }
 
+/**
+ * Gets the name of the current git branch
+ * @returns Current branch name
+ */
 export function getCurrentBranch() {
   return execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
 }
 
+/**
+ * Gets all commit hashes since a reference branch or tag
+ * @param branch - The branch to compare against
+ * @returns Array of commit hashes since the reference point
+ */
 export function getCommitsSinceRef(branch: string) {
   gitFetch(branch)
   const currentBranch = getCurrentBranch()
@@ -197,6 +256,11 @@ export function getCommitsSinceRef(branch: string) {
     .reverse()
 }
 
+/**
+ * Checks if a git tag exists
+ * @param tag - The tag name to check
+ * @returns True if the tag exists
+ */
 export function tagExists(tag: string): boolean {
   try {
     execSync(`git rev-parse --verify refs/tags/${tag}`, {stdio: "pipe"})
@@ -206,6 +270,14 @@ export function tagExists(tag: string): boolean {
   }
 }
 
+/**
+ * Gets all commit hashes since a package's release tag
+ * Falls back to the base branch if the release tag doesn't exist
+ * @param packageName - The package name (e.g., "@qualcomm-ui/angular")
+ * @param version - The package's current version
+ * @param baseBranch - The base branch to fall back to
+ * @returns Array of commit hashes since the release tag or base branch
+ */
 export function getCommitsSincePackageRelease(
   packageName: string,
   version: string,
@@ -229,6 +301,12 @@ export function getCommitsSincePackageRelease(
     .reverse()
 }
 
+/**
+ * Compares two changesets for equality
+ * @param a - First changeset
+ * @param b - Second changeset
+ * @returns True if changesets are equal
+ */
 function compareChangeSet(a: Changeset, b: Changeset): boolean {
   return (
     a.summary.replace(/\n$/, "") === b.summary &&
@@ -236,6 +314,12 @@ function compareChangeSet(a: Changeset, b: Changeset): boolean {
   )
 }
 
+/**
+ * Returns changesets in array a that are not in array b
+ * @param a - Array of changesets to filter
+ * @param b - Array of changesets to compare against
+ * @returns Changesets that exist in a but not in b
+ */
 export function difference(a: Changeset[], b: Changeset[]): Changeset[] {
   return a.filter(
     (changeA) => !b.some((changeB) => compareChangeSet(changeA, changeB)),

@@ -7,6 +7,14 @@ import {join, resolve} from "node:path"
 
 const DEFAULT_CONFIG_LOCATION = join(".changeset", "config.json")
 
+/**
+ * Retrieves all packages in the monorepo that should be published.
+ * Filters out packages marked as private and ignored packages.
+ *
+ * @param configPath - Path to the changesets config file, relative to cwd
+ * @param cwd - Working directory (defaults to process.cwd())
+ * @returns Array of package objects that are eligible for publishing
+ */
 export async function getPublishablePackages(
   configPath?: string,
   cwd: string = process.cwd(),
