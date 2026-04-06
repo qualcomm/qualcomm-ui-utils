@@ -1,4 +1,4 @@
-me: QC Preflight Checks
+name: QC Preflight Checks
 
 on:
   pull_request:
