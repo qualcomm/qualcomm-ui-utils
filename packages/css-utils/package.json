@@ -47,7 +47,7 @@
     "chokidar": "^4.0.3",
     "cssnano": "^6.1.2",
     "cssnano-preset-lite": "^3.1.0",
-    "esbuild": "^0.25.8",
+    "esbuild": "catalog:",
     "glob": "catalog:",
     "ora": "^9.0.0",
     "postcss": "^8.5.6",
