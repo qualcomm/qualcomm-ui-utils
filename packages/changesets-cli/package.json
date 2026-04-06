@@ -1,0 +1,45 @@
+{
+  "name": "@qualcomm-ui/changesets-cli",
+  "version": "0.0.1",
+  "description": "Changeset automation CLI for conventional commits",
+  "author": "Ryan Bower",
+  "license": "BSD-3-Clause-Clear",
+  "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "qui-changesets": "./lib/cli.cjs"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "run-s clean compile",
+    "clean": "shx rm -rf dist",
+    "compile": "run-p compile:cli compile:types",
+    "compile:cli": "tsx build.ts --mode production",
+    "compile:types": "tsc -b tsconfig.lib.json --force",
+    "dev": "run-p watch:cli watch:types",
+    "watch:cli": "tsx build.ts --mode development --watch",
+    "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
+    "lint": "eslint --quiet",
+    "prepublishOnly": "qui-cli pre-publish",
+    "postpublish": "qui-cli post-publish"
+  },
+  "dependencies": {
+    "@changesets/read": "^0.6.6",
+    "@changesets/write": "^0.4.0",
+    "@manypkg/get-packages": "^3.1.0"
+  },
+  "devDependencies": {
+    "@changesets/types": "^6.1.0",
+    "@commander-js/extra-typings": "^14.0.0",
+    "commander": "^14.0.3",
+    "dayjs": "^1.11.19",
+    "esbuild": "catalog:"
+  }
+}
