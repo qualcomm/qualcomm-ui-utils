@@ -33,6 +33,7 @@ function getCommitsWithMessages(commitHashes: string[]) {
 }
 
 export interface ChangesetGenerateOptions {
+  configPath?: string | undefined
   fromReleaseTags?: boolean | undefined
   includeCommitLinks?: boolean | undefined
 }
@@ -41,8 +42,9 @@ export async function conventionalCommitChangeset(
   options: ChangesetGenerateOptions,
   cwd: string = process.cwd(),
 ) {
+  const configLocation = options.configPath ?? CHANGESET_CONFIG_LOCATION
   const changesetConfig = JSON.parse(
-    readFileSync(join(cwd, CHANGESET_CONFIG_LOCATION)).toString(),
+    readFileSync(join(cwd, configLocation)).toString(),
   )
   const ignored = changesetConfig.ignore ?? []
   const packages = getPackagesSync(cwd).packages.filter(

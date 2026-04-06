@@ -15,10 +15,6 @@ export async function getPublishablePackages() {
   const changesetConfig = JSON.parse(
     await readFile(resolve(cwd(), ".changeset/config.json"), "utf-8"),
   )
-  const publishablePrivatePackages = new Set([
-    "@qualcomm-ui/angular",
-    "@qualcomm-ui/angular-core",
-  ])
   const ignoredPackages = new Set(changesetConfig.ignored ?? [])
   return packages.filter((pkg) => {
     if (ignoredPackages.has(pkg.packageJson.name)) {
@@ -27,9 +23,6 @@ export async function getPublishablePackages() {
     if (!pkg.packageJson.version) {
       return false
     }
-    if (!pkg.packageJson.private) {
-      return true
-    }
-    return publishablePrivatePackages.has(pkg.packageJson.name)
+    return !pkg.packageJson.private
   })
 }

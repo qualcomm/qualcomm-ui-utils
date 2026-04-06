@@ -6,7 +6,9 @@ import {execSync} from "node:child_process"
 import {stdin, stdout} from "node:process"
 import {createInterface} from "node:readline/promises"
 
+import {checkVersions} from "./check-versions"
 import {consolidateChangelogs} from "./consolidate-changelogs"
+import {createGitHubReleases} from "./create-github-releases"
 import {generateReleaseNotes} from "./generate-release-notes"
 import {conventionalCommitChangeset} from "./main"
 
@@ -17,6 +19,7 @@ interface Step {
 }
 
 function buildSteps(options: {
+  config?: string
   fromReleaseTags?: boolean
   includeCommitLinks?: boolean
   packageManager?: string
@@ -29,6 +32,7 @@ function buildSteps(options: {
       name: "changeset-generate",
       run: () =>
         conventionalCommitChangeset({
+          configPath: options.config,
           fromReleaseTags: options.fromReleaseTags,
           includeCommitLinks: options.includeCommitLinks,
         }),
@@ -68,6 +72,7 @@ async function waitForConfirmation(stepName: string): Promise<boolean> {
 }
 
 async function run(options: {
+  config?: string
   fromReleaseTags?: boolean
   includeCommitLinks?: boolean
   inSteps?: boolean
@@ -111,7 +116,7 @@ program
   )
   .option(
     "--from-release-tags",
-    "Diff each package from its most recent release tag instead of the base branch",
+    "Diff each package from its most recent release tag instead of the baseBranch from the changesets config",
     false,
   )
   .option(
@@ -123,6 +128,10 @@ program
     "--package-manager <command>",
     "Package manager command to use for changeset version",
     "pnpm",
+  )
+  .option(
+    "--config <path>",
+    "Path to the changesets config file, relative to the project root",
   )
   .action((options) => run(options))
 
@@ -139,7 +148,13 @@ program
     "Embed commit hashes in changeset summaries for changelog links",
     false,
   )
-  .action((options) => conventionalCommitChangeset(options))
+  .option(
+    "--config <path>",
+    "Path to the changesets config file, relative to the project root",
+  )
+  .action(({config, ...options}) =>
+    conventionalCommitChangeset({...options, configPath: config}),
+  )
 
 program
   .command("consolidate-changelogs")
@@ -151,6 +166,47 @@ program
   .description("Generate combined release notes")
   .action(async () => {
     await generateReleaseNotes()
+  })
+
+program
+  .command("check-versions")
+  .description(
+    "Check which packages have newer versions than what is published on npm",
+  )
+  .option(
+    "--config <path>",
+    "Path to the changesets config file, relative to the project root",
+  )
+  .action((options) => checkVersions({configPath: options.config}))
+
+program
+  .command("create-github-releases")
+  .description("Create GitHub releases for published packages from changelogs")
+  .option(
+    "--token <token>",
+    "GitHub token for authentication (falls back to TOKEN or GITHUB_TOKEN env vars)",
+  )
+  .option(
+    "--repo <owner/repo>",
+    "GitHub repository in owner/repo format (defaults to git remote origin)",
+  )
+  .option(
+    "--config <path>",
+    "Path to the changesets config file, relative to the project root",
+  )
+  .action((options) => {
+    const token = options.token ?? process.env.TOKEN ?? process.env.GITHUB_TOKEN
+    if (!token) {
+      console.error(
+        "GitHub token is required. Use --token, or set TOKEN or GITHUB_TOKEN env var.",
+      )
+      process.exit(1)
+    }
+    return createGitHubReleases({
+      configPath: options.config,
+      repo: options.repo,
+      token,
+    })
   })
 
 program.parse(process.argv)

@@ -28,8 +28,8 @@ const typeMap: Record<string, string> = {
   test: "Tests",
 }
 
-export const changelogFunctions = {
-  getDependencyReleaseLine: async (
+const changelogFunctions = {
+  getDependencyReleaseLine: (
     _changesets: unknown,
     dependenciesUpdated: DependencyUpdated[],
     options: ChangelogOptions,
@@ -47,7 +47,7 @@ export const changelogFunctions = {
     return `### Miscellaneous Chores\n* **deps:** update dependencies [${deps}]`
   },
 
-  getReleaseLine: async (
+  getReleaseLine: (
     changeset: ChangesetInfo,
     _type: string,
     options: ChangelogOptions,
@@ -109,4 +109,4 @@ export const changelogFunctions = {
   },
 }
 
-module.exports = changelogFunctions
+export default changelogFunctions

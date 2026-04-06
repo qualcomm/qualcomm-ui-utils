@@ -64,7 +64,7 @@
     "syncpack": "14.0.0-alpha.32",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
-    "turbo": "^2.8.5",
+    "turbo": "^2.9.3",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "yaml": "^2.8.2"

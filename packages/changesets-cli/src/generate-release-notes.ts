@@ -7,7 +7,7 @@ import {join} from "node:path"
 
 import {getChangedChangelogs} from "./consolidate-changelogs"
 
-const RELEASE_NOTES_FILENAME = "qualcomm-ui-release-notes.md"
+const RELEASE_NOTES_FILENAME = "release-notes.md"
 
 interface ChangelogEntry {
   date: string

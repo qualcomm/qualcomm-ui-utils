@@ -42,8 +42,6 @@ async function main(argv: string[]) {
     tsconfig: "tsconfig.lib.json",
   }
 
-  // Build main and preload
-  console.log("[build.ts] build")
   await buildOrWatch(buildOpts, IS_WATCH)
 }
 

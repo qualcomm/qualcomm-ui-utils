@@ -1,23 +1,8 @@
-import esbuild, {type BuildOptions} from "esbuild"
+import type {BuildOptions} from "esbuild"
 
-function getArg(argv: any[], key: string) {
-  const index = argv.indexOf(key)
-  if (index !== -1) {
-    return argv[index + 1]
-  }
-}
+import {buildOrWatch, getArg, hasArg, logPlugin} from "@qualcomm-ui/esbuild"
 
-function hasArg(argv: any[], key: string) {
-  return argv.includes(key)
-}
-
-async function buildOrWatch(options: BuildOptions, watch: boolean) {
-  if (watch) {
-    await esbuild.context(options).then((ctx) => ctx.watch())
-  } else {
-    await esbuild.build(options)
-  }
-}
+import pkgJson from "./package.json"
 
 async function main(argv: string[]) {
   const IS_WATCH = hasArg(argv, "--watch")
@@ -29,21 +14,22 @@ async function main(argv: string[]) {
     define: {
       "process.env.BUILD_MODE": JSON.stringify(BUILD_MODE),
     },
-    entryPoints: ["./src/cli.ts"],
-    external: ["typescript", "@changesets/*", "@manypkg/*"],
+    entryPoints: ["./src/cli.ts", "./src/changelog-formatter.ts"],
+    external: [...Object.keys(pkgJson.dependencies)],
     format: "cjs",
     loader: {
       ".node": "copy",
     },
-    outfile: "./dist/cli.cjs",
+    outdir: "./dist",
+    outExtension: {".js": ".cjs"},
     platform: "node",
+    plugins: [logPlugin({bundleSizeOptions: {logMode: "all"}})],
     sourcemap: true,
     target: "es2020",
     tsconfig: "tsconfig.lib.json",
   }
 
-  console.log("[build.ts] build")
   await buildOrWatch(buildOpts, IS_WATCH)
 }
 
-main(process.argv)
+void main(process.argv)
