@@ -20,6 +20,7 @@ async function main(argv: string[]) {
     loader: {
       ".node": "copy",
     },
+    metafile: true,
     outdir: "./dist",
     outExtension: {".js": ".cjs"},
     platform: "node",
