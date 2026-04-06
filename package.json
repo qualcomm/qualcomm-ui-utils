@@ -12,7 +12,8 @@
     "test": "turbo run test",
     "lint": "turbo run lint --continue",
     "lint:ci": "turbo run lint --concurrency 6",
-    "check-updates": "pnpm npm-check-updates"
+    "check-updates": "pnpm npm-check-updates",
+    "bump": "pnpm qui-changesets prep-release --include-commit-links"
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",
