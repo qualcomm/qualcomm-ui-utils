@@ -68,6 +68,9 @@ importers:
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
+      '@qualcomm-ui/changesets-cli':
+        specifier: workspace:*
+        version: link:packages/changesets-cli
       '@qualcomm-ui/eslint-config-mdx':
         specifier: ^1.1.0
         version: 1.1.0(eslint-mdx@3.6.2(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-mdx@3.6.2(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-prettier@5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(prettier@3.8.1))(eslint-plugin-react@7.37.5(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(typescript-eslint@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)

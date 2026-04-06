@@ -28,6 +28,7 @@
     "@eslint/js": "catalog:",
     "@manypkg/get-packages": "^3.1.0",
     "@octokit/rest": "^22.0.1",
+    "@qualcomm-ui/changesets-cli": "workspace:*",
     "@qualcomm-ui/eslint-config-mdx": "^1.1.0",
     "@qualcomm-ui/eslint-config-react": "^1.1.0",
     "@qualcomm-ui/eslint-config-typescript": "^2.0.0",
