@@ -1,8 +1,16 @@
+// Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+// SPDX-License-Identifier: BSD-3-Clause-Clear
+
 import dayjs from "dayjs"
+import advancedFormat from "dayjs/plugin/advancedFormat"
 import {execSync} from "node:child_process"
 import {readFile, writeFile} from "node:fs/promises"
 
-function getChangedChangelogs(): string[] {
+dayjs.extend(advancedFormat)
+
+const DATE_FORMAT = "MMM Do, YYYY"
+
+export function getChangedChangelogs(): string[] {
   try {
     const output = execSync("git diff --name-only HEAD", {
       encoding: "utf-8",
@@ -16,7 +24,9 @@ function getChangedChangelogs(): string[] {
   }
 }
 
-async function consolidateChangelog(changelogPath: string): Promise<void> {
+export async function consolidateChangelog(
+  changelogPath: string,
+): Promise<void> {
   const changelog = await readFile(changelogPath, "utf-8")
   const lines = changelog.split("\n")
 
@@ -37,14 +47,18 @@ async function consolidateChangelog(changelogPath: string): Promise<void> {
 
   const sections = new Map<string, string[]>()
   let versionLine = ""
+  let dateLine = ""
   let currentSection = ""
 
   for (const line of releaseLines) {
     if (line.startsWith("## ")) {
-      versionLine = line
-      if (!line.match(/\(\d{4}\/\d{2}\/\d{2}\)/)) {
-        const date = dayjs().format("YYYY/MM/DD")
-        versionLine = `${line} (${date})`
+      const dateMatch = line.match(/\((\d{4}\/\d{2}\/\d{2})\)/)
+      if (dateMatch) {
+        versionLine = line.replace(` (${dateMatch[1]})`, "")
+        dateLine = dayjs(dateMatch[1]).format(DATE_FORMAT)
+      } else {
+        versionLine = line
+        dateLine = dayjs().format(DATE_FORMAT)
       }
       continue
     }
@@ -66,12 +80,14 @@ async function consolidateChangelog(changelogPath: string): Promise<void> {
     }
 
     if (currentSection && line.trim()) {
-      sections.get(currentSection).push(line.trim())
+      sections.get(currentSection)?.push(line.trim())
     }
   }
 
   const output: string[] = []
   output.push(versionLine)
+  output.push("")
+  output.push(dateLine)
   output.push("")
 
   for (const [section, items] of sections) {
@@ -88,18 +104,20 @@ async function consolidateChangelog(changelogPath: string): Promise<void> {
   await writeFile(changelogPath, result)
 }
 
-const changedChangelogs = getChangedChangelogs()
+export async function consolidateChangelogs(): Promise<void> {
+  const changedChangelogs = getChangedChangelogs()
 
-if (changedChangelogs.length === 0) {
-  console.log("No changelogs changed")
-  process.exit(0)
+  if (changedChangelogs.length === 0) {
+    console.log("No changelogs changed")
+    return
+  }
+
+  console.log(`Consolidating ${changedChangelogs.length} changelog(s)...`)
+
+  for (const changelogPath of changedChangelogs) {
+    console.log(`  - ${changelogPath}`)
+    await consolidateChangelog(changelogPath)
+  }
+
+  console.log("Done")
 }
-
-console.log(`Consolidating ${changedChangelogs.length} changelog(s)...`)
-
-for (const changelogPath of changedChangelogs) {
-  console.log(`  - ${changelogPath}`)
-  await consolidateChangelog(changelogPath)
-}
-
-console.log("Done")

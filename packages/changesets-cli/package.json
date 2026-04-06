@@ -1,7 +1,7 @@
 {
-  "name": "@qualcomm-ui/cli",
-  "version": "1.0.6",
-  "description": "Dev utils and scripts in a convenient CLI",
+  "name": "@qualcomm-ui/changesets-cli",
+  "version": "1.0.0",
+  "description": "Changeset automation CLI for conventional commits",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
@@ -10,13 +10,13 @@
   },
   "type": "module",
   "bin": {
-    "qui-cli": "./lib/cli.cjs"
+    "qui-changesets": "./lib/cli.cjs"
   },
   "files": [
     "dist",
     "lib"
   ],
-  "types": "./dist/modules/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist",
@@ -27,16 +27,23 @@
     "watch:cli": "tsx build.ts --mode development --watch",
     "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
     "lint": "eslint --quiet",
-    "prepublishOnly": "node lib/cli.cjs pre-publish",
-    "postpublish": "node lib/cli.cjs post-publish"
+    "prepublishOnly": "qui-cli pre-publish",
+    "postpublish": "qui-cli post-publish"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@changesets/read": "^0.6.6",
+    "@changesets/write": "^0.4.0",
+    "@manypkg/get-packages": "^3.1.0",
+    "@octokit/rest": "^22.0.1"
   },
   "devDependencies": {
+    "@changesets/types": "^6.1.0",
     "@commander-js/extra-typings": "^14.0.0",
+    "@qualcomm-ui/esbuild": "workspace:*",
     "chalk": "^5.6.2",
-    "chokidar": "^4.0.3",
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
-    "esbuild": "catalog:",
-    "vitest": "^4.0.8"
+    "esbuild": "catalog:"
   }
 }

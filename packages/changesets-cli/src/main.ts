@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 // Modified from https://github.com/iamchathu/changeset-conventional-commits
 // Changes from Qualcomm Technologies, Inc. are provided under the following license:
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
@@ -7,7 +5,6 @@
 
 import readChangeset from "@changesets/read"
 import writeChangeset from "@changesets/write"
-import {Command} from "@commander-js/extra-typings"
 import {getPackagesSync} from "@manypkg/get-packages"
 import {execSync} from "node:child_process"
 import {readFileSync} from "node:fs"
@@ -35,16 +32,19 @@ function getCommitsWithMessages(commitHashes: string[]) {
   })
 }
 
-interface CliOptions {
+export interface ChangesetGenerateOptions {
+  configPath?: string | undefined
   fromReleaseTags?: boolean | undefined
+  includeCommitLinks?: boolean | undefined
 }
 
-async function conventionalCommitChangeset(
-  options: CliOptions,
+export async function conventionalCommitChangeset(
+  options: ChangesetGenerateOptions,
   cwd: string = process.cwd(),
 ) {
+  const configLocation = options.configPath ?? CHANGESET_CONFIG_LOCATION
   const changesetConfig = JSON.parse(
-    readFileSync(join(cwd, CHANGESET_CONFIG_LOCATION)).toString(),
+    readFileSync(join(cwd, configLocation)).toString(),
   )
   const ignored = changesetConfig.ignore ?? []
   const packages = getPackagesSync(cwd).packages.filter(
@@ -54,12 +54,11 @@ async function conventionalCommitChangeset(
   )
 
   const {baseBranch = "main"} = changesetConfig
-  const {fromReleaseTags} = options
+  const {fromReleaseTags, includeCommitLinks} = options
 
   let changesets
 
   if (fromReleaseTags) {
-    // Per-package diffing from each package's release tag
     const allChangesets = packages.flatMap((pkg) => {
       const packageName = pkg.packageJson.name
       const version = pkg.packageJson.version
@@ -79,11 +78,11 @@ async function conventionalCommitChangeset(
 
       return conventionalMessagesWithCommitsToChangesets(changelogMessages, {
         ignoredFiles: ignored,
+        includeCommitLinks,
         packages: [pkg],
       })
     })
 
-    // Deduplicate changesets with same summary and releases
     changesets = allChangesets.filter(
       (changeset, index, self) =>
         index ===
@@ -94,7 +93,6 @@ async function conventionalCommitChangeset(
         ),
     )
   } else {
-    // Original behavior: diff from base branch
     const commitsSinceBase = getCommitsSinceRef(baseBranch)
     const commitsWithMessages = getCommitsWithMessages(commitsSinceBase)
     const changelogMessagesWithAssociatedCommits =
@@ -104,6 +102,7 @@ async function conventionalCommitChangeset(
       changelogMessagesWithAssociatedCommits,
       {
         ignoredFiles: ignored,
+        includeCommitLinks,
         packages,
       },
     )
@@ -116,17 +115,7 @@ async function conventionalCommitChangeset(
       ? changesets
       : difference(changesets, currentChangesets)
 
-  newChangesets.forEach((changeset) => writeChangeset(changeset, cwd))
-}
-
-const program = new Command()
-  .name("changeset-generate")
-  .description("Generate changesets from conventional commits")
-  .option(
-    "--from-release-tags",
-    "Diff each package from its most recent release tag instead of the base branch",
-    false,
+  await Promise.all(
+    newChangesets.map((changeset) => writeChangeset(changeset, cwd)),
   )
-  .action((options) => conventionalCommitChangeset(options))
-
-program.parse()
+}

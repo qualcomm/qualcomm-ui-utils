@@ -43,7 +43,7 @@
     "@qualcomm-ui/tsconfig": "workspace:^2.0.0",
     "chalk": "^5.6.2",
     "chokidar": "^4.0.3",
-    "esbuild": "^0.25.8",
+    "esbuild": "catalog:",
     "glob": "catalog:",
     "npm-run-all2": "^8.0.4",
     "pretty-ms": "^9.3.0",

@@ -12,12 +12,7 @@
     "test": "turbo run test",
     "lint": "turbo run lint --continue",
     "lint:ci": "turbo run lint --concurrency 6",
-    "check-updates": "pnpm npm-check-updates",
-    "changeset-generate": "tsx scripts/changeset-conventional-commits/main.ts",
-    "bump": "pnpm changeset version",
-    "consolidate-changelogs": "tsx scripts/changeset-conventional-commits/consolidate-changelogs.ts",
-    "prep-release": "run-s changeset-generate bump consolidate-changelogs",
-    "prep-release-from-tags": "pnpm changeset-generate --from-release-tags && pnpm bump && pnpm consolidate-changelogs"
+    "check-updates": "pnpm npm-check-updates"
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",
@@ -61,10 +56,10 @@
     "stylelint-config-standard": "^40.0.0",
     "stylelint-order": "^7.0.1",
     "stylelint-prettier": "^5.0.3",
-    "syncpack": "14.0.0-alpha.32",
+    "syncpack": "14.3.0",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
-    "turbo": "^2.8.5",
+    "turbo": "^2.9.3",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "yaml": "^2.8.2"
@@ -75,5 +70,5 @@
     "playwright": "1.58.2",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.29.2"
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }
