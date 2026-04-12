@@ -25,13 +25,13 @@ Runs the full release-prep pipeline sequentially:
 qui-changesets prep-release [options]
 ```
 
-| Option                        | Description                                                                   | Default                  |
-| ----------------------------- | ----------------------------------------------------------------------------- | ------------------------ |
-| `--in-steps`                  | Pause after each step and wait for confirmation                               | `false`                  |
+| Option                        | Description                                                                         | Default                  |
+| ----------------------------- | ----------------------------------------------------------------------------------- | ------------------------ |
+| `--in-steps`                  | Pause after each step and wait for confirmation                                     | `false`                  |
 | `--commit-sha <sha>`          | Diff each package against the target commit instead of the repository's base branch |                          |
-| `--include-commit-links`      | Embed commit hashes in changeset summaries for changelog links                | `false`                  |
-| `--package-manager <command>` | Package manager command to use for `changeset version`                        | `pnpm`                   |
-| `--config <path>`             | Path to the changesets config file, relative to the project root              | `.changeset/config.json` |
+| `--include-commit-links`      | Embed commit hashes in changeset summaries for changelog links                      | `false`                  |
+| `--package-manager <command>` | Package manager command to use for `changeset version`                              | `pnpm`                   |
+| `--config <path>`             | Path to the changesets config file, relative to the project root                    | `.changeset/config.json` |
 
 ### `changeset-generate`
 
@@ -41,11 +41,11 @@ Generates changesets from conventional commits without running the full pipeline
 qui-changesets changeset-generate [options]
 ```
 
-| Option                   | Description                                                                   | Default                  |
-| ------------------------ | ----------------------------------------------------------------------------- | ------------------------ |
+| Option                   | Description                                                                         | Default                  |
+| ------------------------ | ----------------------------------------------------------------------------------- | ------------------------ |
 | `--commit-sha`           | Diff each package against the target commit instead of the repository's base branch | `false`                  |
-| `--include-commit-links` | Embed commit hashes in changeset summaries for changelog links                | `false`                  |
-| `--config <path>`        | Path to the changesets config file, relative to the project root              | `.changeset/config.json` |
+| `--include-commit-links` | Embed commit hashes in changeset summaries for changelog links                      | `false`                  |
+| `--config <path>`        | Path to the changesets config file, relative to the project root                    | `.changeset/config.json` |
 
 ### `consolidate-changelogs`
 
