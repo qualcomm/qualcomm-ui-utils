@@ -13,8 +13,8 @@ import {join} from "node:path"
 import {
   conventionalMessagesWithCommitsToChangesets,
   difference,
-  getCommitsSincePackageRelease,
-  getCommitsSinceRef,
+  getCommitsSinceCommit,
+  getCommitsSinceBranch,
   translateCommitsToConventionalCommitMessages,
 } from "./utils"
 
@@ -33,8 +33,8 @@ function getCommitsWithMessages(commitHashes: string[]) {
 }
 
 export interface ChangesetGenerateOptions {
+  commitSha?: string | undefined
   configPath?: string | undefined
-  fromReleaseTags?: boolean | undefined
   includeCommitLinks?: boolean | undefined
 }
 
@@ -54,59 +54,23 @@ export async function conventionalCommitChangeset(
   )
 
   const {baseBranch = "main"} = changesetConfig
-  const {fromReleaseTags, includeCommitLinks} = options
+  const {commitSha, includeCommitLinks} = options
 
-  let changesets
+  const commitsSinceRef = commitSha
+    ? getCommitsSinceCommit(commitSha)
+    : getCommitsSinceBranch(baseBranch)
+  const commitsWithMessages = getCommitsWithMessages(commitsSinceRef)
+  const changelogMessages =
+    translateCommitsToConventionalCommitMessages(commitsWithMessages)
 
-  if (fromReleaseTags) {
-    const allChangesets = packages.flatMap((pkg) => {
-      const packageName = pkg.packageJson.name
-      const version = pkg.packageJson.version
-      if (!packageName || !version) {
-        return []
-      }
-
-      const commitsSinceRelease = getCommitsSincePackageRelease(
-        packageName,
-        version,
-        baseBranch,
-      )
-
-      const commitsWithMessages = getCommitsWithMessages(commitsSinceRelease)
-      const changelogMessages =
-        translateCommitsToConventionalCommitMessages(commitsWithMessages)
-
-      return conventionalMessagesWithCommitsToChangesets(changelogMessages, {
-        ignoredFiles: ignored,
-        includeCommitLinks,
-        packages: [pkg],
-      })
-    })
-
-    changesets = allChangesets.filter(
-      (changeset, index, self) =>
-        index ===
-        self.findIndex(
-          (c) =>
-            c.summary === changeset.summary &&
-            JSON.stringify(c.releases) === JSON.stringify(changeset.releases),
-        ),
-    )
-  } else {
-    const commitsSinceBase = getCommitsSinceRef(baseBranch)
-    const commitsWithMessages = getCommitsWithMessages(commitsSinceBase)
-    const changelogMessagesWithAssociatedCommits =
-      translateCommitsToConventionalCommitMessages(commitsWithMessages)
-
-    changesets = conventionalMessagesWithCommitsToChangesets(
-      changelogMessagesWithAssociatedCommits,
-      {
-        ignoredFiles: ignored,
-        includeCommitLinks,
-        packages,
-      },
-    )
-  }
+  const changesets = conventionalMessagesWithCommitsToChangesets(
+    changelogMessages,
+    {
+      ignoredFiles: ignored,
+      includeCommitLinks,
+      packages,
+    },
+  )
 
   const currentChangesets = await readChangeset(cwd)
 

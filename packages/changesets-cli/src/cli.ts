@@ -19,8 +19,8 @@ interface Step {
 }
 
 function buildSteps(options: {
+  commitSha?: string
   config?: string
-  fromReleaseTags?: boolean
   includeCommitLinks?: boolean
   packageManager?: string
 }): Step[] {
@@ -32,8 +32,8 @@ function buildSteps(options: {
       name: "changeset-generate",
       run: () =>
         conventionalCommitChangeset({
+          commitSha: options.commitSha,
           configPath: options.config,
-          fromReleaseTags: options.fromReleaseTags,
           includeCommitLinks: options.includeCommitLinks,
         }),
     },
@@ -72,8 +72,8 @@ async function waitForConfirmation(stepName: string): Promise<boolean> {
 }
 
 async function run(options: {
+  commitSha?: string
   config?: string
-  fromReleaseTags?: boolean
   includeCommitLinks?: boolean
   inSteps?: boolean
   packageManager?: string
@@ -116,9 +116,8 @@ program
     false,
   )
   .option(
-    "--from-release-tags",
-    "Diff each package from its most recent release tag instead of the baseBranch from the changesets config",
-    false,
+    "--commit-sha <sha>",
+    "Diff each package against the target commit instead of the repository's base branch",
   )
   .option(
     "--include-commit-links",
@@ -140,9 +139,8 @@ program
   .command("changeset-generate")
   .description("Generate changesets from conventional commits")
   .option(
-    "--from-release-tags",
-    "Diff each package from its most recent release tag instead of the base branch",
-    false,
+    "--commit-sha <sha>",
+    "Diff each package against the target commit instead of the repository's base branch",
   )
   .option(
     "--include-commit-links",

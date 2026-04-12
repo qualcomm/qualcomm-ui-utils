@@ -28,7 +28,7 @@ qui-changesets prep-release [options]
 | Option                        | Description                                                                   | Default                  |
 | ----------------------------- | ----------------------------------------------------------------------------- | ------------------------ |
 | `--in-steps`                  | Pause after each step and wait for confirmation                               | `false`                  |
-| `--from-release-tags`         | Diff each package from its most recent release tag instead of the base branch | `false`                  |
+| `--commit-sha <sha>`          | Diff each package against the target commit instead of the repository's base branch |                          |
 | `--include-commit-links`      | Embed commit hashes in changeset summaries for changelog links                | `false`                  |
 | `--package-manager <command>` | Package manager command to use for `changeset version`                        | `pnpm`                   |
 | `--config <path>`             | Path to the changesets config file, relative to the project root              | `.changeset/config.json` |
@@ -43,7 +43,7 @@ qui-changesets changeset-generate [options]
 
 | Option                   | Description                                                                   | Default                  |
 | ------------------------ | ----------------------------------------------------------------------------- | ------------------------ |
-| `--from-release-tags`    | Diff each package from its most recent release tag instead of the base branch | `false`                  |
+| `--commit-sha`           | Diff each package against the target commit instead of the repository's base branch | `false`                  |
 | `--include-commit-links` | Embed commit hashes in changeset summaries for changelog links                | `false`                  |
 | `--config <path>`        | Path to the changesets config file, relative to the project root              | `.changeset/config.json` |
 

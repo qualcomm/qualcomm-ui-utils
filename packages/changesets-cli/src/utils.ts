@@ -220,36 +220,12 @@ export function gitFetch(branch: string) {
 }
 
 /**
- * Gets the name of the current git branch
- * @returns Current branch name
+ * Gets all commit hashes since a specific commit
+ * @param sha - The commit SHA to compare against
+ * @returns Array of commit hashes since the given commit
  */
-export function getCurrentBranch() {
-  return execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
-}
-
-/**
- * Gets all commit hashes since a reference branch or tag
- * @param branch - The branch to compare against
- * @returns Array of commit hashes since the reference point
- */
-export function getCommitsSinceRef(branch: string) {
-  gitFetch(branch)
-  const currentBranch = getCurrentBranch()
-  let sinceRef = `origin/${branch}`
-
-  if (currentBranch === branch) {
-    try {
-      sinceRef = execSync("git describe --tags --abbrev=0").toString()
-    } catch (e) {
-      console.log(
-        "No git tags found, using repo's first commit for automated change detection. Note: this may take a while.",
-      )
-      sinceRef = execSync("git rev-list --max-parents=0 HEAD").toString()
-    }
-  }
-
-  sinceRef = sinceRef.trim()
-  return execSync(`git rev-list ${sinceRef}..HEAD`)
+export function getCommitsSinceCommit(sha: string) {
+  return execSync(`git rev-list ${sha}..HEAD`)
     .toString()
     .split("\n")
     .filter(Boolean)
@@ -257,44 +233,14 @@ export function getCommitsSinceRef(branch: string) {
 }
 
 /**
- * Checks if a git tag exists
- * @param tag - The tag name to check
- * @returns True if the tag exists
+ * Gets all commit hashes since a reference branch or tag
+ * @param branch - The branch to compare against
+ * @returns Array of commit hashes since the reference point
  */
-export function tagExists(tag: string): boolean {
-  try {
-    execSync(`git rev-parse --verify refs/tags/${tag}`, {stdio: "pipe"})
-    return true
-  } catch {
-    return false
-  }
-}
-
-/**
- * Gets all commit hashes since a package's release tag
- * Falls back to the base branch if the release tag doesn't exist
- * @param packageName - The package name (e.g., "@qualcomm-ui/angular")
- * @param version - The package's current version
- * @param baseBranch - The base branch to fall back to
- * @returns Array of commit hashes since the release tag or base branch
- */
-export function getCommitsSincePackageRelease(
-  packageName: string,
-  version: string,
-  baseBranch: string,
-): string[] {
-  const releaseTag = `${packageName}@${version}`
-
-  if (tagExists(releaseTag)) {
-    return execSync(`git rev-list ${releaseTag}..HEAD`)
-      .toString()
-      .split("\n")
-      .filter(Boolean)
-      .reverse()
-  }
-
-  gitFetch(baseBranch)
-  return execSync(`git rev-list origin/${baseBranch}..HEAD`)
+export function getCommitsSinceBranch(branch: string) {
+  gitFetch(branch)
+  const sinceRef = `origin/${branch}`
+  return execSync(`git rev-list ${sinceRef}..HEAD`)
     .toString()
     .split("\n")
     .filter(Boolean)
