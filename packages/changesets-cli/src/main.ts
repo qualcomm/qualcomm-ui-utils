@@ -13,8 +13,8 @@ import {join} from "node:path"
 import {
   conventionalMessagesWithCommitsToChangesets,
   difference,
-  getCommitsSinceCommit,
   getCommitsSinceBranch,
+  getCommitsSinceCommit,
   translateCommitsToConventionalCommitMessages,
 } from "./utils"
 
