@@ -159,6 +159,7 @@ export function conventionalMessagesWithCommitsToChangesets(
   },
 ) {
   const {ignoredFiles = [], includeCommitLinks, packages} = options
+  const repoRoot = getRepoRoot()
   return conventionalMessagesToCommits
     .flatMap((entry) => {
       const filesChanged = getFilesChangedSince({
@@ -170,7 +171,7 @@ export function conventionalMessagesWithCommitsToChangesets(
         )
       })
       const packagesChanged = packages.filter((pkg) => {
-        const pkgPath = pkg.dir.replace(`${getRepoRoot()}/`, "")
+        const pkgPath = pkg.dir.replace(/\\/g, "/").replace(`${repoRoot}/`, "")
         return filesChanged.some((file) => file.startsWith(`${pkgPath}/`))
       })
       if (packagesChanged.length === 0) {
