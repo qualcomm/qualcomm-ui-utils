@@ -5,6 +5,7 @@ import {Octokit} from "@octokit/rest"
 import chalk from "chalk"
 import {execSync} from "node:child_process"
 import {readFile} from "node:fs/promises"
+import {join} from "node:path"
 
 import {getPublishablePackages} from "./publishable-packages"
 
@@ -68,7 +69,7 @@ export async function createGitHubReleases(options: GitHubReleaseOptions) {
   const packages = await getPublishablePackages(options.configPath)
 
   for (const pkg of packages) {
-    const changelogPath = `${pkg.dir}/CHANGELOG.md`
+    const changelogPath = join(pkg.dir, "CHANGELOG.md")
     const changelog = await parseChangelog(changelogPath).catch(() => null)
     if (!changelog) {
       console.warn(

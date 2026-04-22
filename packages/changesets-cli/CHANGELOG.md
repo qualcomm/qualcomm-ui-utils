@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 1.0.3
+
+Apr 22nd, 2026
+
+### Bug Fixes
+
+- [changesets-cli]: normalize windows paths in changelog and package resolution ([8ea7dc9](https://github.com/qualcomm/qualcomm-ui-utils/commit/8ea7dc9))
+
 ## 1.0.2
 
 Apr 11th, 2026
