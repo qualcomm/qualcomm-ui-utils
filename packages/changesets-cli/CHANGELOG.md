@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 1.0.4
+
+Apr 29th, 2026
+
+### Bug Fixes
+
+- [github-releases]: fix release version identification ([91c1914](https://github.com/qualcomm/qualcomm-ui-utils/commit/91c1914))
+
 ## 1.0.3
 
 Apr 22nd, 2026
