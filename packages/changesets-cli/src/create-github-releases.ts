@@ -30,7 +30,7 @@ async function parseChangelog(path: string) {
     return null
   }
   const headerLine = lines[firstVersionIndex]
-  const match = headerLine.match(/^## ([\d.]+) \((\d{4}\/\d{2}\/\d{2})\)/)
+  const match = headerLine.match(/^## ([\d.]+)/)
   if (!match) {
     console.log(`  Invalid version format: ${headerLine}`)
     return null
