@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import {program} from "@commander-js/extra-typings"
-import {execSync} from "node:child_process"
 import {stdin, stdout} from "node:process"
 import {createInterface} from "node:readline/promises"
 
@@ -11,6 +10,18 @@ import {consolidateChangelogs} from "./consolidate-changelogs"
 import {createGitHubReleases} from "./create-github-releases"
 import {generateReleaseNotes} from "./generate-release-notes"
 import {conventionalCommitChangeset} from "./main"
+import {
+  checkJsDocSinceTags,
+  formatJsDocSinceCheckResult,
+  formatJsDocSinceUpdateResult,
+  formatJsDocSinceUpdateStartMessage,
+  updateJsDocSinceTagsForPackages,
+} from "./update-jsdoc-since-tags"
+import {
+  bumpVersionsAndMaybeUpdateJsDocSinceTags,
+  getCheckPackageSnapshots,
+  getUpdatePackageSnapshots,
+} from "./version-bump"
 
 interface Step {
   description: string
@@ -40,9 +51,10 @@ function buildSteps(options: {
     {
       description: "Bump versions and generate changelogs",
       name: "bump",
-      run: () => {
-        execSync(`${pm} changeset version`, {stdio: "inherit"})
-      },
+      run: () =>
+        bumpVersionsAndMaybeUpdateJsDocSinceTags({
+          packageManager: pm,
+        }),
     },
     {
       description: "Consolidate changelog formatting",
@@ -177,6 +189,62 @@ program
     "Path to the changesets config file, relative to the project root",
   )
   .action((options) => checkVersions({configPath: options.config}))
+
+program
+  .command("check-jsdoc-since-tags")
+  .argument(
+    "[directories...]",
+    "Directories to scan instead of package sources. If this is omitted, the `src` folder will be used by default",
+  )
+  .description(
+    "Check for JSDoc @since next-release tags without modifying files",
+  )
+  .action(async (directories) => {
+    const result = await checkJsDocSinceTags({
+      packages: getCheckPackageSnapshots({directories}),
+    })
+    for (const line of formatJsDocSinceCheckResult(result)) {
+      console.log(line)
+    }
+  })
+
+program
+  .command("update-jsdoc-since-tags")
+  .argument(
+    "[directories...]",
+    "Directories to update instead of package sources",
+  )
+  .option(
+    "--version <version>",
+    "Version to use instead of each containing package's current version",
+  )
+  .option(
+    "--diff-ref <git-ref>",
+    "Git ref to compare package versions against (defaults to the changesets base branch)",
+  )
+  .description(
+    "Replace JSDoc @since next-release tags with package or explicit versions",
+  )
+  .action(async (directories, options) => {
+    console.log(formatJsDocSinceUpdateStartMessage())
+    const result = await updateJsDocSinceTagsForPackages({
+      onProgress: console.log,
+      packages: getUpdatePackageSnapshots({
+        diffRef: options.diffRef,
+        directories,
+        version: options.version,
+      }),
+    })
+    const lines = formatJsDocSinceUpdateResult(result)
+    if (lines.length === 0) {
+      console.log("No JSDoc @since next-release tags updated.")
+      return
+    }
+
+    for (const line of lines) {
+      console.log(line)
+    }
+  })
 
 program
   .command("create-github-releases")

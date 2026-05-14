@@ -7,6 +7,9 @@
     },
     {
       "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ]
 }
