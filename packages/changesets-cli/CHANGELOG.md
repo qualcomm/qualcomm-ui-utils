@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 1.1.0
+
+May 14th, 2026
+
+### Features
+
+- [jsdoc]: add since tag placeholder replacement ([7233508](https://github.com/qualcomm/qualcomm-ui-utils/commit/7233508))
+
 ## 1.0.4
 
 Apr 29th, 2026
