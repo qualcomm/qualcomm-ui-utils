@@ -13,3 +13,21 @@ export {generateReleaseNotes} from "./generate-release-notes"
 export type {ChangesetGenerateOptions} from "./main"
 export {conventionalCommitChangeset} from "./main"
 export {getPublishablePackages} from "./publishable-packages"
+export {
+  checkJsDocSinceTags,
+  formatJsDocSinceCheckResult,
+  formatJsDocSincePackageUpdateProgress,
+  formatJsDocSinceUpdateStartMessage,
+  formatJsDocSinceUpdateResult,
+  updateJsDocSinceTagsForBumpedPackages,
+  updateJsDocSinceTagsForPackages,
+  type CheckJsDocSinceTagsResult,
+  type PackageSnapshot,
+  type UpdateJsDocSinceTagsResult,
+} from "./update-jsdoc-since-tags"
+export {
+  bumpVersionsAndMaybeUpdateJsDocSinceTags,
+  getCheckPackageSnapshots,
+  getPackageSnapshots,
+  getUpdatePackageSnapshots,
+} from "./version-bump"

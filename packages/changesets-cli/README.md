@@ -75,6 +75,22 @@ qui-changesets check-versions [options]
 | ----------------- | ---------------------------------------------------------------- | ------------------------ |
 | `--config <path>` | Path to the changesets config file, relative to the project root | `.changeset/config.json` |
 
+### `check-jsdoc-since-tags`
+
+Checks for unresolved JSDoc `@since next-release` tags without modifying files. With no directories, it scans package source directories. Pass one or more directories to scan those trees directly. Output includes the file and the declaration that owns the tag.
+
+```sh
+qui-changesets check-jsdoc-since-tags [directories...]
+```
+
+### `update-jsdoc-since-tags`
+
+Replaces JSDoc `@since next-release` tags. With no directories, it updates package source directories whose current `package.json` version differs from the Changesets base branch. Pass `--diff-ref` to compare against another Git ref such as a commit SHA, tag, local branch, or remote-tracking branch like `origin/main`. Pass one or more directories to update those trees directly. Pass `--version` to use an explicit version; otherwise each custom directory must be inside a package with a current version.
+
+```sh
+qui-changesets update-jsdoc-since-tags [directories...] [--diff-ref <git-ref>] [--version <version>]
+```
+
 ### `create-github-releases`
 
 Creates GitHub releases for published packages by parsing their changelogs.
