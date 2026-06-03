@@ -1,0 +1,50 @@
+{
+  "name": "@qualcomm-ui/vite",
+  "version": "1.0.0",
+  "description": "Vite build utilities for library mode",
+  "author": "Ryan Bower",
+  "license": "BSD-3-Clause-Clear",
+  "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "run-s clean build:js build:types",
+    "clean": "shx rm -rf dist && shx rm -f tsconfig.lib.tsbuildinfo",
+    "build:js": "vite build",
+    "build:types": "tsc -p tsconfig.lib.json",
+    "dev": "run-p watch:js watch:types",
+    "watch:js": "vite build --watch",
+    "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
+    "lint": "eslint --quiet",
+    "test": "vitest --run",
+    "prepublishOnly": "qui-cli pre-publish",
+    "postpublish": "qui-cli post-publish"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3"
+  },
+  "devDependencies": {
+    "@qualcomm-ui/cli": "workspace:^1.0.6",
+    "@qualcomm-ui/tsconfig": "workspace:^2.0.0",
+    "npm-run-all2": "^8.0.4",
+    "shx": "^0.4.0",
+    "tsx": "catalog:",
+    "vite": "8.0.12",
+    "vitest": "^4.1.6"
+  },
+  "peerDependencies": {
+    "vite": ">=8.0.0"
+  }
+}
