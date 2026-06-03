@@ -1,0 +1,8 @@
+{
+  "extends": "@qualcomm-ui/tsconfig/tsconfig.strict.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": ["./src/**/*.test.ts"],
+  "references": [{"path": "./tsconfig.lib.json"}]
+}
