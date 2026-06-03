@@ -1,11 +1,6 @@
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-import type {
-  NormalizedOutputOptions,
-  PluginContext,
-  RenderedChunk,
-} from "rollup"
 import {describe, expect, it} from "vitest"
 
 import {useClientPlugin} from "./use-client-plugin.js"
@@ -15,17 +10,12 @@ function callRenderChunk(
 ): {code: string} | string | null | undefined {
   const plugin = useClientPlugin()
   const hook = plugin.renderChunk as unknown as (
-    this: PluginContext,
+    this: any,
     code: string,
-    chunk: RenderedChunk,
-    options: NormalizedOutputOptions,
+    chunk: any,
+    options: any,
   ) => {code: string} | string | null | undefined
-  return hook.call(
-    {} as PluginContext,
-    code,
-    {} as RenderedChunk,
-    {} as NormalizedOutputOptions,
-  )
+  return hook.call({}, code, {}, {})
 }
 
 describe("useClientPlugin", () => {
