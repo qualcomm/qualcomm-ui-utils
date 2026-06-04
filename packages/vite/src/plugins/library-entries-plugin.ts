@@ -2,23 +2,62 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import {type FSWatcher, watch} from "chokidar"
-import {mkdirSync, writeFileSync} from "node:fs"
-import path from "node:path"
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from "node:fs"
+import {readdir} from "node:fs/promises"
+import {basename, dirname, join, resolve} from "node:path"
 import {gzipSync} from "node:zlib"
-import type {Plugin} from "vite"
+import type {Plugin, ResolvedConfig} from "vite"
+
+export interface DiscoveredLibraryEntriesOptions {
+  /**
+   * File name to use as each folder's entry point.
+   * @default "index.ts"
+   */
+  entryFile?: string
+  /**
+   * Maps an entry folder name to its output entry name.
+   * @default (folderName) => `${folderName}/index`
+   */
+  name?: (folderName: string) => string
+  /**
+   * Directory containing entry folders.
+   * @default "./src"
+   */
+  root?: string
+}
+
+export interface CustomLibraryEntriesOptions {
+  /**
+   * Async function that returns the entry map: output name → input path.
+   * Use this for nested, generated, or otherwise non-standard entry layouts.
+   */
+  collect: () => Promise<Record<string, string>>
+  /**
+   * Optional watch configuration for custom discovery.
+   * When omitted, custom entries are collected for initial and non-watch builds
+   * but new/removed entry files will not trigger watch rebuilds automatically.
+   */
+  watch?: {
+    /** Directories or files for chokidar to watch. */
+    paths: string[]
+    /**
+     * Returns true when a changed file should refresh the entry map.
+     * @default () => true
+     */
+    shouldRefresh?: (file: string) => boolean
+  }
+}
+
+export type LibraryEntriesOptions =
+  | DiscoveredLibraryEntriesOptions
+  | CustomLibraryEntriesOptions
 
 export interface LibraryEntriesPluginOptions {
   /**
-   * Async function that returns the entry map: output name → input path.
-   * Called on every rebuild so new/removed folders are picked up automatically.
+   * Entry discovery configuration.
+   * Defaults to top-level index entries under `./src`.
    */
-  collectEntryPoints: () => Promise<Record<string, string>>
-  /**
-   * Filename pattern that identifies an entry point within a watched directory.
-   * Matched against `path.basename(file)`, not as a suffix.
-   * @default "index.ts"
-   */
-  entryPointPattern?: string
+  entries?: LibraryEntriesOptions
   /**
    * Path for the sentinel file used to signal Vite when a new entry folder appears.
    * Must be inside `node_modules` or another location Vite excludes from its own
@@ -26,13 +65,25 @@ export interface LibraryEntriesPluginOptions {
    * @default "node_modules/.cache/qui-vite-sentinel"
    */
   sentinelFile?: string
-  /**
-   * Directories for chokidar to watch for new/removed entry points.
-   * Paths are resolved relative to `process.cwd()` at plugin creation time.
-   * When omitted, new entry folders will not trigger a rebuild automatically.
-   */
-  watchGlob?: string[]
 }
+
+interface ResolvedLibraryEntriesOptions {
+  collect: () => Promise<Record<string, string>>
+  watch?: {
+    paths: string[]
+    shouldRefresh: (file: string) => boolean
+  }
+}
+
+type BundleItem =
+  | {
+      code: string
+      type: "chunk"
+    }
+  | {
+      source: string | Uint8Array
+      type: "asset"
+    }
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024 * 1024) {
@@ -40,6 +91,73 @@ function formatBytes(bytes: number): string {
     return `${kb < 1 ? `0${kb.toFixed(2).slice(1)}` : kb.toFixed(2)} KB`
   }
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+}
+
+function getBundleItemSource(item: BundleItem): string | Uint8Array {
+  return item.type === "chunk" ? item.code : item.source
+}
+
+function isSameOutputFile(fileName: string, item: BundleItem): boolean {
+  try {
+    const existing = readFileSync(fileName)
+    const source = getBundleItemSource(item)
+    const next = Buffer.isBuffer(source) ? source : Buffer.from(source)
+    return existing.equals(next)
+  } catch {
+    return false
+  }
+}
+
+function isCustomEntriesOptions(
+  entries: LibraryEntriesOptions,
+): entries is CustomLibraryEntriesOptions {
+  return "collect" in entries
+}
+
+export async function collectLibraryEntries({
+  entryFile = "index.ts",
+  name = (folderName) => `${folderName}/index`,
+  root = "./src",
+}: DiscoveredLibraryEntriesOptions = {}): Promise<Record<string, string>> {
+  const folders = await readdir(root, {withFileTypes: true})
+  const input: Record<string, string> = {}
+
+  for (const folder of folders) {
+    if (!folder.isDirectory()) {
+      continue
+    }
+
+    const entryPath = join(root, folder.name, entryFile)
+    if (existsSync(entryPath)) {
+      input[name(folder.name)] = entryPath
+    }
+  }
+
+  return input
+}
+
+function resolveEntriesOptions(
+  entries: LibraryEntriesOptions = {},
+): ResolvedLibraryEntriesOptions {
+  if (isCustomEntriesOptions(entries)) {
+    return {
+      collect: entries.collect,
+      watch: entries.watch && {
+        paths: entries.watch.paths.map((p) => resolve(p)),
+        shouldRefresh: entries.watch.shouldRefresh ?? (() => true),
+      },
+    }
+  }
+
+  const {entryFile = "index.ts", root = "./src"} = entries
+  return {
+    collect: () => collectLibraryEntries(entries),
+    watch: {
+      paths: [resolve(root)],
+      shouldRefresh: (file) =>
+        basename(file) === entryFile && !file.includes("node_modules"),
+    },
+  }
 }
 
 /**
@@ -51,16 +169,16 @@ function formatBytes(bytes: number): string {
  * dynamic chunk names.
  */
 export function libraryEntriesPlugin({
-  collectEntryPoints,
-  entryPointPattern = "index.ts",
+  entries,
   sentinelFile = "node_modules/.cache/qui-vite-sentinel",
-  watchGlob,
-}: LibraryEntriesPluginOptions): Plugin {
-  const resolvedSentinel = path.resolve(sentinelFile)
-  const resolvedWatchGlob = watchGlob?.map((p) => path.resolve(p))
+}: LibraryEntriesPluginOptions = {}): Plugin {
+  const resolvedEntries = resolveEntriesOptions(entries)
+  const resolvedSentinel = resolve(sentinelFile)
   let fsWatcher: FSWatcher | null = null
   let sentinelCreated = false
   let bumpTimer: ReturnType<typeof setTimeout> | undefined
+  let config: ResolvedConfig | undefined
+  let watchBundleCount = 0
   const initialEntryNames = new Set<string>()
 
   function bumpSentinel(): void {
@@ -70,19 +188,12 @@ export function libraryEntriesPlugin({
     }, 100)
   }
 
-  function isEntryPoint(file: string): boolean {
-    return (
-      path.basename(file) === entryPointPattern &&
-      !file.includes("node_modules")
-    )
-  }
-
   let pendingLog: string | undefined
 
   return {
     async buildStart(this) {
-      if (this.meta.watchMode && resolvedWatchGlob) {
-        const input = await collectEntryPoints()
+      if (this.meta.watchMode && resolvedEntries.watch) {
+        const input = await resolvedEntries.collect()
         for (const [name, id] of Object.entries(input)) {
           if (!initialEntryNames.has(name)) {
             this.emitFile({fileName: `${name}.js`, id, name, type: "chunk"})
@@ -93,7 +204,7 @@ export function libraryEntriesPlugin({
         // nonexistent file. Only create once per process start to avoid triggering
         // an immediate extra rebuild.
         if (!sentinelCreated) {
-          mkdirSync(path.dirname(resolvedSentinel), {recursive: true})
+          mkdirSync(dirname(resolvedSentinel), {recursive: true})
           writeFileSync(resolvedSentinel, "")
           sentinelCreated = true
         }
@@ -101,14 +212,14 @@ export function libraryEntriesPlugin({
 
         if (!fsWatcher) {
           // chokidar 4 dropped glob support — watch dirs and filter in the callback.
-          fsWatcher = watch(resolvedWatchGlob, {ignoreInitial: true})
+          fsWatcher = watch(resolvedEntries.watch.paths, {ignoreInitial: true})
           fsWatcher.on("add", (file) => {
-            if (isEntryPoint(file)) {
+            if (resolvedEntries.watch?.shouldRefresh(file)) {
               bumpSentinel()
             }
           })
           fsWatcher.on("unlink", (file) => {
-            if (isEntryPoint(file)) {
+            if (resolvedEntries.watch?.shouldRefresh(file)) {
               bumpSentinel()
             }
           })
@@ -129,10 +240,32 @@ export function libraryEntriesPlugin({
       fsWatcher = null
     },
 
+    configResolved(resolvedConfig) {
+      config = resolvedConfig
+    },
+
+    generateBundle(_, bundle) {
+      if (!this.meta.watchMode || !config) {
+        return
+      }
+
+      watchBundleCount += 1
+      if (watchBundleCount === 1) {
+        return
+      }
+
+      const outDir = resolve(config.root, config.build.outDir)
+      for (const [fileName, item] of Object.entries(bundle)) {
+        if (isSameOutputFile(join(outDir, fileName), item)) {
+          delete bundle[fileName]
+        }
+      }
+    },
+
     name: "qui-library-entries",
 
     async options(opts) {
-      const input = await collectEntryPoints()
+      const input = await resolvedEntries.collect()
       for (const name of Object.keys(input)) {
         initialEntryNames.add(name)
       }

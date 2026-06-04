@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/vite",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Vite build utilities for library mode",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
