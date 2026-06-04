@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import {type FSWatcher, watch} from "chokidar"
-import {existsSync, mkdirSync, writeFileSync} from "node:fs"
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from "node:fs"
 import {readdir} from "node:fs/promises"
-import path from "node:path"
+import {basename, dirname, join, resolve} from "node:path"
 import {gzipSync} from "node:zlib"
-import type {Plugin} from "vite"
+import type {Plugin, ResolvedConfig} from "vite"
 
 export interface DiscoveredLibraryEntriesOptions {
   /**
@@ -75,12 +75,37 @@ interface ResolvedLibraryEntriesOptions {
   }
 }
 
+type BundleItem =
+  | {
+      code: string
+      type: "chunk"
+    }
+  | {
+      source: string | Uint8Array
+      type: "asset"
+    }
+
 function formatBytes(bytes: number): string {
   if (bytes < 1024 * 1024) {
     const kb = bytes / 1024
     return `${kb < 1 ? `0${kb.toFixed(2).slice(1)}` : kb.toFixed(2)} KB`
   }
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+}
+
+function getBundleItemSource(item: BundleItem): string | Uint8Array {
+  return item.type === "chunk" ? item.code : item.source
+}
+
+function isSameOutputFile(fileName: string, item: BundleItem): boolean {
+  try {
+    const existing = readFileSync(fileName)
+    const source = getBundleItemSource(item)
+    const next = Buffer.isBuffer(source) ? source : Buffer.from(source)
+    return existing.equals(next)
+  } catch {
+    return false
+  }
 }
 
 function isCustomEntriesOptions(
@@ -102,7 +127,7 @@ export async function collectLibraryEntries({
       continue
     }
 
-    const entryPath = path.join(root, folder.name, entryFile)
+    const entryPath = join(root, folder.name, entryFile)
     if (existsSync(entryPath)) {
       input[name(folder.name)] = entryPath
     }
@@ -118,7 +143,7 @@ function resolveEntriesOptions(
     return {
       collect: entries.collect,
       watch: entries.watch && {
-        paths: entries.watch.paths.map((p) => path.resolve(p)),
+        paths: entries.watch.paths.map((p) => resolve(p)),
         shouldRefresh: entries.watch.shouldRefresh ?? (() => true),
       },
     }
@@ -128,9 +153,9 @@ function resolveEntriesOptions(
   return {
     collect: () => collectLibraryEntries(entries),
     watch: {
-      paths: [path.resolve(root)],
+      paths: [resolve(root)],
       shouldRefresh: (file) =>
-        path.basename(file) === entryFile && !file.includes("node_modules"),
+        basename(file) === entryFile && !file.includes("node_modules"),
     },
   }
 }
@@ -148,10 +173,12 @@ export function libraryEntriesPlugin({
   sentinelFile = "node_modules/.cache/qui-vite-sentinel",
 }: LibraryEntriesPluginOptions = {}): Plugin {
   const resolvedEntries = resolveEntriesOptions(entries)
-  const resolvedSentinel = path.resolve(sentinelFile)
+  const resolvedSentinel = resolve(sentinelFile)
   let fsWatcher: FSWatcher | null = null
   let sentinelCreated = false
   let bumpTimer: ReturnType<typeof setTimeout> | undefined
+  let config: ResolvedConfig | undefined
+  let watchBundleCount = 0
   const initialEntryNames = new Set<string>()
 
   function bumpSentinel(): void {
@@ -177,7 +204,7 @@ export function libraryEntriesPlugin({
         // nonexistent file. Only create once per process start to avoid triggering
         // an immediate extra rebuild.
         if (!sentinelCreated) {
-          mkdirSync(path.dirname(resolvedSentinel), {recursive: true})
+          mkdirSync(dirname(resolvedSentinel), {recursive: true})
           writeFileSync(resolvedSentinel, "")
           sentinelCreated = true
         }
@@ -211,6 +238,28 @@ export function libraryEntriesPlugin({
       clearTimeout(bumpTimer)
       fsWatcher?.close()
       fsWatcher = null
+    },
+
+    configResolved(resolvedConfig) {
+      config = resolvedConfig
+    },
+
+    generateBundle(_, bundle) {
+      if (!this.meta.watchMode || !config) {
+        return
+      }
+
+      watchBundleCount += 1
+      if (watchBundleCount === 1) {
+        return
+      }
+
+      const outDir = resolve(config.root, config.build.outDir)
+      for (const [fileName, item] of Object.entries(bundle)) {
+        if (isSameOutputFile(join(outDir, fileName), item)) {
+          delete bundle[fileName]
+        }
+      }
     },
 
     name: "qui-library-entries",
