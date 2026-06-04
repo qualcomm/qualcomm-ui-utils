@@ -4,7 +4,6 @@
 import {mkdir, mkdtemp, rm, writeFile} from "node:fs/promises"
 import {tmpdir} from "node:os"
 import {join} from "node:path"
-import type {InputOption} from "rollup"
 import type {Plugin} from "vite"
 import {afterEach, beforeEach, describe, expect, it} from "vitest"
 
@@ -13,11 +12,9 @@ import {
   libraryEntriesPlugin,
 } from "./library-entries-plugin"
 
-async function getPluginInput(plugin: Plugin): Promise<InputOption> {
+async function getPluginInput(plugin: Plugin): Promise<any> {
   const options = await (
-    plugin.options as (opts: {
-      input?: InputOption
-    }) => Promise<{input?: InputOption}>
+    plugin.options as (opts: {input?: any}) => Promise<{input?: any}>
   )({})
   return options.input
 }
