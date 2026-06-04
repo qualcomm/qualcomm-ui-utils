@@ -3,5 +3,5 @@
   "compilerOptions": {
     "composite": true,
   },
-  "include": ["build.ts"]
+  "include": ["build.ts", "vitest.config.ts"]
 }

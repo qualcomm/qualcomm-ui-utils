@@ -99,13 +99,13 @@ class CssFileGroupBuilder {
     this.reset()
     const {cssFiles, emitIndividualCssFiles, ignore, outFileName} = this.group
 
-    const allCss: string[] = []
-    const files = sync(cssFiles, {ignore})
+    const files = sync(cssFiles, {ignore}).sort((a, b) => a.localeCompare(b))
+    const allCss: string[] = new Array<string>(files.length)
     this.fileCount = files.length
 
     const changedFiles: BuildArtifact[] = []
     const minifiedCss: BuildArtifact[] = await Promise.all(
-      files.map(async (file) => {
+      files.map(async (file, index) => {
         const normalizedFileName = file.replace(`src${sep}`, "")
         const outFile = `${this.opts.outDir}/${normalizedFileName}`
         const fileData = await readFile(file, "utf-8")
@@ -147,7 +147,7 @@ class CssFileGroupBuilder {
         }
 
         if (outFileName) {
-          allCss.push(css)
+          allCss[index] = css
         }
 
         if (emitIndividualCssFiles) {
