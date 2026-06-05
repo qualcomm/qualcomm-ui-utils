@@ -8,6 +8,7 @@ interface ChangesetInfo {
 
 interface DependencyUpdated {
   name: string
+  newVersion: string
 }
 
 interface ChangelogOptions {
@@ -43,7 +44,10 @@ const changelogFunctions = {
       return ""
     }
 
-    const deps = dependenciesUpdated.map((d) => d.name).join(", ")
+    const deps = dependenciesUpdated
+      // TODO: link to changelog?
+      .map((d) => `${d.name}@${d.newVersion}`)
+      .join(", ")
     return `### Miscellaneous Chores\n* **deps:** update dependencies [${deps}]`
   },
 
