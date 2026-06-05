@@ -21,10 +21,10 @@
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist",
     "compile": "run-p compile:cli compile:types",
-    "compile:cli": "tsx build.ts --mode production",
+    "compile:cli": "vite build",
     "compile:types": "tsc -b tsconfig.lib.json --force",
     "dev": "run-p watch:cli watch:types",
-    "watch:cli": "tsx build.ts --mode development --watch",
+    "watch:cli": "vite build -w",
     "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
     "test": "vitest -c vitest.config.ts --run",
     "lint": "eslint --quiet",
@@ -43,11 +43,11 @@
     "@changesets/write": "^0.4.0",
     "@commander-js/extra-typings": "^14.0.0",
     "@qualcomm-ui/cli": "workspace:*",
-    "@qualcomm-ui/esbuild": "workspace:*",
+    "@qualcomm-ui/vite": "workspace:*",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
-    "esbuild": "catalog:",
-    "vitest": "^4.1.6"
+    "vite": "catalog:",
+    "vitest": "catalog:"
   }
 }
