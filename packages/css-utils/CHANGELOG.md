@@ -1,5 +1,13 @@
 # @qualcomm-ui/css-utils Changelog
 
+## 1.1.0
+
+Jun 4th, 2026
+
+### Bug Fixes
+
+- build CSS output is now deterministic ([9a99184](https://github.com/qualcomm/qualcomm-ui-utils/commit/9a9918473e8364a11e2e10bf8112389b05e54a9c))
+
 ## 1.0.5 (2026/01/23)
 
 ### Code Refactoring
