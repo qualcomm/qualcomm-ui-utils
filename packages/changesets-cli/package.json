@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/changesets-cli",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Changeset automation CLI for conventional commits",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
