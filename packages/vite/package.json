@@ -41,8 +41,8 @@
     "npm-run-all2": "^8.0.4",
     "shx": "^0.4.0",
     "tsx": "catalog:",
-    "vite": "8.0.12",
-    "vitest": "^4.1.6"
+    "vite": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "vite": ">=8.0.0"

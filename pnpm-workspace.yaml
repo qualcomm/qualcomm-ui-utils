@@ -15,6 +15,8 @@ catalog:
   '@typescript-eslint/eslint-plugin': 8.58.1
   '@typescript-eslint/parser': 8.58.1
   '@typescript-eslint/utils': 8.58.1
+  '@vitest/coverage-v8': 4.1.6
+  '@vitest/ui': 4.1.6
   esbuild: 0.27.0
   eslint: 9.39.4
   glob: 13.0.3
@@ -25,6 +27,8 @@ catalog:
   tsx: 4.21.0
   typescript: 5.9.3
   typescript-eslint: 8.58.1
+  vite: 8.0.12
+  vitest: 4.1.6
 
 allowBuilds:
   esbuild: true
