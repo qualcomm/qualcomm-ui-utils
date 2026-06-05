@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 1.2.0
+
+Jun 4th, 2026
+
+### Features
+
+- [changelog-formatter]: add updated package version information to release line ([3d95168](https://github.com/qualcomm/qualcomm-ui-utils/commit/3d95168))
+
 ## 1.1.0
 
 May 14th, 2026
