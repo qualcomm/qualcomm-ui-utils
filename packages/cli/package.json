@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/cli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Dev utils and scripts in a convenient CLI",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
@@ -37,6 +37,6 @@
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
     "esbuild": "catalog:",
-    "vitest": "^4.1.6"
+    "vitest": "catalog:"
   }
 }

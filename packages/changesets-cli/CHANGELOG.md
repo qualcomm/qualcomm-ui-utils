@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 1.2.1
+
+Jun 7th, 2026
+
+### Miscellaneous Chores
+
+- migrate to vite bundler ([4899c95](https://github.com/qualcomm/qualcomm-ui-utils/commit/4899c95))
+
 ## 1.2.0
 
 Jun 4th, 2026

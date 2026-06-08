@@ -1,5 +1,13 @@
 # @qualcomm-ui/codemod Changelog
 
+## 0.2.2
+
+Jun 7th, 2026
+
+### Miscellaneous Chores
+
+- update vite dependencies ([901d353](https://github.com/qualcomm/qualcomm-ui-utils/commit/901d353))
+
 ## 0.2.1 (2026/01/23)
 
 ### Code Refactoring
