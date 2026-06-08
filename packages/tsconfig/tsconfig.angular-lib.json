@@ -10,7 +10,7 @@
       "dom"
     ],
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "stripInternal": true,
     "strict": true,
