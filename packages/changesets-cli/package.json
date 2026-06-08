@@ -10,7 +10,7 @@
   },
   "type": "module",
   "bin": {
-    "qui-changesets": "./lib/cli.cjs"
+    "qui-changesets": "./lib/cli.js"
   },
   "files": [
     "dist",
@@ -20,11 +20,13 @@
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist",
-    "compile": "run-p compile:cli compile:types",
+    "compile": "run-p compile:cli compile:changesets-cli compile:types",
     "compile:cli": "vite build",
+    "compile:changesets-cli": "vite build -c vite-changelog.config.ts",
     "compile:types": "tsc -b tsconfig.lib.json --force",
-    "dev": "run-p watch:cli watch:types",
+    "dev": "run-p watch:cli watch:changesets-cli watch:types",
     "watch:cli": "vite build -w",
+    "watch:changesets-cli": "vite build -c vite-changelog.config.ts -w",
     "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
     "test": "vitest -c vitest.config.ts --run",
     "lint": "eslint --quiet",
