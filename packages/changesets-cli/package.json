@@ -44,7 +44,6 @@
     "@commander-js/extra-typings": "^14.0.0",
     "@qualcomm-ui/cli": "workspace:*",
     "@qualcomm-ui/vite": "workspace:*",
-    "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
     "vite": "catalog:",
