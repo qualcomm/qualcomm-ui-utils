@@ -1,5 +1,13 @@
 # @qualcomm-ui/css-utils Changelog
 
+## 1.1.1
+
+Jun 7th, 2026
+
+### Miscellaneous Chores
+
+- update vite dependencies ([901d353](https://github.com/qualcomm/qualcomm-ui-utils/commit/901d353))
+
 ## 1.1.0
 
 Jun 4th, 2026

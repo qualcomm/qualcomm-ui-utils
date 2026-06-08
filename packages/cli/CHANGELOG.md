@@ -1,5 +1,13 @@
 # @qualcomm-ui/cli Changelog
 
+## 1.0.7
+
+Jun 7th, 2026
+
+### Miscellaneous Chores
+
+- update vite dependencies ([901d353](https://github.com/qualcomm/qualcomm-ui-utils/commit/901d353))
+
 ## 1.0.6 (2026/01/23)
 
 ### Code Refactoring

@@ -1,5 +1,13 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 2.1.0
+
+Jun 7th, 2026
+
+### Features
+
+- update tsconfig files with best practices, add lib config ([7a68019](https://github.com/qualcomm/qualcomm-ui-utils/commit/7a68019))
+
 ## 2.0.0 (2026/02/14)
 
 ### BREAKING CHANGES

@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/vite",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Vite build utilities for library mode",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
@@ -36,8 +36,8 @@
     "chokidar": "^4.0.3"
   },
   "devDependencies": {
-    "@qualcomm-ui/cli": "workspace:^1.0.6",
-    "@qualcomm-ui/tsconfig": "workspace:^2.0.0",
+    "@qualcomm-ui/cli": "workspace:^1.0.7",
+    "@qualcomm-ui/tsconfig": "workspace:^2.1.0",
     "npm-run-all2": "^8.0.4",
     "shx": "^0.4.0",
     "tsx": "catalog:",
