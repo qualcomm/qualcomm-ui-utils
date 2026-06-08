@@ -1,5 +1,17 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 2.0.0
+
+Jun 7th, 2026
+
+### BREAKING CHANGES
+
+- use esm for cli ([28eb3e8](https://github.com/qualcomm/qualcomm-ui-utils/commit/28eb3e8))
+
+### Code Refactoring
+
+- [create-github-releases]: remove chalk dependency ([984c25e](https://github.com/qualcomm/qualcomm-ui-utils/commit/984c25e))
+
 ## 1.2.1
 
 Jun 7th, 2026

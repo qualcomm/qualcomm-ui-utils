@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import {Octokit} from "@octokit/rest"
-import chalk from "chalk"
 import {execSync} from "node:child_process"
 import {readFile} from "node:fs/promises"
 import {join} from "node:path"
@@ -54,7 +53,7 @@ function getRepoFromGitRemote(): {owner: string; repo: string} {
   )
   if (!match) {
     throw new Error(
-      `Could not parse GitHub owner/repo from remote URL: ${remoteUrl}. Use --repo to specify explicitly.`,
+      `Could not parse GitHub owner/repo from remote URL: ${remoteUrl}, use --repo to specify explicitly.`,
     )
   }
   return {owner: match[1], repo: match[2]}
@@ -93,11 +92,11 @@ export async function createGitHubReleases(options: GitHubReleaseOptions) {
       .catch(() => null)
     if (release) {
       console.log(
-        `Release ${chalk.yellowBright(release.data.name)} already exists, skipping`,
+        `Release \x1b[93m${release.data.name}\x1b[0m already exists, skipping`,
       )
       continue
     }
-    console.log(`Creating release: ${chalk.cyanBright(tag)}`)
+    console.log(`Creating release: \x1b[96m${tag}\x1b[0m`)
     await octokit.repos.createRelease({
       ...repoOpts,
       body: changelog.body,

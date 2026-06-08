@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/changesets-cli",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Changeset automation CLI for conventional commits",
   "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
@@ -10,7 +10,7 @@
   },
   "type": "module",
   "bin": {
-    "qui-changesets": "./lib/cli.cjs"
+    "qui-changesets": "./lib/cli.js"
   },
   "files": [
     "dist",
@@ -20,11 +20,13 @@
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist",
-    "compile": "run-p compile:cli compile:types",
+    "compile": "run-p compile:cli compile:changesets-cli compile:types",
     "compile:cli": "vite build",
+    "compile:changesets-cli": "vite build -c vite-changelog.config.ts",
     "compile:types": "tsc -b tsconfig.lib.json --force",
-    "dev": "run-p watch:cli watch:types",
+    "dev": "run-p watch:cli watch:changesets-cli watch:types",
     "watch:cli": "vite build -w",
+    "watch:changesets-cli": "vite build -c vite-changelog.config.ts -w",
     "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
     "test": "vitest -c vitest.config.ts --run",
     "lint": "eslint --quiet",
@@ -44,7 +46,6 @@
     "@commander-js/extra-typings": "^14.0.0",
     "@qualcomm-ui/cli": "workspace:*",
     "@qualcomm-ui/vite": "workspace:*",
-    "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
     "vite": "catalog:",

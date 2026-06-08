@@ -9,14 +9,14 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: {
-        cli: "./src/cli.ts",
+        "changelog-formatter": "./src/changelog-formatter.ts",
       },
-      formats: ["es"],
+      formats: ["cjs"],
     },
     rolldownOptions: {
       external: [...packagesToExternal(Object.keys(pkg.dependencies)), /^node/],
       output: {
-        entryFileNames: "[name].js",
+        entryFileNames: "[name].cjs",
       },
       platform: "node",
     },
