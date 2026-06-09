@@ -1,5 +1,13 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 2.1.1
+
+Jun 9th, 2026
+
+### Bug Fixes
+
+- format tsconfigs, remove comments for strict json parsers ([8cf6703](https://github.com/qualcomm/qualcomm-ui-utils/commit/8cf6703))
+
 ## 2.1.0
 
 Jun 7th, 2026
