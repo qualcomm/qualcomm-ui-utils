@@ -1,5 +1,3 @@
-// A strict tsconfig intended for local modules in a monorepo.
-// You should use tsconfig.lib.json for external-facing modules.
 {
   "compilerOptions": {
     "allowUnreachableCode": false,
@@ -11,12 +9,7 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "isolatedModules": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "ES2023"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2023"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "noImplicitAny": true,

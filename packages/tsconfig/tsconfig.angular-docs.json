@@ -17,12 +17,7 @@
     "strictPropertyInitialization": false,
     "module": "es2020",
     "target": "es2022",
-    "lib": [
-      "es2022",
-      "esnext",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "esnext", "dom", "dom.iterable"]
   },
   "angularCompilerOptions": {
     "allowSyntheticDefaultImports": true,
