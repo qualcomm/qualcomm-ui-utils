@@ -1,4 +1,3 @@
-// Use this tsconfig for source files in a reusable library.
 {
   "compilerOptions": {
     "allowUnreachableCode": false,
