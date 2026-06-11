@@ -1,5 +1,13 @@
 # @qualcomm-ui/codemod Changelog
 
+## 0.2.3
+
+Jun 11th, 2026
+
+### Code Refactoring
+
+- support NodeNext moduleResolution ([b335d31](https://github.com/qualcomm/qualcomm-ui-utils/commit/b335d31))
+
 ## 0.2.2
 
 Jun 7th, 2026

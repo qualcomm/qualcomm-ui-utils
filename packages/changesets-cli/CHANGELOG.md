@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 2.0.1
+
+Jun 11th, 2026
+
+### Code Refactoring
+
+- support NodeNext moduleResolution ([b335d31](https://github.com/qualcomm/qualcomm-ui-utils/commit/b335d31))
+
 ## 2.0.0
 
 Jun 7th, 2026

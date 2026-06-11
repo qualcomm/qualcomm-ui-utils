@@ -1,5 +1,13 @@
 # @qualcomm-ui/esbuild Changelog
 
+## 1.0.6
+
+Jun 11th, 2026
+
+### Code Refactoring
+
+- support NodeNext moduleResolution ([b335d31](https://github.com/qualcomm/qualcomm-ui-utils/commit/b335d31))
+
 ## 1.0.5 (2026/01/23)
 
 ### Code Refactoring

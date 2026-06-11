@@ -1,5 +1,19 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 2.2.0
+
+Jun 11th, 2026
+
+### Features
+
+- add react-app tsconfig ([a2ee6c5](https://github.com/qualcomm/qualcomm-ui-utils/commit/a2ee6c5))
+- add angular-app tsconfig ([c4fa50d](https://github.com/qualcomm/qualcomm-ui-utils/commit/c4fa50d))
+- add vitest tsconfig ([f0562fb](https://github.com/qualcomm/qualcomm-ui-utils/commit/f0562fb))
+
+### Code Refactoring
+
+- adjust lib and angular-lib tsconfigs ([f453b86](https://github.com/qualcomm/qualcomm-ui-utils/commit/f453b86))
+
 ## 2.1.1
 
 Jun 9th, 2026
