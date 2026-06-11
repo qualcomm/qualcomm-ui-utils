@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "ES2022"
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": false,
+    "compilationMode": "partial",
+    "enableI18nLegacyMessageIdFormat": false,
+    "preserveWhitespaces": false,
+    "skipTemplateCodegen": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictMetadataEmit": true,
+    "strictNullChecks": true
+  }
+}
