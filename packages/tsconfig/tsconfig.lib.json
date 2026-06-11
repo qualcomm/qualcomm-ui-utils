@@ -10,7 +10,7 @@
     "jsx": "preserve",
     "isolatedDeclarations": true,
     "isolatedModules": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2023"],
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noImplicitAny": true,
