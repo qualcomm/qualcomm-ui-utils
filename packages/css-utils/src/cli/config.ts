@@ -3,7 +3,9 @@
 
 import {cosmiconfig, type CosmiconfigResult} from "cosmiconfig"
 
-export async function loadConfig(configPath?: string) {
+export async function loadConfig(
+  configPath?: string,
+): Promise<CosmiconfigResult> {
   const explorer = cosmiconfig("qui-css-utils")
 
   const result: CosmiconfigResult | null = configPath
@@ -14,7 +16,7 @@ export async function loadConfig(configPath?: string) {
 }
 
 // TODO: validate
-export async function resolveConfig(configPath?: string) {
+export async function resolveConfig(configPath?: string): Promise<any> {
   const config = await loadConfig(configPath)
   if (!config?.config) {
     throw new Error(

@@ -4,7 +4,7 @@
 import {readFileSync, writeFileSync} from "node:fs"
 import path from "node:path"
 
-import type {ClassTransformEntry, ClassTransformResult} from "./types"
+import type {ClassTransformEntry, ClassTransformResult} from "./types.js"
 
 interface TransformOptions {
   dryRun?: boolean

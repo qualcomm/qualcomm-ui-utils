@@ -26,6 +26,12 @@ minimumReleaseAgeExclude:
   - '@oxfmt/binding-win32-ia32-msvc@0.54.0'
   - '@oxfmt/binding-win32-x64-msvc@0.54.0'
   - oxfmt@0.54.0
+  - '@qualcomm-ui/oxfmt-config@1.0.1'
+  - '@qualcomm-ui/eslint-config-mdx@3.0.3'
+  - '@qualcomm-ui/eslint-config-react@2.0.0'
+  - '@qualcomm-ui/eslint-config-typescript@3.0.0'
+  - '@qualcomm-ui/eslint-plugin-path-alias@1.1.2'
+  - '@qualcomm-ui/tailwind-plugin@1.7.4'
 
 catalog:
   '@eslint/js': 9.39.4

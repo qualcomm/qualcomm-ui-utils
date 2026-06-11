@@ -14,7 +14,7 @@ import {
   transpileModule,
 } from "typescript"
 
-import {strip} from "./strip-it"
+import {strip} from "./strip-it.js"
 
 /**
  * @public

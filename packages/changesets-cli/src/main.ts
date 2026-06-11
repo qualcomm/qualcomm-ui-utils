@@ -16,7 +16,7 @@ import {
   getCommitsSinceBranch,
   getCommitsSinceCommit,
   translateCommitsToConventionalCommitMessages,
-} from "./utils"
+} from "./utils.js"
 
 const CHANGESET_CONFIG_LOCATION = join(".changeset", "config.json")
 

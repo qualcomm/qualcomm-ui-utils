@@ -7,8 +7,8 @@ import {glob} from "glob"
 import {parse} from "node:path"
 import ora from "ora"
 
-import {CssBuilder, getDefaultWatchOptions} from "./build-css"
-import type {CssBuilderConfig} from "./css-utils.types"
+import {CssBuilder, getDefaultWatchOptions} from "./build-css.js"
+import type {CssBuilderConfig} from "./css-utils.types.js"
 
 function debounce(
   func: (...args: any[]) => void | Promise<void>,
@@ -31,7 +31,9 @@ function debounce(
   return debounced
 }
 
-export async function watchCss(opts: CssBuilderConfig) {
+export async function watchCss(
+  opts: CssBuilderConfig,
+): Promise<() => Promise<void>> {
   const watchOptions = getDefaultWatchOptions(opts)
   const builder = new CssBuilder({...opts, isWatch: true})
   let fileWatcher: FSWatcher | null = null

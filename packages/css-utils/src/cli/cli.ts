@@ -3,10 +3,10 @@
 
 import {program} from "@commander-js/extra-typings"
 
-import {CssBuilder} from "../build-css"
-import {watchCss} from "../watch-css"
+import {CssBuilder} from "../build-css.js"
+import {watchCss} from "../watch-css.js"
 
-import {resolveConfig} from "./config"
+import {resolveConfig} from "./config.js"
 
 const Commands = {
   BUILD: "build",

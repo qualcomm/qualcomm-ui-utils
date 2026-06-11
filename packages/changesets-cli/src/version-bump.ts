@@ -6,7 +6,7 @@ import {execFileSync, execSync} from "node:child_process"
 import {existsSync, readFileSync} from "node:fs"
 import {isAbsolute, join, relative, resolve, sep} from "node:path"
 
-import type {PackageSnapshot} from "./update-jsdoc-since-tags"
+import type {PackageSnapshot} from "./update-jsdoc-since-tags.js"
 
 const CHANGESET_CONFIG_LOCATION = join(".changeset", "config.json")
 

@@ -1,4 +1,4 @@
-export * from "./class-transformers"
-export * from "./mdx-transformers"
-export * from "./ts-transformers"
-export type * from "./types"
+export * from "./class-transformers.js"
+export * from "./mdx-transformers.js"
+export * from "./ts-transformers.js"
+export type * from "./types.js"

@@ -6,7 +6,7 @@ import {execSync} from "node:child_process"
 import {readFile} from "node:fs/promises"
 import {join} from "node:path"
 
-import {getPublishablePackages} from "./publishable-packages"
+import {getPublishablePackages} from "./publishable-packages.js"
 
 interface GitHubReleaseOptions {
   configPath?: string

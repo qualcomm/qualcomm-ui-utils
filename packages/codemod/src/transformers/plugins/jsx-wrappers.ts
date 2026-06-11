@@ -9,7 +9,7 @@ import {
   SyntaxKind,
 } from "ts-morph"
 
-import type {TransformContext, TransformPlugin} from "../types"
+import type {TransformContext, TransformPlugin} from "../types.js"
 
 interface JsxWrapper {
   name: string

@@ -10,7 +10,7 @@ import {
   type ImportTransformEntry,
   transformMdx,
   transformTs,
-} from "./transformers" // Adjust import path as needed
+} from "./transformers/index.js" // Adjust import path as needed
 
 interface ProcessDirectoryContext {
   changedFiles: Set<string>

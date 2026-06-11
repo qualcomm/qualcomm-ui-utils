@@ -5,7 +5,7 @@ import {readFile, writeFile} from "node:fs/promises"
 import {tmpdir} from "node:os"
 import {join} from "node:path"
 
-import {getChangedChangelogs} from "./consolidate-changelogs"
+import {getChangedChangelogs} from "./consolidate-changelogs.js"
 
 const RELEASE_NOTES_FILENAME = "release-notes.md"
 

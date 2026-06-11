@@ -48,13 +48,13 @@ export default defineConfig(
     },
   },
   {
-    extends: [...quiEslintTs.configs.recommended],
-    files: ["scripts/**/*.ts"],
+    extends: [quiEslintTs.configs.recommended],
+    files: ["*.ts"],
     languageOptions,
   },
   {
     extends: [
-      quiEslintTs.configs.base,
+      quiEslintTs.configs.namingConventions,
       quiEslintTs.configs.sortKeys,
       quiEslintTs.configs.styleGuide,
     ],
@@ -69,8 +69,7 @@ export default defineConfig(
   // strict performance config, enforces strict type exports
   {
     extends: [
-      ...quiEslintTs.configs.recommended,
-      quiEslintTs.configs.performance,
+      quiEslintTs.configs.recommended,
       quiEslintTs.configs.strictExports,
     ],
     files: ["packages/**/*.ts"],

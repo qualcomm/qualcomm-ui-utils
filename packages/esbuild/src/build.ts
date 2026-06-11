@@ -14,7 +14,7 @@ import {
   formatHumanFileSize,
   getBundleSize,
   logOutputSizes,
-} from "./plugins"
+} from "./plugins/index.js"
 
 export async function buildOrWatch(
   options: BuildOptions,

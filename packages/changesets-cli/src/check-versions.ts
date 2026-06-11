@@ -3,7 +3,7 @@
 
 import * as core from "@actions/core"
 
-import {getPublishablePackages} from "./publishable-packages"
+import {getPublishablePackages} from "./publishable-packages.js"
 
 async function getPublishedVersion(
   packageName: string,

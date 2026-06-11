@@ -3,8 +3,8 @@ import {dirname, resolve} from "node:path"
 import {fileURLToPath} from "node:url"
 import {describe, expect, test} from "vitest"
 
-import {transformClasses} from "../../../transformers/class-transformers"
-import {allTailwindTransforms} from "../tailwind"
+import {transformClasses} from "../../../transformers/class-transformers.js"
+import {allTailwindTransforms} from "../tailwind.js"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

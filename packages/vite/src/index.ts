@@ -9,11 +9,11 @@ export {
   type LibraryEntriesOptions,
   type LibraryEntriesPluginOptions,
   useClientPlugin,
-} from "./plugins"
+} from "./plugins/index.js"
 export {
   collectFolders,
   dependenciesToExternal,
   getArg,
   hasArg,
   packagesToExternal,
-} from "./utils"
+} from "./utils.js"

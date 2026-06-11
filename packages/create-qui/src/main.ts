@@ -5,9 +5,9 @@ import * as p from "@clack/prompts"
 import {existsSync} from "node:fs"
 import {resolve} from "node:path"
 
-import {cloneTemplate} from "./clone"
-import {fetchTemplateNames} from "./fetch-templates"
-import {runPrompts} from "./prompts"
+import {cloneTemplate} from "./clone.js"
+import {fetchTemplateNames} from "./fetch-templates.js"
+import {runPrompts} from "./prompts.js"
 
 export async function main(): Promise<void> {
   try {

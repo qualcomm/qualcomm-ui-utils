@@ -19,7 +19,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "run-s clean compile",
-    "clean": "shx rm -rf dist",
+    "clean": "shx rm -rf dist node_modules/.tmp",
     "compile": "run-p compile:cli compile:changesets-cli compile:types",
     "compile:cli": "vite build",
     "compile:changesets-cli": "vite build -c vite-changelog.config.ts",

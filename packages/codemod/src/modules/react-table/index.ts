@@ -1,1 +1,1 @@
-export * from "./react-table"
+export * from "./react-table.js"

@@ -1,11 +1,5 @@
 {
-  "extends": "@qualcomm-ui/tsconfig/tsconfig.super-strict.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist"
-  },
-  "include": ["./src"],
-  "exclude": ["./src/**/*__tests__/**/*"],
+  "files": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
@@ -18,4 +12,3 @@
     }
   ]
 }
-

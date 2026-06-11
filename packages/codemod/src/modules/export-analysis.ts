@@ -6,7 +6,7 @@
 import {readdirSync, readFileSync, statSync} from "node:fs"
 import {join, relative, sep} from "node:path"
 
-import type {ImportTransformEntry} from "../transformers"
+import type {ImportTransformEntry} from "../transformers/index.js"
 
 export interface ExportInfo {
   filePath: string

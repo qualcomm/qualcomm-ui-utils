@@ -4,7 +4,7 @@
 import {program} from "@commander-js/extra-typings"
 import type {BuildOptions} from "esbuild"
 
-import {buildOrWatch, logPlugin} from "./build"
+import {buildOrWatch, logPlugin} from "./build.js"
 
 program.allowUnknownOption(false)
 

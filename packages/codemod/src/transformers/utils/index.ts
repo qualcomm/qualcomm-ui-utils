@@ -1,1 +1,1 @@
-export * from "./merge-imports"
+export * from "./merge-imports.js"

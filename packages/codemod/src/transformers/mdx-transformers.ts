@@ -9,7 +9,7 @@ import remarkParseFrontmatter from "remark-parse-frontmatter"
 import remarkStringify from "remark-stringify"
 import {unified} from "unified"
 
-import type {ImportTransformEntry, TransformOptions} from "./types"
+import type {ImportTransformEntry, TransformOptions} from "./types.js"
 
 export interface MdxSections {
   contentSection: string

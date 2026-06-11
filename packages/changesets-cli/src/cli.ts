@@ -5,23 +5,23 @@ import {program} from "@commander-js/extra-typings"
 import {stdin, stdout} from "node:process"
 import {createInterface} from "node:readline/promises"
 
-import {checkVersions} from "./check-versions"
-import {consolidateChangelogs} from "./consolidate-changelogs"
-import {createGitHubReleases} from "./create-github-releases"
-import {generateReleaseNotes} from "./generate-release-notes"
-import {conventionalCommitChangeset} from "./main"
+import {checkVersions} from "./check-versions.js"
+import {consolidateChangelogs} from "./consolidate-changelogs.js"
+import {createGitHubReleases} from "./create-github-releases.js"
+import {generateReleaseNotes} from "./generate-release-notes.js"
+import {conventionalCommitChangeset} from "./main.js"
 import {
   checkJsDocSinceTags,
   formatJsDocSinceCheckResult,
   formatJsDocSinceUpdateResult,
   formatJsDocSinceUpdateStartMessage,
   updateJsDocSinceTagsForPackages,
-} from "./update-jsdoc-since-tags"
+} from "./update-jsdoc-since-tags.js"
 import {
   bumpVersionsAndMaybeUpdateJsDocSinceTags,
   getCheckPackageSnapshots,
   getUpdatePackageSnapshots,
-} from "./version-bump"
+} from "./version-bump.js"
 
 interface Step {
   description: string

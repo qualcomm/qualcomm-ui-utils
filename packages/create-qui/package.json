@@ -16,10 +16,10 @@
   ],
   "scripts": {
     "build": "run-s clean compile",
-    "clean": "shx rm -rf dist",
+    "clean": "shx rm -rf dist node_modules/.tmp",
     "compile": "run-p compile:cli compile:types",
     "compile:cli": "tsx build.ts --mode production",
-    "compile:types": "tsc -b tsconfig.lib.json --force",
+    "compile:types": "tsc -b tsconfig.lib.json",
     "dev": "run-p watch:cli watch:types",
     "watch:cli": "tsx build.ts --mode development --watch",
     "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",

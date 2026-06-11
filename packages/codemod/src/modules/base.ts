@@ -1,8 +1,8 @@
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-import {createImportModEntries} from "../process-dirs"
-import type {ImportTransformEntry} from "../transformers"
+import {createImportModEntries} from "../process-dirs.js"
+import type {ImportTransformEntry} from "../transformers/index.js"
 
 export const base: ImportTransformEntry[] = createImportModEntries(
   "@qui/base",

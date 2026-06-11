@@ -1,7 +1,7 @@
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-import type {TransformContext, TransformPlugin} from "../types"
+import type {TransformContext, TransformPlugin} from "../types.js"
 
 function transform(ctx: TransformContext): boolean {
   const {options, sourceFile} = ctx
