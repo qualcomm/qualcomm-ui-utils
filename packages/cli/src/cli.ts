@@ -3,7 +3,7 @@
 
 import {program} from "@commander-js/extra-typings"
 
-import {addPublishAngularCommands, addPublishCommands} from "./modules"
+import {addPublishAngularCommands, addPublishCommands} from "./modules/index.js"
 
 program.allowUnknownOption(false)
 

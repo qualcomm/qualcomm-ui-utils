@@ -1,2 +1,2 @@
-export * from "./publish-angular"
-export * from "./publish"
+export * from "./publish-angular.js"
+export * from "./publish.js"
