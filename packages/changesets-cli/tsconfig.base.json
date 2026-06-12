@@ -9,14 +9,9 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "isolatedModules": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "ES2023"
-    ],
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "noImplicitReturns": false,
     "noUnusedLocals": false,

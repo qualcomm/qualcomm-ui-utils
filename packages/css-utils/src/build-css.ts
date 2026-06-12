@@ -41,7 +41,7 @@ import type {
   CssBuilderConfig,
   CssBuilderWatchOptions,
   CssFileGroup,
-} from "./css-utils.types"
+} from "./css-utils.types.js"
 
 const stripCommentsPreset = litePreset({})
 
@@ -238,7 +238,7 @@ export class CssBuilder {
     )
   }
 
-  async build() {
+  async build(): Promise<void> {
     const startTime = new Date().getTime()
     await ensureDir(this.opts.outDir)
 

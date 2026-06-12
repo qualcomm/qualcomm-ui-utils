@@ -3,7 +3,7 @@
 
 import {SyntaxKind} from "ts-morph"
 
-import type {TransformContext, TransformPlugin} from "../types"
+import type {TransformContext, TransformPlugin} from "../types.js"
 
 function transform(ctx: TransformContext): boolean {
   const {importAliasMap, options, sourceFile} = ctx

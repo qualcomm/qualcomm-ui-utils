@@ -2,6 +2,8 @@
   "extends": "@qualcomm-ui/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "composite": true,
+    "outDir": "out-tsc",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node"
   },
   "include": ["build.ts", "vitest.config.ts"]
 }

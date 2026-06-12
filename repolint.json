@@ -12,11 +12,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "LICENSE*",
-            "COPYING*",
-            "NOTICE*"
-          ],
+          "globsAny": ["LICENSE*", "COPYING*", "NOTICE*"],
           "nocase": true
         }
       }
@@ -26,9 +22,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "README*"
-          ],
+          "globsAny": ["README*"],
           "nocase": true
         }
       }
@@ -38,9 +32,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "{docs/,.github/,}CONTRIB*"
-          ],
+          "globsAny": ["{docs/,.github/,}CONTRIB*"],
           "nocase": true
         }
       }
@@ -64,9 +56,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "**/CHANGELOG.md"
-          ],
+          "globsAny": ["**/CHANGELOG.md"],
           "nocase": true
         }
       }
@@ -76,9 +66,7 @@
       "rule": {
         "type": "file-contents",
         "options": {
-          "globsAll": [
-            "README*"
-          ],
+          "globsAll": ["README*"],
           "content": "license|notice",
           "flags": "i"
         }
@@ -104,11 +92,7 @@
       "rule": {
         "type": "directory-existence",
         "options": {
-          "globsAny": [
-            "**/test*",
-            "**/specs",
-            "**/*test*"
-          ],
+          "globsAny": ["**/test*", "**/specs", "**/*test*"],
           "nocase": true
         }
       }
@@ -238,10 +222,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "ISSUE_TEMPLATE/*",
-            ".github/ISSUE_TEMPLATE/*"
-          ]
+          "globsAny": ["ISSUE_TEMPLATE/*", ".github/ISSUE_TEMPLATE/*"]
         }
       }
     },
@@ -259,141 +240,97 @@
     },
     "javascript-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=javascript"
-      ],
+      "where": ["language=javascript"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "package.json"
-          ]
+          "globsAny": ["package.json"]
         }
       }
     },
     "ruby-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=ruby"
-      ],
+      "where": ["language=ruby"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "Gemfile"
-          ]
+          "globsAny": ["Gemfile"]
         }
       }
     },
     "java-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=java"
-      ],
+      "where": ["language=java"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "pom.xml",
-            "build.xml",
-            "build.gradle"
-          ]
+          "globsAny": ["pom.xml", "build.xml", "build.gradle"]
         }
       }
     },
     "python-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=python"
-      ],
+      "where": ["language=python"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "setup.py",
-            "requirements.txt"
-          ]
+          "globsAny": ["setup.py", "requirements.txt"]
         }
       }
     },
     "rust-package-metadata-exists": {
       "level": "error",
-      "where": [
-        "language=rust"
-      ],
+      "where": ["language=rust"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "**/Cargo.toml",
-            "**/Cargo.lock"
-          ]
+          "globsAny": ["**/Cargo.toml", "**/Cargo.lock"]
         }
       }
     },
     "objective-c-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=objective-c"
-      ],
+      "where": ["language=objective-c"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "Cartfile",
-            "Podfile",
-            "*.podspec"
-          ]
+          "globsAny": ["Cartfile", "Podfile", "*.podspec"]
         }
       }
     },
     "swift-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=swift"
-      ],
+      "where": ["language=swift"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "Package.swift"
-          ]
+          "globsAny": ["Package.swift"]
         }
       }
     },
     "erlang-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=erlang"
-      ],
+      "where": ["language=erlang"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "rebar.config"
-          ]
+          "globsAny": ["rebar.config"]
         }
       }
     },
     "elixir-package-metadata-exists": {
       "level": "warning",
-      "where": [
-        "language=elixir"
-      ],
+      "where": ["language=elixir"],
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "mix.exs"
-          ]
+          "globsAny": ["mix.exs"]
         }
       }
     },
     "license-detectable-by-licensee": {
       "level": "off",
-      "where": [
-        "license=*"
-      ],
+      "where": ["license=*"],
       "rule": {
         "type": "license-detectable-by-licensee",
         "options": {}

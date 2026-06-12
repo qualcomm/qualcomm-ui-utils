@@ -1,7 +1,7 @@
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-import type {ClassTransformEntry} from "../../transformers/types"
+import type {ClassTransformEntry} from "../../transformers/types.js"
 
 const metadataSizeMap: Record<string, string> = {
   lg: "sm",

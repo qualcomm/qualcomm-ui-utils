@@ -8,5 +8,5 @@ export {
   type DiscoveredLibraryEntriesOptions,
   type LibraryEntriesOptions,
   type LibraryEntriesPluginOptions,
-} from "./library-entries-plugin"
-export {useClientPlugin} from "./use-client-plugin"
+} from "./library-entries-plugin.js"
+export {useClientPlugin} from "./use-client-plugin.js"

@@ -9,9 +9,9 @@ import {
   ExportAnalyzer,
   mdxDocs,
   reactRouterUtils,
-} from "./modules"
-import {processDirs} from "./process-dirs"
-import {processClassTransforms} from "./transformers"
+} from "./modules/index.js"
+import {processDirs} from "./process-dirs.js"
+import {processClassTransforms} from "./transformers/index.js"
 
 const logModeOpt = new Option("--log-mode <logMode>", "Log mode")
   .choices(["info", "verbose"])

@@ -1,4 +1,4 @@
-export * from "./build-css"
-export type * from "./css-utils.types"
-export * from "./vite-plugin"
-export * from "./watch-css"
+export * from "./build-css.js"
+export type * from "./css-utils.types.js"
+export * from "./vite-plugin.js"
+export * from "./watch-css.js"

@@ -11,7 +11,7 @@ import {
   hasTailwindOptions,
   parseTemplates,
   type Template,
-} from "./parse-template"
+} from "./parse-template.js"
 
 export interface PromptResult {
   targetDir: string

@@ -2,11 +2,12 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "baseUrl": "./",
     "outDir": "./dist",
     "rootDir": "./src",
     "resolveJsonModule": true,
-    "tsBuildInfoFile": "dist/tsbuildinfo"
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-lib",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
-  "include": ["./src"],
+  "include": ["./src"]
 }

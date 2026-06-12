@@ -1,8 +1,9 @@
 {
   "extends": "@qualcomm-ui/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "outDir": "out-tsc",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node"
   },
-  "files": ["vite.config.ts"],
-  "references": [{"path": "./tsconfig.lib.json"}]
+  "include": ["*.ts"]
 }

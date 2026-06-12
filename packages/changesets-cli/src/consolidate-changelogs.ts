@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import dayjs from "dayjs"
-import advancedFormat from "dayjs/plugin/advancedFormat"
+import advancedFormat from "dayjs/plugin/advancedFormat.js"
 import {execSync} from "node:child_process"
 import {readFile, writeFile} from "node:fs/promises"
 

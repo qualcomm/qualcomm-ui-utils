@@ -3,13 +3,13 @@
 
 import {Project, type SourceFile} from "ts-morph"
 
-import {plugins} from "./plugins"
+import {plugins} from "./plugins/index.js"
 import type {
   ImportTransformEntry,
   TransformContext,
   TransformOptions,
-} from "./types"
-import {mergeImports} from "./utils"
+} from "./types.js"
+import {mergeImports} from "./utils/index.js"
 
 function createContext(
   sourceFile: SourceFile,

@@ -1,8 +1,8 @@
 // Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-import {CssBuilder} from "./build-css"
-import type {CssBuilderConfig} from "./css-utils.types"
+import {CssBuilder} from "./build-css.js"
+import type {CssBuilderConfig} from "./css-utils.types.js"
 
 export interface ViteCssPluginOptions extends CssBuilderConfig {
   isDev?: boolean

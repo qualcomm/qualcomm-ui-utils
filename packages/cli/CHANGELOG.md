@@ -1,5 +1,14 @@
 # @qualcomm-ui/cli Changelog
 
+## 1.0.8
+
+Jun 11th, 2026
+
+### Code Refactoring
+
+- support NodeNext moduleResolution ([d31da3e](https://github.com/qualcomm/qualcomm-ui-utils/commit/d31da3e))
+- support NodeNext moduleResolution ([b335d31](https://github.com/qualcomm/qualcomm-ui-utils/commit/b335d31))
+
 ## 1.0.7
 
 Jun 7th, 2026
