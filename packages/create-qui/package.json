@@ -2,18 +2,18 @@
   "name": "create-qui",
   "version": "0.1.0",
   "description": "Create a new Qualcomm UI project",
-  "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
+  "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
   "bin": "./lib/cli.cjs",
   "files": [
     "lib",
     "dist"
   ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist node_modules/.tmp",

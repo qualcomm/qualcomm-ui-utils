@@ -2,22 +2,22 @@
   "name": "@qualcomm-ui/vite",
   "version": "1.1.2",
   "description": "Vite build utilities for library mode",
-  "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
+  "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
   "files": [
     "dist"
   ],
+  "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "run-s clean build:js build:types",

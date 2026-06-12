@@ -1,8 +1,6 @@
 {
   "$schema": "https://v2-9-4.turborepo.dev/schema.json",
-  "globalDependencies": [
-    "eslint.config.js"
-  ],
+  "globalDependencies": ["eslint.config.js"],
   "cacheDir": ".turbo/cache",
   "concurrency": "30",
   "tasks": {
@@ -11,9 +9,7 @@
       "persistent": true
     },
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": ["dist"],
       "outputLogs": "new-only"
     },

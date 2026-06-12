@@ -13,5 +13,5 @@
     "target": "ESNext",
     "verbatimModuleSyntax": false
   },
-  "include": ["./scripts", "*.ts"],
+  "include": ["./scripts", "*.ts"]
 }

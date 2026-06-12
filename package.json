@@ -1,8 +1,8 @@
 {
   "name": "@qualcomm-ui-utils/root",
   "version": "0.0.0",
-  "description": "@qui utils monorepo",
   "private": true,
+  "description": "@qui utils monorepo",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
   "type": "module",
   "scripts": {

@@ -2,21 +2,21 @@
   "name": "@qualcomm-ui/codemod",
   "version": "0.2.3",
   "description": "Codemod utilities for automatic QUI package migrations",
-  "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
+  "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
   "bin": {
     "qui-codemod": "./lib/cli.cjs"
   },
-  "sideEffects": false,
   "files": [
     "dist",
     "lib"
   ],
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "run-s clean build:js build:ts",
     "clean": "shx rm -rf dist node_modules/.tmp",
@@ -54,8 +54,8 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
-    "remark-parse-frontmatter": "^1.0.3",
     "remark-parse": "^11.0.0",
+    "remark-parse-frontmatter": "^1.0.3",
     "remark-stringify": "^11.0.0",
     "shx": "^0.4.0",
     "ts-morph": "^25.0.1",

@@ -2,13 +2,9 @@
   "name": "@qualcomm-ui/cli",
   "version": "1.0.8",
   "description": "Dev utils and scripts in a convenient CLI",
-  "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
+  "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
   "bin": {
     "qui-cli": "./lib/cli.cjs"
   },
@@ -16,7 +12,11 @@
     "dist",
     "lib"
   ],
+  "type": "module",
   "types": "./dist/modules/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist node_modules/.tmp",

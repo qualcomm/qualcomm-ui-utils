@@ -3,9 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "out-tsc",
+    "rootDir": "./src",
     "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec"
   },
-  "include": ["./test"],
+  "include": ["./src/**/__tests__", "./src/**/*.spec.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

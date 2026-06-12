@@ -2,13 +2,9 @@
   "name": "@qualcomm-ui/changesets-cli",
   "version": "2.0.1",
   "description": "Changeset automation CLI for conventional commits",
-  "author": "Ryan Bower",
   "license": "BSD-3-Clause-Clear",
+  "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
   "bin": {
     "qui-changesets": "./lib/cli.js"
   },
@@ -16,7 +12,11 @@
     "dist",
     "lib"
   ],
+  "type": "module",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "run-s clean compile",
     "clean": "shx rm -rf dist node_modules/.tmp",
