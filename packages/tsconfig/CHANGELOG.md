@@ -1,5 +1,13 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 2.3.0
+
+Jun 12th, 2026
+
+### Features
+
+- add scripts tsconfig with "node" types ([991d77a](https://github.com/qualcomm/qualcomm-ui-utils/commit/991d77a))
+
 ## 2.2.0
 
 Jun 11th, 2026

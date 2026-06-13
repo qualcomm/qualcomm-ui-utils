@@ -394,7 +394,7 @@ importers:
         specifier: workspace:^1.0.6
         version: link:../esbuild
       '@qualcomm-ui/tsconfig':
-        specifier: workspace:^2.2.0
+        specifier: workspace:^2.3.0
         version: link:../tsconfig
       autoprefixer:
         specifier: ^10.4.21
@@ -451,7 +451,7 @@ importers:
         specifier: workspace:^1.0.8
         version: link:../cli
       '@qualcomm-ui/tsconfig':
-        specifier: workspace:^2.2.0
+        specifier: workspace:^2.3.0
         version: link:../tsconfig
       chalk:
         specifier: ^5.6.2
@@ -494,7 +494,7 @@ importers:
         specifier: workspace:^1.0.8
         version: link:../cli
       '@qualcomm-ui/tsconfig':
-        specifier: workspace:^2.2.0
+        specifier: workspace:^2.3.0
         version: link:../tsconfig
       npm-run-all2:
         specifier: ^8.0.4
