@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@qualcomm-ui/cli": "workspace:^1.0.8",
-    "@qualcomm-ui/tsconfig": "workspace:^2.2.0",
+    "@qualcomm-ui/tsconfig": "workspace:^2.3.0",
     "npm-run-all2": "^8.0.4",
     "shx": "^0.4.0",
     "tsx": "catalog:",
