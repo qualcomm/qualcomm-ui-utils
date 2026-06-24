@@ -15,7 +15,7 @@
     "postpublish": "qui-cli post-publish"
   },
   "devDependencies": {
-    "@qualcomm-ui/cli": "workspace:^1.0.8",
+    "@qualcomm-ui/cli": "workspace:^1.1.0",
     "typescript": "catalog:"
   },
   "peerDependencies": {

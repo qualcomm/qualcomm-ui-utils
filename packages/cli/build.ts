@@ -30,7 +30,7 @@ async function main(argv: string[]) {
       "process.env.BUILD_MODE": JSON.stringify(BUILD_MODE),
     },
     entryPoints: ["./src/cli.ts"],
-    external: ["typescript"],
+    external: ["typescript", "@manypkg/get-packages"],
     format: "cjs",
     loader: {
       ".node": "copy",

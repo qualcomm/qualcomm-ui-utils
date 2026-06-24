@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/css-utils",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "QUI utils for bundling CSS",
   "license": "BSD-3-Clause-Clear",
   "author": "Ryan Bower",
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@commander-js/extra-typings": "^14.0.0",
-    "@qualcomm-ui/cli": "workspace:^1.0.8",
-    "@qualcomm-ui/esbuild": "workspace:^1.0.6",
+    "@qualcomm-ui/cli": "workspace:^1.1.0",
+    "@qualcomm-ui/esbuild": "workspace:^1.0.7",
     "@qualcomm-ui/tsconfig": "workspace:^2.3.0",
     "autoprefixer": "^10.4.21",
     "chalk": "^5.6.2",

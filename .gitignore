@@ -34,6 +34,7 @@ packages/docs/*/knowledge/
 packages/docs/*/public/exports
 .wireit
 .lint-cache
+.pnpm-store
 
 ###############################################################################
 # Framework-specific outputs

@@ -3,11 +3,14 @@
 
 import {program} from "@commander-js/extra-typings"
 
-import {addPublishAngularCommands, addPublishCommands} from "./modules/index.js"
+import {addLintChangedCommand} from "./modules/lint-changed.js"
+import {addPublishAngularCommands} from "./modules/publish-angular.js"
+import {addPublishCommands} from "./modules/publish.js"
 
 program.allowUnknownOption(false)
 
 addPublishCommands()
 addPublishAngularCommands()
+addLintChangedCommand()
 
 program.parse(process.argv)

@@ -1,5 +1,17 @@
 # @qualcomm-ui/cli Changelog
 
+## 1.1.0
+
+Jun 23rd, 2026
+
+### Features
+
+- [lint-changed]: add script for linting changed files ([1131bb3](https://github.com/qualcomm/qualcomm-ui-utils/commit/1131bb3))
+
+### Build System
+
+- support TypeScript 6.0 ([fccb8c7](https://github.com/qualcomm/qualcomm-ui-utils/commit/fccb8c7))
+
 ## 1.0.8
 
 Jun 11th, 2026

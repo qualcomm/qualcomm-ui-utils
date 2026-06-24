@@ -1,5 +1,13 @@
 # @qualcomm-ui/css-utils Changelog
 
+## 1.1.3
+
+Jun 23rd, 2026
+
+### Build System
+
+- support TypeScript 6.0 ([fccb8c7](https://github.com/qualcomm/qualcomm-ui-utils/commit/fccb8c7))
+
 ## 1.1.2
 
 Jun 11th, 2026
