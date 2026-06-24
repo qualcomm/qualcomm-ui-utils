@@ -11,10 +11,10 @@ import {
 } from "node:fs"
 import {resolve} from "node:path"
 
-enum Commands {
-  PRE_PUBLISH = "pre-publish",
-  POST_PUBLISH = "post-publish",
-}
+const Commands = {
+  POST_PUBLISH: "post-publish",
+  PRE_PUBLISH: "pre-publish",
+} as const
 
 export function prePublish(pkgPath: string, pkgBackupPath: string) {
   cpSync(pkgPath, pkgBackupPath)
