@@ -1,5 +1,13 @@
 # @qualcomm-ui/esbuild Changelog
 
+## 1.0.7
+
+Jun 23rd, 2026
+
+### Build System
+
+- support TypeScript 6.0 ([fccb8c7](https://github.com/qualcomm/qualcomm-ui-utils/commit/fccb8c7))
+
 ## 1.0.6
 
 Jun 11th, 2026

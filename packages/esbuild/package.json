@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/esbuild",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "esbuild utilities and plugins",
   "license": "BSD-3-Clause-Clear",
   "author": "Ryan Bower",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@commander-js/extra-typings": "^14.0.0",
-    "@qualcomm-ui/cli": "workspace:^1.0.8",
+    "@qualcomm-ui/cli": "workspace:^1.1.0",
     "@qualcomm-ui/tsconfig": "workspace:^2.3.0",
     "chalk": "^5.6.2",
     "chokidar": "^4.0.3",
