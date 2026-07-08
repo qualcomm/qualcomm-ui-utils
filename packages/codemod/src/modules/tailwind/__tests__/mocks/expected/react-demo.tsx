@@ -27,7 +27,7 @@ export function ContrastDemo() {
   return (
     <div
       className={clsx(
-        "bg-neutral-07",
+        "bg-neutral-10",
         "grid grid-cols-3 grid-rows-2",
         "justify-items-center gap-x-8 gap-y-1 rounded p-4",
       )}

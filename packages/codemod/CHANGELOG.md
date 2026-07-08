@@ -1,5 +1,17 @@
 # @qualcomm-ui/codemod Changelog
 
+## 0.3.0
+
+Jul 8th, 2026
+
+### Features
+
+- align with updated NextGen tailwind plugin ([058174f](https://github.com/qualcomm/qualcomm-ui-utils/commit/058174f))
+
+### Tests
+
+- fix node.js types ([d2ea7bb](https://github.com/qualcomm/qualcomm-ui-utils/commit/d2ea7bb))
+
 ## 0.2.4
 
 Jun 23rd, 2026

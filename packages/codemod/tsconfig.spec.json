@@ -4,7 +4,8 @@
     "composite": true,
     "outDir": "out-tsc",
     "rootDir": "./src",
-    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec"
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec",
+    "types": ["node"]
   },
   "include": ["./src/**/__tests__", "./src/**/*.spec.ts"],
   "references": [
