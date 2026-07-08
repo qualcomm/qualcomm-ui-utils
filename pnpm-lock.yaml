@@ -441,6 +441,9 @@ importers:
       pretty-ms:
         specifier: ^9.3.0
         version: 9.3.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
       vitest:
         specifier: 'catalog:'
         version: 4.1.6(@types/node@24.10.15)(@vitest/coverage-v8@4.1.6)(@vitest/ui@4.1.6)(vite@8.0.12(@types/node@24.10.15)(esbuild@0.27.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
