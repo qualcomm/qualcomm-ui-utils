@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 2.1.0
+
+Jul 8th, 2026
+
+### Features
+
+- ignore skipped commits ([cc6ca92](https://github.com/qualcomm/qualcomm-ui-utils/commit/cc6ca92))
+
 ## 2.0.1
 
 Jun 11th, 2026
