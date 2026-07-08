@@ -7,7 +7,7 @@
 }
 
 .custom-button:focus {
-  @apply border-focus-border;
+  @apply border-focus;
 }
 
 .custom-card {
@@ -52,7 +52,7 @@
 }
 
 .contrast-section {
-  @apply bg-neutral-07 text-neutral-inverse p-8;
+  @apply bg-neutral-10 text-neutral-inverse p-8;
 }
 
 .contrast-text {
@@ -79,7 +79,7 @@
   border-color: var(--color-border-neutral-01);
 }
 
-.border-focus-border {
+.border-focus {
   border-color: var(--color-utility-focus-border);
 }
 

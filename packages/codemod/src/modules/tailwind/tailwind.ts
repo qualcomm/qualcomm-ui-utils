@@ -54,9 +54,9 @@ export const tailwindClassTransforms: ClassTransformEntry[] = [
   {pattern: "bg-3", replacement: "bg-neutral-02"},
   {pattern: "bg-4", replacement: "bg-neutral-03"},
   {pattern: "bg-contrast-1", replacement: "bg-neutral-10"},
-  {pattern: "bg-contrast-2", replacement: "bg-neutral-09"},
-  {pattern: "bg-contrast-3", replacement: "bg-neutral-08"},
-  {pattern: "bg-contrast-4", replacement: "bg-neutral-07"},
+  {pattern: "bg-contrast-2", replacement: "bg-neutral-10"},
+  {pattern: "bg-contrast-3", replacement: "bg-neutral-10"},
+  {pattern: "bg-contrast-4", replacement: "bg-neutral-10"},
 
   {pattern: "text-primary", replacement: "text-neutral-primary"},
   {pattern: "text-secondary", replacement: "text-neutral-secondary"},
@@ -70,7 +70,7 @@ export const tailwindClassTransforms: ClassTransformEntry[] = [
   {pattern: "text-semantic-positive", replacement: "text-support-success"},
   {pattern: "text-semantic-primary", replacement: "text-brand-primary"},
   {pattern: "text-semantic-secondary", replacement: "text-neutral-secondary"},
-  {pattern: "text-semantic-warning", replacement: "text-support-warning"},
+  {pattern: "text-semantic-warning", replacement: "text-icon-support-warning"},
   {
     pattern: "text-foreground-primary",
     replacement: "text-icon-neutral-primary",
@@ -96,9 +96,9 @@ export const tailwindClassTransforms: ClassTransformEntry[] = [
   {pattern: "border-default", replacement: "border-neutral-01"},
   {pattern: "border-subtle", replacement: "border-neutral-00"},
   {pattern: "border-strong", replacement: "border-neutral-02"},
-  {pattern: "border-focus", replacement: "border-focus-border"},
+  {pattern: "border-focus", replacement: "border-focus"},
   {pattern: "border-contrast-default", replacement: "border-neutral-10"},
-  {pattern: "border-contrast-subtle", replacement: "border-neutral-09"},
+  {pattern: "border-contrast-subtle", replacement: "border-neutral-10"},
   {pattern: "border-contrast-strong", replacement: "border-neutral-10"},
 
   {pattern: "q-border-default", replacement: "border-neutral-01"},
@@ -108,7 +108,7 @@ export const tailwindClassTransforms: ClassTransformEntry[] = [
   {pattern: "q-background-1", replacement: "bg-neutral-01"},
   {pattern: "q-background-2", replacement: "bg-neutral-02"},
   {pattern: "q-background-3", replacement: "bg-neutral-03"},
-  {pattern: "q-background-4", replacement: "bg-neutral-04"},
+  {pattern: "q-background-4", replacement: "bg-neutral-03"},
 
   {pattern: "q-text-link", replacement: "text-link-default-idle"},
   {pattern: "q-text-error", replacement: "text-support-danger"},
@@ -140,7 +140,7 @@ export const tailwindVariableTransforms: ClassTransformEntry[] = [
   },
   {
     pattern: /var\(--q-background-4\)/g,
-    replacement: "var(--color-background-neutral-04)",
+    replacement: "var(--color-background-neutral-03)",
   },
   {
     pattern: /var\(--q-text-1-primary\)/g,

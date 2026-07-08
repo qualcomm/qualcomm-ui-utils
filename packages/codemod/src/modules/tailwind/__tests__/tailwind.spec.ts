@@ -94,6 +94,21 @@ describe("tailwind-migrations", () => {
 })
 
 describe("individual transform tests", () => {
+  test("does not emit unavailable next-gen variables", () => {
+    const unavailableVariables = new Set(["var(--color-background-neutral-04)"])
+    const emittedUnavailableVariables = allTailwindTransforms.flatMap(
+      ({replacement}) => {
+        if (typeof replacement !== "string") {
+          return []
+        }
+
+        return unavailableVariables.has(replacement) ? [replacement] : []
+      },
+    )
+
+    expect([...new Set(emittedUnavailableVariables)].sort()).toEqual([])
+  })
+
   test("q-font-body transforms", () => {
     const transforms = allTailwindTransforms
     const bodyTransform = transforms.find(
@@ -134,7 +149,7 @@ describe("individual transform tests", () => {
 
     expect(bg1?.replacement).toBe("bg-neutral-00")
     expect(bg2?.replacement).toBe("bg-neutral-01")
-    expect(bgContrast?.replacement).toBe("bg-neutral-07")
+    expect(bgContrast?.replacement).toBe("bg-neutral-10")
   })
 
   test("text color transforms", () => {
@@ -154,7 +169,7 @@ describe("individual transform tests", () => {
     const borderFocus = transforms.find((t) => t.pattern === "border-focus")
 
     expect(borderDefault?.replacement).toBe("border-neutral-01")
-    expect(borderFocus?.replacement).toBe("border-focus-border")
+    expect(borderFocus?.replacement).toBe("border-focus")
   })
 
   test("rounded-2xl transforms to rounded-xxl", () => {
