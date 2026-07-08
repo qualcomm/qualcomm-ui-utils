@@ -36,6 +36,7 @@ qui-changesets prep-release [options]
 ### `changeset-generate`
 
 Generates changesets from conventional commits without running the full pipeline.
+Commits with messages containing the exact text `no-ci` are ignored.
 
 ```sh
 qui-changesets changeset-generate [options]

@@ -88,7 +88,11 @@ export function translateCommitsToConventionalCommitMessages(
   commits: Commit[],
 ): ConventionalMessagesToCommits[] {
   return commits
-    .filter((commit) => isConventionalCommit(commit.commitMessage))
+    .filter(
+      (commit) =>
+        !commit.commitMessage.includes("no-ci") &&
+        isConventionalCommit(commit.commitMessage),
+    )
     .map((commit) => ({
       changelogMessage: normalizeConventionalCommit(commit.commitMessage),
       commitHashes: [commit.commitHash],
