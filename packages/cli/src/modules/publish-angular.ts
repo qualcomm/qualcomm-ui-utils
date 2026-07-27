@@ -70,7 +70,7 @@ export function publishAngular({flatModuleId}: PublishAngularOpts): void {
   // replace workspace dependencies.
   if (Object.keys(peerDeps).length) {
     console.log("Adjusting peerDependencies")
-    Object.keys(pkgJson.peerDependencies).forEach((key) => {
+    for (const key of Object.keys(pkgJson.peerDependencies)) {
       if (peerDeps[key].includes("workspace:")) {
         const updatedPeerDep = peerDeps[key].replace("workspace:", "")
         console.log(
@@ -78,7 +78,7 @@ export function publishAngular({flatModuleId}: PublishAngularOpts): void {
         )
         peerDeps[key] = updatedPeerDep
       }
-    })
+    }
   }
 
   pkgJson.peerDependencies = peerDeps
@@ -101,6 +101,19 @@ export function publishAngular({flatModuleId}: PublishAngularOpts): void {
       process.exit(1)
     }
   } catch (e) {
+    if (
+      typeof e === "object" &&
+      e &&
+      "message" in e &&
+      typeof e.message === "string" &&
+      e.message.includes("cannot publish over the previously published")
+    ) {
+      console.debug(
+        `Version ${pkgJson.version} has already been published, exiting`,
+      )
+      console.groupEnd()
+      process.exit(0)
+    }
     console.debug(
       `${chalk.red("✖")} Critical error encountered while publishing. Failed to publish ${pkgJson.name}.`,
     )
