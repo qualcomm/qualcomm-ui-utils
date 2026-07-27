@@ -1,5 +1,13 @@
 # @qualcomm-ui/cli Changelog
 
+## 1.1.1
+
+Jul 27th, 2026
+
+### Code Refactoring
+
+- [publish]: exit gracefully from known publish error ([0dd7373](https://github.com/qualcomm/qualcomm-ui-utils/commit/0dd7373))
+
 ## 1.1.0
 
 Jun 23rd, 2026

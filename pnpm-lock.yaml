@@ -391,7 +391,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(commander@14.0.3)
       '@qualcomm-ui/cli':
-        specifier: workspace:^1.1.0
+        specifier: workspace:^1.1.1
         version: link:../cli
       '@qualcomm-ui/esbuild':
         specifier: workspace:^1.0.7
@@ -454,7 +454,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(commander@14.0.3)
       '@qualcomm-ui/cli':
-        specifier: workspace:^1.1.0
+        specifier: workspace:^1.1.1
         version: link:../cli
       '@qualcomm-ui/tsconfig':
         specifier: workspace:^2.3.0
@@ -484,7 +484,7 @@ importers:
   packages/tsconfig:
     devDependencies:
       '@qualcomm-ui/cli':
-        specifier: workspace:^1.1.0
+        specifier: workspace:^1.1.1
         version: link:../cli
       typescript:
         specifier: 'catalog:'
@@ -497,7 +497,7 @@ importers:
         version: 4.0.3
     devDependencies:
       '@qualcomm-ui/cli':
-        specifier: workspace:^1.1.0
+        specifier: workspace:^1.1.1
         version: link:../cli
       '@qualcomm-ui/tsconfig':
         specifier: workspace:^2.3.0
