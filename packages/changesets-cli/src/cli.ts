@@ -30,6 +30,7 @@ interface Step {
 }
 
 function buildSteps(options: {
+  commitMessageIgnorePattern?: string | string[]
   commitSha?: string
   config?: string
   includeCommitLinks?: boolean
@@ -43,6 +44,7 @@ function buildSteps(options: {
       name: "changeset-generate",
       run: () =>
         conventionalCommitChangeset({
+          commitMessageIgnorePattern: options.commitMessageIgnorePattern,
           commitSha: options.commitSha,
           configPath: options.config,
           includeCommitLinks: options.includeCommitLinks,
@@ -84,6 +86,7 @@ async function waitForConfirmation(stepName: string): Promise<boolean> {
 }
 
 async function run(options: {
+  commitMessageIgnorePattern?: string | string[]
   commitSha?: string
   config?: string
   includeCommitLinks?: boolean
@@ -145,7 +148,17 @@ program
     "--config <path>",
     "Path to the changesets config file, relative to the project root",
   )
-  .action((options) => run(options))
+  .option(
+    "--exclude-messages <pattern>",
+    "Ignore commit messages containing the given string. Supports multiple entries",
+    ["no-ci", "skip-changelog", "no-changelog"],
+  )
+  .action((options) =>
+    run({
+      ...options,
+      commitMessageIgnorePattern: options.excludeMessages,
+    }),
+  )
 
 program
   .command("changeset-generate")
@@ -160,11 +173,25 @@ program
     false,
   )
   .option(
+    "--package-manager <command>",
+    "Package manager command to use for changeset version",
+    "pnpm",
+  )
+  .option(
     "--config <path>",
     "Path to the changesets config file, relative to the project root",
   )
+  .option(
+    "--exclude-messages <pattern>",
+    "Ignore commit messages containing the given string. Supports multiple entries",
+    ["no-ci", "skip-changelog", "no-changelog"],
+  )
   .action(({config, ...options}) =>
-    conventionalCommitChangeset({...options, configPath: config}),
+    conventionalCommitChangeset({
+      ...options,
+      commitMessageIgnorePattern: options.excludeMessages,
+      configPath: config,
+    }),
   )
 
 program

@@ -33,6 +33,14 @@ function getCommitsWithMessages(commitHashes: string[]) {
 }
 
 export interface ChangesetGenerateOptions {
+  /**
+   * Commit messages containing these strings will be ignored in versioning and
+   * changelog generation. The default values will be overridden if you provide this
+   * option.
+   *
+   * @default ["no-changelog", "skip-changelog", "no-ci"]
+   */
+  commitMessageIgnorePattern?: string | string[] | RegExp | RegExp[]
   commitSha?: string | undefined
   configPath?: string | undefined
   includeCommitLinks?: boolean | undefined
@@ -53,6 +61,24 @@ export async function conventionalCommitChangeset(
       !ignored.includes(pkg.packageJson.name),
   )
 
+  const commitMessageIgnorePattern = options.commitMessageIgnorePattern ?? [
+    "no-changelog",
+    "skip-changelog",
+    "no-ci",
+  ]
+  const commitMessageIgnoreOpts = Array.isArray(commitMessageIgnorePattern)
+    ? commitMessageIgnorePattern
+    : [commitMessageIgnorePattern]
+
+  function shouldIgnoreCommitMessage(message: string): boolean {
+    return commitMessageIgnoreOpts.some((strOrPattern) => {
+      if (typeof strOrPattern === "string") {
+        return message.includes(strOrPattern)
+      }
+      return strOrPattern.test(message)
+    })
+  }
+
   const {baseBranch = "main"} = changesetConfig
   const {commitSha, includeCommitLinks} = options
 
@@ -60,8 +86,10 @@ export async function conventionalCommitChangeset(
     ? getCommitsSinceCommit(commitSha)
     : getCommitsSinceBranch(baseBranch)
   const commitsWithMessages = getCommitsWithMessages(commitsSinceRef)
-  const changelogMessages =
-    translateCommitsToConventionalCommitMessages(commitsWithMessages)
+  const changelogMessages = translateCommitsToConventionalCommitMessages(
+    commitsWithMessages,
+    shouldIgnoreCommitMessage,
+  )
 
   const changesets = conventionalMessagesWithCommitsToChangesets(
     changelogMessages,

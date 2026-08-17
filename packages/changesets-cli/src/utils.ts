@@ -82,15 +82,17 @@ export function isBreakingChange(commit: string) {
 /**
  * Filters commits to only conventional commits and maps them to changelog format
  * @param commits - Array of commits to translate
+ * @param shouldIgnoreCommitMessage - Function to determine if a commit message should be ignored
  * @returns Array of conventional commit messages with their associated commit hashes
  */
 export function translateCommitsToConventionalCommitMessages(
   commits: Commit[],
+  shouldIgnoreCommitMessage?: (message: string) => boolean,
 ): ConventionalMessagesToCommits[] {
   return commits
     .filter(
       (commit) =>
-        !commit.commitMessage.includes("no-ci") &&
+        !shouldIgnoreCommitMessage?.(commit.commitMessage) &&
         isConventionalCommit(commit.commitMessage),
     )
     .map((commit) => ({
