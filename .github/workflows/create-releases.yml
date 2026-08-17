@@ -1,0 +1,30 @@
+name: "Create GitHub Releases"
+env:
+  IS_CI: true
+  TURBO_API: "http://127.0.0.1:8585"
+  TURBO_TEAM: "qualcomm-ui"
+  TURBO_TOKEN: "turbo-cache-token"
+on:
+  workflow_dispatch:
+
+jobs:
+  create-releases:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: Publish Packages - ${{github.head_ref}}
+      cancel-in-progress: true
+    permissions:
+      id-token: write
+      contents: write
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/actions/init-node-and-install
+
+    - run: pnpm build
+
+    - name: create releases
+      run: pnpm qui-changesets create-github-releases --token $TOKEN
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
