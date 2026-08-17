@@ -35,23 +35,29 @@ describe("translateCommitsToConventionalCommitMessages", () => {
 
   it("ignores commits with no-ci in the subject", () => {
     expect(
-      translateCommitsToConventionalCommitMessages([
-        {
-          commitHash: "abc1234",
-          commitMessage: "fix(button): align icon spacing [no-ci]",
-        },
-      ]),
+      translateCommitsToConventionalCommitMessages(
+        [
+          {
+            commitHash: "abc1234",
+            commitMessage: "fix(button): align icon spacing [no-ci]",
+          },
+        ],
+        (msg) => msg.includes("[no-ci]"),
+      ),
     ).toEqual([])
   })
 
   it("ignores commits with no-ci in the body", () => {
     expect(
-      translateCommitsToConventionalCommitMessages([
-        {
-          commitHash: "abc1234",
-          commitMessage: "fix(button): align icon spacing\n\nno-ci",
-        },
-      ]),
+      translateCommitsToConventionalCommitMessages(
+        [
+          {
+            commitHash: "abc1234",
+            commitMessage: "fix(button): align icon spacing\n\nno-ci",
+          },
+        ],
+        (msg) => msg.includes("no-ci"),
+      ),
     ).toEqual([])
   })
 

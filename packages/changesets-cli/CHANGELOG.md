@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 2.2.0
+
+Aug 16th, 2026
+
+### Features
+
+- add configurable commit message ignore pattern ([484ed94](https://github.com/qualcomm/qualcomm-ui-utils/commit/484ed94))
+
 ## 2.1.0
 
 Jul 8th, 2026
