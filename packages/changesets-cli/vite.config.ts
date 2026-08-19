@@ -1,9 +1,5 @@
 import {defineConfig} from "vite"
 
-import {packagesToExternal} from "@qualcomm-ui/vite"
-
-import pkg from "./package.json"
-
 export default defineConfig({
   build: {
     emptyOutDir: false,
@@ -14,7 +10,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rolldownOptions: {
-      external: [...packagesToExternal(Object.keys(pkg.dependencies)), /^node/],
+      external: [/^node/],
       output: {
         entryFileNames: "[name].js",
       },
