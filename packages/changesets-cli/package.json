@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/changesets-cli",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Changeset automation CLI for conventional commits",
   "license": "BSD-3-Clause-Clear",
   "author": "Ryan Bower",
@@ -33,22 +33,32 @@
     "prepublishOnly": "qui-cli pre-publish",
     "postpublish": "qui-cli post-publish"
   },
-  "dependencies": {
+  "devDependencies": {
     "@actions/core": "^1.11.1",
+    "@changesets/read": "^1.0.0",
+    "@changesets/types": "^7.0.0",
+    "@changesets/write": "^1.0.0",
+    "@commander-js/extra-typings": "^14.0.0",
     "@manypkg/get-packages": "^3.1.0",
     "@octokit/rest": "^22.0.1",
-    "ts-morph": "^25.0.1"
-  },
-  "devDependencies": {
-    "@changesets/read": "^0.6.6",
-    "@changesets/types": "^6.1.0",
-    "@changesets/write": "^0.4.0",
-    "@commander-js/extra-typings": "^14.0.0",
     "@qualcomm-ui/cli": "workspace:*",
     "@qualcomm-ui/vite": "workspace:*",
     "commander": "^14.0.3",
     "dayjs": "^1.11.19",
+    "ts-morph": "^25.0.1",
     "vite": "catalog:",
     "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@actions/core": ">=1.11.1",
+    "@changesets/read": ">=1.0.0",
+    "@changesets/types": ">=7.0.0",
+    "@changesets/write": ">=1.0.0",
+    "@commander-js/extra-typings": ">=14.0.0",
+    "@manypkg/get-packages": ">=3.1.0",
+    "@octokit/rest": "^22.0.1",
+    "commander": ">=14.0.3",
+    "dayjs": ">=1.11.19",
+    "ts-morph": ">=25.0.1"
   }
 }

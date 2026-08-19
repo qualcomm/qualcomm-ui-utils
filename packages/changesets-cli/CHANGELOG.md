@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 3.0.0
+
+Aug 18th, 2026
+
+### BREAKING CHANGES
+
+- add missing peerDependencies ([a89b552](https://github.com/qualcomm/qualcomm-ui-utils/commit/a89b552))
+
 ## 2.2.0
 
 Aug 16th, 2026
