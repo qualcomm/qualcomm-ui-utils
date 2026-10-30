@@ -1,5 +1,13 @@
 # @qualcomm-ui/codemod Changelog
 
+## 1.0.0
+
+Oct 30th, 2026
+
+### BREAKING CHANGES
+
+- update codemod for latest qui-docs migration ([b8733ca](https://github.com/qualcomm/qualcomm-ui-utils/commit/b8733ca))
+
 ## 0.3.0
 
 Jul 8th, 2026
