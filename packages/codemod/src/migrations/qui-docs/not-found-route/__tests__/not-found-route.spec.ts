@@ -103,7 +103,7 @@ describe("notFoundRoute codemod", () => {
     expect(results).toEqual([
       {
         file: routeFile,
-        message: "added the NotFoundRoute default export",
+        message: "added the 404 fallback component",
         status: "updated",
       },
     ])
