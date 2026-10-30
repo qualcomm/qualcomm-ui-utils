@@ -12,7 +12,7 @@ import {
   type PackageSnapshot,
   updateJsDocSinceTagsForBumpedPackages,
   updateJsDocSinceTagsForPackages,
-} from "./update-jsdoc-since-tags"
+} from "./update-jsdoc-since-tags.js"
 
 const tempRoots: string[] = []
 

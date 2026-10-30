@@ -42,4 +42,4 @@ async function main(argv: string[]) {
   await buildOrWatch(buildOpts, IS_WATCH)
 }
 
-main(process.argv)
+await main(process.argv)

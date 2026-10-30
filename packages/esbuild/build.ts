@@ -1,6 +1,6 @@
 import type {BuildOptions} from "esbuild"
 
-import {buildOrWatch, hasArg, logPlugin} from "./src"
+import {buildOrWatch, hasArg, logPlugin} from "./src/index.js"
 
 async function main(argv: string[]) {
   const IS_WATCH = hasArg(argv, "--watch")
@@ -40,4 +40,4 @@ async function main(argv: string[]) {
   ])
 }
 
-main(process.argv)
+await main(process.argv)

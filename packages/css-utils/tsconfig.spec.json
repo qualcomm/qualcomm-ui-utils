@@ -1,8 +1,8 @@
 {
-  "extends": "@qualcomm-ui/tsconfig/tsconfig.strict.json",
+  "extends": "@qualcomm-ui/tsconfig/tsconfig.vitest.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "out-tsc",
+    "outDir": "node_modules/.tmp/out-spec",
     "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec"
   },
   "include": ["./test"],
