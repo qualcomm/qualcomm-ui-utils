@@ -4,6 +4,7 @@
 import {readdir, readFile} from "node:fs/promises"
 import {extname, join, relative, sep} from "node:path"
 import {
+  type JSDocTag,
   type Node as MorphNode,
   Node,
   Project,
@@ -44,6 +45,7 @@ export interface CheckJsDocSinceTagsOptions {
 export interface JsDocSinceTagLocation {
   entityName: string
   filePath: string
+  tagName: string
 }
 
 export interface CheckJsDocSinceTagsResult {
@@ -62,8 +64,15 @@ interface BumpedPackage {
   version: string
 }
 
+interface NextReleaseTag {
+  node: MorphNode
+  tag: JSDocTag
+}
+
 const NEXT_RELEASE = "next-release"
-const NEXT_RELEASE_TAG_PATTERN = /@since\s+next-release\b/
+const NEXT_RELEASE_TAG_PATTERN =
+  /@since\s+next-release\b|@deprecated\s+in\s+next-release\b/
+const DEPRECATED_NEXT_RELEASE_PATTERN = /^in\s+next-release\b/
 
 const SOURCE_EXTENSIONS = new Set([
   ".cjs",
@@ -93,7 +102,7 @@ function pluralize(count: number, singular: string, plural: string) {
 }
 
 export function formatJsDocSinceUpdateStartMessage() {
-  return "Updating JSDoc @since tags..."
+  return "Updating JSDoc next-release tags..."
 }
 
 export function formatJsDocSincePackageUpdateProgress({
@@ -107,7 +116,7 @@ function normalizeRelativePath(cwd: string, filePath: string) {
   return relative(cwd, filePath).split(sep).join("/")
 }
 
-function hasNextReleaseSinceTag(content: string) {
+function hasNextReleaseTag(content: string) {
   const scanner = ts.createScanner(
     ts.ScriptTarget.Latest,
     false,
@@ -229,20 +238,24 @@ async function getSourceFiles(dir: string): Promise<string[]> {
   return files
 }
 
-async function updateSourceFile(filePath: string, version: string) {
-  const project = new Project({
-    compilerOptions: {
-      allowJs: true,
-      checkJs: false,
-    },
-    manipulationSettings: {
-      insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: false,
-      useTrailingCommas: true,
-    },
-    skipAddingFilesFromTsConfig: true,
-  })
-  const sourceFile = project.addSourceFileAtPath(filePath)
-  let tagCount = 0
+function isNextReleaseTag(tag: JSDocTag) {
+  const comment = tag.getCommentText()?.trim()
+  if (!comment) {
+    return false
+  }
+
+  switch (tag.getTagName()) {
+    case "since":
+      return comment === NEXT_RELEASE
+    case "deprecated":
+      return DEPRECATED_NEXT_RELEASE_PATTERN.test(comment)
+    default:
+      return false
+  }
+}
+
+function getNextReleaseTags(sourceFile: SourceFile): NextReleaseTag[] {
+  const tags: NextReleaseTag[] = []
 
   sourceFile.forEachDescendant((node) => {
     if (!Node.isJSDocable(node)) {
@@ -251,22 +264,40 @@ async function updateSourceFile(filePath: string, version: string) {
 
     for (const jsDoc of node.getJsDocs()) {
       for (const tag of jsDoc.getTags()) {
-        if (
-          tag.getTagName() === "since" &&
-          tag.getCommentText()?.trim() === NEXT_RELEASE
-        ) {
-          tag.set({tagName: "since", text: version})
-          tagCount += 1
+        if (isNextReleaseTag(tag)) {
+          tags.push({node, tag})
         }
       }
     }
   })
 
-  if (tagCount > 0) {
-    await sourceFile.save()
+  return tags
+}
+
+async function updateSourceFile(filePath: string, version: string) {
+  const sourceFile = createProject().addSourceFileAtPath(filePath)
+  const tags = getNextReleaseTags(sourceFile)
+  if (tags.length === 0) {
+    return 0
   }
 
-  return tagCount
+  // Splice the version into the original text so the rest of each tag's
+  // comment (links, wrapped lines, etc.) keeps its formatting.
+  const positions = tags
+    .map(({tag}) => tag.getStart() + tag.getText().indexOf(NEXT_RELEASE))
+    .sort((a, b) => b - a)
+  let text = sourceFile.getFullText()
+  for (const position of positions) {
+    text =
+      text.slice(0, position) +
+      version +
+      text.slice(position + NEXT_RELEASE.length)
+  }
+
+  sourceFile.replaceWithText(text)
+  await sourceFile.save()
+
+  return tags.length
 }
 
 async function findUnresolvedFiles(cwd: string, sourceFiles: string[]) {
@@ -274,7 +305,7 @@ async function findUnresolvedFiles(cwd: string, sourceFiles: string[]) {
 
   for (const filePath of sourceFiles) {
     const content = await readFile(filePath, "utf-8")
-    if (hasNextReleaseSinceTag(content)) {
+    if (hasNextReleaseTag(content)) {
       unresolvedFiles.push(normalizeRelativePath(cwd, filePath))
     }
   }
@@ -287,29 +318,12 @@ function collectSourceFileSinceTagLocations(
   sourceFile: SourceFile,
 ): JsDocSinceTagLocation[] {
   const filePath = normalizeRelativePath(cwd, sourceFile.getFilePath())
-  const locations: JsDocSinceTagLocation[] = []
 
-  sourceFile.forEachDescendant((node) => {
-    if (!Node.isJSDocable(node)) {
-      return
-    }
-
-    for (const jsDoc of node.getJsDocs()) {
-      for (const tag of jsDoc.getTags()) {
-        if (
-          tag.getTagName() === "since" &&
-          tag.getCommentText()?.trim() === NEXT_RELEASE
-        ) {
-          locations.push({
-            entityName: getQualifiedEntityName(node),
-            filePath,
-          })
-        }
-      }
-    }
-  })
-
-  return locations
+  return getNextReleaseTags(sourceFile).map(({node, tag}) => ({
+    entityName: getQualifiedEntityName(node),
+    filePath,
+    tagName: tag.getTagName(),
+  }))
 }
 
 function createProject() {
@@ -412,7 +426,7 @@ export function formatJsDocSinceUpdateResult(
   const lines: string[] = []
 
   if (result.updatedPackages.length > 0) {
-    lines.push("Updated JSDoc @since tags:")
+    lines.push("Updated JSDoc next-release tags:")
     for (const pkg of result.updatedPackages) {
       lines.push(
         `  ${pkg.name} ${pkg.version}: ${pkg.tagCount} ${pluralize(
@@ -430,7 +444,7 @@ export function formatJsDocSinceUpdateResult(
     }
 
     lines.push(
-      "Warning: unresolved @since next-release tags remain after JSDoc version update:",
+      "Warning: unresolved next-release JSDoc tags remain after JSDoc version update:",
     )
     lines.push(...result.unresolvedFiles.map((filePath) => `  ${filePath}`))
     lines.push("")
@@ -446,13 +460,14 @@ export function formatJsDocSinceCheckResult(
   result: CheckJsDocSinceTagsResult,
 ): string[] {
   if (result.unresolvedTags.length === 0) {
-    return ["No @since next-release tags found."]
+    return ["No next-release JSDoc tags found."]
   }
 
   return [
-    "Found @since next-release tags:",
+    "Found next-release JSDoc tags:",
     ...result.unresolvedTags.map(
-      ({entityName, filePath}) => `  ${filePath}: ${entityName}`,
+      ({entityName, filePath, tagName}) =>
+        `  ${filePath}: ${entityName} (@${tagName})`,
     ),
   ]
 }

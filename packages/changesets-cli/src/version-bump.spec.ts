@@ -8,7 +8,7 @@ import {
   bumpVersionsAndMaybeUpdateJsDocSinceTags,
   getCheckPackageSnapshots,
   getUpdatePackageSnapshots,
-} from "./version-bump"
+} from "./version-bump.js"
 
 const tempRoots: string[] = []
 

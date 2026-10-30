@@ -19,10 +19,10 @@
     "clean": "shx rm -rf dist node_modules/.tmp",
     "compile": "run-p compile:cli compile:types",
     "compile:cli": "tsx build.ts --mode production",
-    "compile:types": "tsc -b tsconfig.lib.json",
+    "compile:types": "tsc -b --force",
     "dev": "run-p watch:cli watch:types",
     "watch:cli": "tsx build.ts --mode development --watch",
-    "watch:types": "tsc -b tsconfig.lib.json -w --preserveWatchOutput --force",
+    "watch:types": "tsc -b -w --preserveWatchOutput --force",
     "lint": "eslint --quiet",
     "prepublishOnly": "qui-cli pre-publish",
     "postpublish": "qui-cli post-publish"

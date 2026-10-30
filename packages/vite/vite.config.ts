@@ -1,6 +1,6 @@
 import {defineConfig} from "vite"
 
-import {dependenciesToExternal} from "./src/utils"
+import {dependenciesToExternal} from "./src/utils.js"
 
 export default defineConfig({
   build: {

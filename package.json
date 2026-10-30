@@ -13,7 +13,7 @@
     "lint": "turbo run lint --continue",
     "lint:ci": "turbo run lint --concurrency 6",
     "check-updates": "pnpm npm-check-updates",
-    "bump": "pnpm qui-changesets prep-release --include-commit-links"
+    "bump": "pnpm qui-changesets changeset-generate --include-commit-links"
   },
   "devDependencies": {
     "@actions/core": "^1.11.1",

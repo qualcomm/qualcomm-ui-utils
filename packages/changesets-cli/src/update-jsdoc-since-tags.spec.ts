@@ -12,7 +12,7 @@ import {
   type PackageSnapshot,
   updateJsDocSinceTagsForBumpedPackages,
   updateJsDocSinceTagsForPackages,
-} from "./update-jsdoc-since-tags"
+} from "./update-jsdoc-since-tags.js"
 
 const tempRoots: string[] = []
 
@@ -119,6 +119,126 @@ describe("updateJsDocSinceTagsForBumpedPackages", () => {
       },
     ])
     expect(result.unresolvedFiles).toEqual([])
+  })
+
+  it("replaces @deprecated in next-release tags and preserves trailing text", async () => {
+    const root = await createTempPackageRoot()
+    const file = await writeFixture(
+      root,
+      "index.ts",
+      [
+        "/**",
+        " * Legacy.",
+        " * @deprecated in next-release. Use {@link modern} instead.",
+        " *   Removed in the next major.",
+        " * @since next-release",
+        " */",
+        "export function legacy() {}",
+        "",
+        "/** @deprecated in next-release */",
+        "export const old = 1",
+        "",
+        "/**",
+        " * @deprecated in 1.0.0",
+        " */",
+        "export const older = 1",
+        "",
+        "/**",
+        " * @deprecated next-release",
+        " */",
+        "export const unsupported = 1",
+        "",
+      ].join("\n"),
+    )
+
+    const result = await updateJsDocSinceTagsForBumpedPackages({
+      afterPackages: [snapshot(root, "1.2.0")],
+      beforePackages: [snapshot(root, "1.1.0")],
+      cwd: root,
+    })
+
+    await expect(readFile(file, "utf-8")).resolves.toBe(
+      [
+        "/**",
+        " * Legacy.",
+        " * @deprecated in 1.2.0. Use {@link modern} instead.",
+        " *   Removed in the next major.",
+        " * @since 1.2.0",
+        " */",
+        "export function legacy() {}",
+        "",
+        "/** @deprecated in 1.2.0 */",
+        "export const old = 1",
+        "",
+        "/**",
+        " * @deprecated in 1.0.0",
+        " */",
+        "export const older = 1",
+        "",
+        "/**",
+        " * @deprecated next-release",
+        " */",
+        "export const unsupported = 1",
+        "",
+      ].join("\n"),
+    )
+    expect(result.updatedPackages).toEqual([
+      {
+        fileCount: 1,
+        name: "@qualcomm-ui/example",
+        tagCount: 3,
+        version: "1.2.0",
+      },
+    ])
+    expect(result.unresolvedFiles).toEqual([])
+  })
+
+  it("checks current package sources for @deprecated in next-release tags", async () => {
+    const root = await createTempPackageRoot()
+    await writeFixture(
+      root,
+      "src/index.ts",
+      [
+        "/**",
+        " * Legacy.",
+        " * @deprecated in next-release. Use modern instead.",
+        " */",
+        "export function legacy() {}",
+        "",
+        "/**",
+        " * @deprecated in 1.0.0",
+        " */",
+        "export function older() {}",
+        "",
+      ].join("\n"),
+    )
+
+    const result = await checkJsDocSinceTags({
+      cwd: root,
+      packages: [snapshot(root, "1.1.0")],
+    })
+
+    expect(result.unresolvedTags).toEqual([
+      {entityName: "legacy", filePath: "src/index.ts", tagName: "deprecated"},
+    ])
+  })
+
+  it("warns when unresolved @deprecated in next-release placeholders remain", async () => {
+    const root = await createTempPackageRoot()
+    await writeFixture(
+      root,
+      "index.ts",
+      "const example = 1\n\n/**\n * @deprecated in next-release\n */\n",
+    )
+
+    const result = await updateJsDocSinceTagsForBumpedPackages({
+      afterPackages: [snapshot(root, "1.2.0")],
+      beforePackages: [snapshot(root, "1.1.0")],
+      cwd: root,
+    })
+
+    expect(result.updatedPackages).toEqual([])
+    expect(result.unresolvedFiles).toEqual(["index.ts"])
   })
 
   it("does not rewrite packages whose versions did not change", async () => {
@@ -305,10 +425,10 @@ describe("updateJsDocSinceTagsForBumpedPackages", () => {
         ],
       }),
     ).toEqual([
-      "Updated JSDoc @since tags:",
+      "Updated JSDoc next-release tags:",
       "  @qualcomm-ui/example 1.2.3: 4 tags in 2 files",
       "",
-      "Warning: unresolved @since next-release tags remain after JSDoc version update:",
+      "Warning: unresolved next-release JSDoc tags remain after JSDoc version update:",
       "  packages/example/src/file-doc.ts",
       "",
       "These tags were not rewritten automatically. This is non-blocking, but the updater may need to support another JSDoc shape.",
@@ -317,7 +437,7 @@ describe("updateJsDocSinceTagsForBumpedPackages", () => {
 
   it("formats update progress messages", () => {
     expect(formatJsDocSinceUpdateStartMessage()).toBe(
-      "Updating JSDoc @since tags...",
+      "Updating JSDoc next-release tags...",
     )
     expect(
       formatJsDocSincePackageUpdateProgress({
@@ -370,8 +490,12 @@ describe("updateJsDocSinceTagsForBumpedPackages", () => {
     })
 
     expect(result.unresolvedTags).toEqual([
-      {entityName: "current", filePath: "src/index.ts"},
-      {entityName: "CurrentOptions.label", filePath: "src/index.ts"},
+      {entityName: "current", filePath: "src/index.ts", tagName: "since"},
+      {
+        entityName: "CurrentOptions.label",
+        filePath: "src/index.ts",
+        tagName: "since",
+      },
     ])
   })
 
@@ -398,16 +522,23 @@ describe("updateJsDocSinceTagsForBumpedPackages", () => {
           {
             entityName: "Example",
             filePath: "packages/example/src/index.ts",
+            tagName: "since",
+          },
+          {
+            entityName: "legacy",
+            filePath: "packages/example/src/index.ts",
+            tagName: "deprecated",
           },
         ],
       }),
     ).toEqual([
-      "Found @since next-release tags:",
-      "  packages/example/src/index.ts: Example",
+      "Found next-release JSDoc tags:",
+      "  packages/example/src/index.ts: Example (@since)",
+      "  packages/example/src/index.ts: legacy (@deprecated)",
     ])
 
     expect(formatJsDocSinceCheckResult({unresolvedTags: []})).toEqual([
-      "No @since next-release tags found.",
+      "No next-release JSDoc tags found.",
     ])
   })
 })

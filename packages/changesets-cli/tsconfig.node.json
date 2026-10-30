@@ -2,7 +2,9 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec"
+    "outDir": "node_modules/.tmp/out-node",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node",
+    "types": ["node"]
   },
   "include": ["*.ts"]
 }

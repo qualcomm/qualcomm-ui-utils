@@ -6,7 +6,7 @@ import {Argument, Option, program} from "@commander-js/extra-typings"
 import {migrationGroups, runMigration} from "./migrations/index.js"
 
 const migrationArgument = new Argument(
-  "<migration>",
+  "[migration]",
   "Migration to run",
 ).choices(migrationGroups.map((group) => group.name))
 
@@ -36,11 +36,13 @@ const availableMigrations = migrationGroups
   .join("\n")
 
 program
+  .name("npx @qualcomm-ui/codemod@latest")
   .command("migrate")
   .addArgument(migrationArgument)
   .addOption(directoryOption)
   .addOption(logModeOpt)
   .addOption(dryRunOption)
+  .usage("[options] <migration>")
   .summary("Run migrations for QUI packages")
   .description(
     `Migrate a project to the latest major versions of QUI packages.
@@ -54,10 +56,13 @@ Available migrations:
 ${availableMigrations}
 
 Examples:
-  qui-codemod migrate qui-docs
-  qui-codemod migrate qui-docs -d apps/docs --dry-run`,
+  npx @qualcomm-ui/codemod@latest migrate qui-docs
+  npx @qualcomm-ui/codemod@latest migrate qui-docs -d apps/docs --dry-run`,
   )
-  .action(async (migration, opts) => {
+  .action(async (migration, opts, command) => {
+    if (!migration) {
+      command.help()
+    }
     const group = migrationGroups.find((group) => group.name === migration)!
     await runMigration(group, {
       dir: opts.dir,

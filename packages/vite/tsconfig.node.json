@@ -1,9 +1,14 @@
 {
-  "extends": "@qualcomm-ui/tsconfig/tsconfig.node.json",
+  "extends": "@qualcomm-ui/tsconfig/tsconfig.nodenext.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "out-tsc",
-    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node"
+    "outDir": "node_modules/.tmp/out-node",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node",
   },
-  "include": ["*.ts"]
+  "include": ["*.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

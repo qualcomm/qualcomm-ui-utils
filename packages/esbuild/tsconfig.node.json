@@ -1,9 +1,16 @@
 {
-  "extends": "@qualcomm-ui/tsconfig/tsconfig.node.json",
+  "extends": "@qualcomm-ui/tsconfig/tsconfig.nodenext.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "out-tsc",
-    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node"
+    "outDir": "node_modules/.tmp/out-node",
+    "rootDir": ".",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-node",
+    "types": ["node"]
   },
-  "include": ["build.ts", "vitest.config.ts"]
+  "include": ["build.ts", "vitest.config.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

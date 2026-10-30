@@ -19,6 +19,6 @@
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "typescript": ">=5.7.3"
+    "typescript": ">=6.0.3"
   }
 }

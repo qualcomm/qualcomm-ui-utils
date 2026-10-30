@@ -2,8 +2,10 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "outDir": "node_modules/.tmp/out-spec",
+    "tsBuildInfoFile": "node_modules/.tmp/.tsbuildinfo-spec",
+    "types": ["node"]
   },
   "include": ["./src/**/*.spec.ts"],
   "references": [
