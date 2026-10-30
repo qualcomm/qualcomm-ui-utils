@@ -1,6 +1,6 @@
 {
   "name": "@qualcomm-ui/tsconfig",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "license": "BSD-3-Clause-Clear",
   "author": "Ryan Bower",
   "repository": "https://github.com/qualcomm/qualcomm-ui-utils",
@@ -15,7 +15,7 @@
     "postpublish": "qui-cli post-publish"
   },
   "devDependencies": {
-    "@qualcomm-ui/cli": "workspace:^1.1.1",
+    "@qualcomm-ui/cli": "workspace:^1.1.2",
     "typescript": "catalog:"
   },
   "peerDependencies": {

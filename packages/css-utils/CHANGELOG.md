@@ -1,5 +1,13 @@
 # @qualcomm-ui/css-utils Changelog
 
+## 1.1.4
+
+Oct 30th, 2026
+
+### Build System
+
+- migrate package tsconfigs to nodenext and project references ([a565528](https://github.com/qualcomm/qualcomm-ui-utils/commit/a565528))
+
 ## 1.1.3
 
 Jun 23rd, 2026

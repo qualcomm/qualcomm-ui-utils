@@ -1,5 +1,17 @@
 # @qualcomm-ui/tsconfig Changelog
 
+## 3.0.0
+
+Oct 30th, 2026
+
+### BREAKING CHANGES
+
+- add tsconfig.nodenext.json and deprecate legacy configs ([e4273aa](https://github.com/qualcomm/qualcomm-ui-utils/commit/e4273aa))
+
+### Features
+
+- include node types in vitest tsconfig ([c3adbed](https://github.com/qualcomm/qualcomm-ui-utils/commit/c3adbed))
+
 ## 2.3.0
 
 Jun 12th, 2026

@@ -1,5 +1,21 @@
 # @qualcomm-ui/codemod Changelog
 
+## 1.1.0
+
+Oct 30th, 2026
+
+### Features
+
+- add docs-context-names codemod ([985cad4](https://github.com/qualcomm/qualcomm-ui-utils/commit/985cad4))
+
+### Tests
+
+- update not-found-route expected message ([dc684a3](https://github.com/qualcomm/qualcomm-ui-utils/commit/dc684a3))
+
+### Build System
+
+- migrate package tsconfigs to nodenext and project references ([a565528](https://github.com/qualcomm/qualcomm-ui-utils/commit/a565528))
+
 ## 1.0.0
 
 Oct 30th, 2026

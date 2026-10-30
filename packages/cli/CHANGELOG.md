@@ -1,5 +1,13 @@
 # @qualcomm-ui/cli Changelog
 
+## 1.1.2
+
+Oct 30th, 2026
+
+### Build System
+
+- migrate package tsconfigs to nodenext and project references ([a565528](https://github.com/qualcomm/qualcomm-ui-utils/commit/a565528))
+
 ## 1.1.1
 
 Jul 27th, 2026
