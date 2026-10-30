@@ -1,3 +1,4 @@
+// @deprecated in 3.0.0, migrate to tsconfig.nodenext.json
 {
   "extends": "./tsconfig.strict.json",
   "compilerOptions": {
