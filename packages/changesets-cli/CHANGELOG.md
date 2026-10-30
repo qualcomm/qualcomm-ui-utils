@@ -1,5 +1,17 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 3.1.0
+
+Oct 30th, 2026
+
+### Features
+
+- support `@deprecated in next-release` in jsdoc tag updater ([6fc033d](https://github.com/qualcomm/qualcomm-ui-utils/commit/6fc033d))
+
+### Build System
+
+- migrate package tsconfigs to nodenext and project references ([a565528](https://github.com/qualcomm/qualcomm-ui-utils/commit/a565528))
+
 ## 3.0.0
 
 Aug 18th, 2026
