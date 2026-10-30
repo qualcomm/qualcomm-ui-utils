@@ -224,7 +224,7 @@ program
     "Directories to scan instead of package sources. If this is omitted, the `src` folder will be used by default",
   )
   .description(
-    "Check for JSDoc @since next-release tags without modifying files",
+    "Check for JSDoc @since next-release and @deprecated in next-release tags without modifying files",
   )
   .action(async (directories) => {
     const result = await checkJsDocSinceTags({
@@ -250,7 +250,7 @@ program
     "Git ref to compare package versions against (defaults to the changesets base branch)",
   )
   .description(
-    "Replace JSDoc @since next-release tags with package or explicit versions",
+    "Replace JSDoc @since next-release and @deprecated in next-release tags with package or explicit versions",
   )
   .action(async (directories, options) => {
     console.log(formatJsDocSinceUpdateStartMessage())
@@ -264,7 +264,7 @@ program
     })
     const lines = formatJsDocSinceUpdateResult(result)
     if (lines.length === 0) {
-      console.log("No JSDoc @since next-release tags updated.")
+      console.log("No JSDoc next-release tags updated.")
       return
     }
 
