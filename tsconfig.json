@@ -11,7 +11,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "target": "ESNext",
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "types": ["node"]
   },
   "include": ["./scripts", "*.ts"]
 }
