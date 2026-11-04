@@ -31,7 +31,7 @@ export function hasArg(argv: string[], key: string): boolean {
  * packages and package names with punctuation are matched literally.
  */
 export function packagesToExternal(packages: string[]): RegExp[] {
-  return packages.map((pkg) => {
+  return [...new Set(packages)].map((pkg) => {
     const escaped = pkg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     return new RegExp(`^${escaped}(/|$)`)
   })
@@ -42,6 +42,8 @@ interface DependenciesToExternalOptions {
     | {
         dependencies?: Record<string, string>
         devDependencies?: Record<string, string>
+        optionalDependencies?: Record<string, string>
+        peerDependencies?: Record<string, string>
       }
     | string
 }
@@ -52,6 +54,8 @@ function packageJsonToExternal(pkg: PackageJson): RegExp[] {
   return packagesToExternal([
     ...Object.keys(pkg.dependencies ?? {}),
     ...Object.keys(pkg.devDependencies ?? {}),
+    ...Object.keys(pkg.peerDependencies ?? {}),
+    ...Object.keys(pkg.optionalDependencies ?? {}),
   ])
 }
 
