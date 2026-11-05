@@ -1,5 +1,17 @@
 # @qualcomm-ui/esbuild Changelog
 
+## 2.0.0
+
+Nov 5th, 2026
+
+### BREAKING CHANGES
+
+- [dependencies]: omit peer and optional dependencies by default ([9b90247](https://github.com/qualcomm/qualcomm-ui-utils/commit/9b90247))
+
+### Features
+
+- [library-entries-plugin]: make bundle size logging opt-in and debounce watch rebuilds ([a4d7814](https://github.com/qualcomm/qualcomm-ui-utils/commit/a4d7814))
+
 ## 1.1.3
 
 Oct 30th, 2026
