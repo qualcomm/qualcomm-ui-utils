@@ -59,12 +59,26 @@ export interface LibraryEntriesPluginOptions {
    */
   entries?: LibraryEntriesOptions
   /**
+   * Log the total raw and gzip size of the emitted JS chunks after each build.
+   * Pass `true` to log in both one-off and watch builds, or an object to enable
+   * them individually, e.g. `{watch: true}`.
+   * @default false
+   */
+  logTotalBundleSize?: boolean | {build?: boolean; watch?: boolean}
+  /**
    * Path for the sentinel file used to signal Vite when a new entry folder appears.
    * Must be inside `node_modules` or another location Vite excludes from its own
    * watcher to avoid double-triggering.
    * @default "node_modules/.cache/qui-vite-sentinel"
    */
   sentinelFile?: string
+  /**
+   * Milliseconds to wait after a file change before rebuilding in watch mode, so
+   * multiple writes from a single save produce one rebuild. Applied as
+   * `build.watch.buildDelay` unless the Vite config already sets it.
+   * @default 25
+   */
+  watchBuildDelay?: number
 }
 
 interface ResolvedLibraryEntriesOptions {
@@ -170,7 +184,9 @@ function resolveEntriesOptions(
  */
 export function libraryEntriesPlugin({
   entries,
+  logTotalBundleSize = false,
   sentinelFile = "node_modules/.cache/qui-vite-sentinel",
+  watchBuildDelay = 25,
 }: LibraryEntriesPluginOptions = {}): Plugin {
   const resolvedEntries = resolveEntriesOptions(entries)
   const resolvedSentinel = resolve(sentinelFile)
@@ -180,6 +196,17 @@ export function libraryEntriesPlugin({
   let config: ResolvedConfig | undefined
   let watchBundleCount = 0
   const initialEntryNames = new Set<string>()
+  const logSize =
+    typeof logTotalBundleSize === "boolean"
+      ? {build: logTotalBundleSize, watch: logTotalBundleSize}
+      : {
+          build: logTotalBundleSize.build ?? false,
+          watch: logTotalBundleSize.watch ?? false,
+        }
+  // Unchanged chunks are pruned from watch rebuilds before writeBundle, so their
+  // sizes are captured here to keep the reported total complete.
+  let prunedBytes = 0
+  let prunedGzipBytes = 0
 
   function bumpSentinel(): void {
     clearTimeout(bumpTimer)
@@ -187,8 +214,6 @@ export function libraryEntriesPlugin({
       writeFileSync(resolvedSentinel, Date.now().toString())
     }, 100)
   }
-
-  let pendingLog: string | undefined
 
   return {
     async buildStart(this) {
@@ -227,17 +252,27 @@ export function libraryEntriesPlugin({
       }
     },
 
-    closeBundle() {
-      if (pendingLog) {
-        console.log(pendingLog)
-        pendingLog = undefined
-      }
-    },
-
     closeWatcher() {
       clearTimeout(bumpTimer)
       fsWatcher?.close()
       fsWatcher = null
+    },
+
+    config(userConfig) {
+      if (
+        userConfig.build?.watch &&
+        userConfig.build.watch.buildDelay === undefined
+      ) {
+        /*
+         * Vite 8's watcher (Rolldown) defaults to buildDelay: 0, so every
+         * filesystem event on a watched file starts its own rebuild. Many editors
+         * write a file more than once per save (format-on-save, ESLint fix-on-save,
+         * Windows IDEs saving into WSL, etc.). Each write is a separate event, so
+         * one save may yield two identical rebuilds. A short delay waits until the
+         * writes stop and then builds once.
+         */
+        return {build: {watch: {buildDelay: watchBuildDelay}}}
+      }
     },
 
     configResolved(resolvedConfig) {
@@ -245,6 +280,9 @@ export function libraryEntriesPlugin({
     },
 
     generateBundle(_, bundle) {
+      prunedBytes = 0
+      prunedGzipBytes = 0
+
       if (!this.meta.watchMode || !config) {
         return
       }
@@ -257,6 +295,10 @@ export function libraryEntriesPlugin({
       const outDir = resolve(config.root, config.build.outDir)
       for (const [fileName, item] of Object.entries(bundle)) {
         if (isSameOutputFile(join(outDir, fileName), item)) {
+          if (logSize.watch && item.type === "chunk") {
+            prunedBytes += Buffer.byteLength(item.code)
+            prunedGzipBytes += gzipSync(item.code).byteLength
+          }
           delete bundle[fileName]
         }
       }
@@ -273,18 +315,27 @@ export function libraryEntriesPlugin({
       return opts
     },
 
-    writeBundle(_, bundle) {
-      let totalBytes = 0
-      let totalGzipBytes = 0
-      for (const chunk of Object.values(bundle)) {
-        if (chunk.type !== "chunk") {
-          continue
+    writeBundle: {
+      // Run after Vite's reporter so the total follows its per-file size list.
+      handler(_, bundle) {
+        if (!(this.meta.watchMode ? logSize.watch : logSize.build)) {
+          return
         }
-        const bytes = Buffer.byteLength(chunk.code)
-        totalBytes += bytes
-        totalGzipBytes += gzipSync(chunk.code).byteLength
-      }
-      pendingLog = `\x1b[2mTotal: ${formatBytes(totalBytes)} | gzip: \x1b[1m${formatBytes(totalGzipBytes)}\x1b[0m`
+
+        let totalBytes = prunedBytes
+        let totalGzipBytes = prunedGzipBytes
+        for (const chunk of Object.values(bundle)) {
+          if (chunk.type !== "chunk") {
+            continue
+          }
+          totalBytes += Buffer.byteLength(chunk.code)
+          totalGzipBytes += gzipSync(chunk.code).byteLength
+        }
+        console.log(
+          `\x1b[2mTotal: ${formatBytes(totalBytes)} | gzip: \x1b[1m${formatBytes(totalGzipBytes)}\x1b[0m`,
+        )
+      },
+      order: "post",
     },
   }
 }
