@@ -24,6 +24,33 @@ export function getChangedChangelogs(): string[] {
   }
 }
 
+/**
+ * Trims list items while preserving indented continuation lines (e.g. markdown
+ * descriptions nested under a bullet) and the blank lines that separate them.
+ */
+function normalizeSectionLines(lines: string[]): string[] {
+  const result: string[] = []
+  let pendingBlank = false
+  let previousIsContinuation = false
+
+  for (const line of lines) {
+    if (!line.trim()) {
+      pendingBlank = result.length > 0
+      continue
+    }
+
+    const isContinuation = /^\s/.test(line)
+    if (pendingBlank && (isContinuation || previousIsContinuation)) {
+      result.push("")
+    }
+    pendingBlank = false
+    previousIsContinuation = isContinuation
+    result.push(isContinuation ? line.trimEnd() : line.trim())
+  }
+
+  return result
+}
+
 export async function consolidateChangelog(
   changelogPath: string,
 ): Promise<void> {
@@ -79,8 +106,8 @@ export async function consolidateChangelog(
       continue
     }
 
-    if (currentSection && line.trim()) {
-      sections.get(currentSection)?.push(line.trim())
+    if (currentSection) {
+      sections.get(currentSection)?.push(line)
     }
   }
 
@@ -91,12 +118,13 @@ export async function consolidateChangelog(
   output.push("")
 
   for (const [section, items] of sections) {
-    if (items.length === 0) {
+    const sectionLines = normalizeSectionLines(items)
+    if (sectionLines.length === 0) {
       continue
     }
     output.push(section)
     output.push("")
-    output.push(...items)
+    output.push(...sectionLines)
     output.push("")
   }
 
