@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 3.2.0
+
+Nov 6th, 2026
+
+### Features
+
+- [changelog-formatter]: render changeset body as nested markdown ([96775c5](https://github.com/qualcomm/qualcomm-ui-utils/commit/96775c5))
+
 ## 3.1.0
 
 Oct 30th, 2026
