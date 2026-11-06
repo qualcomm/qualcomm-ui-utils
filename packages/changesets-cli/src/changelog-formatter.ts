@@ -29,6 +29,38 @@ const typeMap: Record<string, string> = {
   test: "Tests",
 }
 
+interface ParsedSummary {
+  body: string
+  commit?: string
+  title: string
+}
+
+/**
+ * Splits a changeset summary into its title (the first line), an optional
+ * `commit:` field, and the markdown body that follows the title.
+ */
+function parseSummary(summary: string): ParsedSummary {
+  let commit: string | undefined
+
+  const [title = "", ...bodyLines] = summary
+    .split("\n")
+    .filter((line) => !line.trim().toLowerCase().startsWith("signed-off-by:"))
+    .join("\n")
+    .replace(/^\s*commit:\s*([^\s]+)/im, (_, match) => {
+      commit = match
+      return ""
+    })
+    .trim()
+    .split("\n")
+
+  const body = bodyLines
+    .join("\n")
+    .replace(/^\s*\n/, "")
+    .trimEnd()
+
+  return {body, commit, title: title.trim()}
+}
+
 const changelogFunctions = {
   getDependencyReleaseLine: (
     _changesets: unknown,
@@ -62,35 +94,26 @@ const changelogFunctions = {
       )
     }
 
-    let commitFromSummary: string | undefined
+    const {
+      body,
+      commit: commitFromSummary,
+      title,
+    } = parseSummary(changeset.summary)
 
-    const cleanedSummary = changeset.summary
-      .split("\n")
-      .filter((line) => !line.trim().toLowerCase().startsWith("signed-off-by:"))
-      .join("\n")
-      .replace(/^\s*commit:\s*([^\s]+)/im, (_, commit) => {
-        commitFromSummary = commit
-        return ""
-      })
-      .trim()
-
-    const prMatch = cleanedSummary.match(/\(#(\d+)\)/)
-    const prNumber = prMatch?.[1]
-
-    const typeMatch = cleanedSummary.match(
+    const typeMatch = title.match(
       /^(feat|fix|refactor|chore|perf|test|docs|styles?|ci|build)\s*(\(.+?\))?!?:\s*/i,
     )
     const conventionalType = typeMatch?.[1]?.toLowerCase()
     const scope = typeMatch?.[2]?.replace("(", "").replace(")", "")
     const isBreaking =
-      cleanedSummary.includes("!:") ||
-      cleanedSummary.toLowerCase().includes("breaking")
-    const summary = cleanedSummary
+      title.includes("!:") ||
+      title.toLowerCase().includes("breaking") ||
+      body.includes("BREAKING CHANGE:")
+    const summary = title
       .replace(
         /^(feat|fix|refactor|chore|perf|test|docs|styles?|ci|build)\s*(\(.+?\))?!?:\s*/i,
         "",
       )
-      .replace(/\s*\(#\d+\)\s*$/, "")
       .trim()
 
     const section = isBreaking
@@ -99,14 +122,20 @@ const changelogFunctions = {
 
     let line = `### ${section}\n* ${scope ? `[${scope}]: ` : ""}${summary}`
 
-    if (prNumber) {
-      line += ` ([#${prNumber}](${options.repo}/issues/${prNumber}))`
-    }
-
     const commit = commitFromSummary || changeset.commit
     if (commit) {
       const shortCommit = commit.slice(0, 7)
       line += ` ([${shortCommit}](${options.repo}/commit/${commit}))`
+    }
+
+    if (body) {
+      // Indent so the body nests under the list item. The blank line keeps it
+      // from merging into the bullet's paragraph.
+      const indented = body
+        .split("\n")
+        .map((bodyLine) => (bodyLine.trim() ? `  ${bodyLine}` : ""))
+        .join("\n")
+      line += `\n\n${indented}`
     }
 
     return line
