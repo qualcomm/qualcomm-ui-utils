@@ -209,7 +209,7 @@ program
 program
   .command("check-versions")
   .description(
-    "Check which packages have newer versions than what is published on npm",
+    "Check which packages have newer versions than what is published to their configured registry",
   )
   .option(
     "--config <path>",
