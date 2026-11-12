@@ -1,5 +1,13 @@
 # @qualcomm-ui/changesets-cli Changelog
 
+## 3.3.0
+
+Nov 12th, 2026
+
+### Features
+
+- use configured npm registry resolution ([c1b0d2b](https://github.com/qualcomm/qualcomm-ui-utils/commit/c1b0d2b))
+
 ## 3.2.0
 
 Nov 6th, 2026
