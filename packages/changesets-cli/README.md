@@ -66,7 +66,9 @@ qui-changesets generate-release-notes
 
 ### `check-versions`
 
-Checks which packages have newer local versions than what is published on npm. Sets a `should-publish` GitHub Actions output.
+Checks which packages have newer local versions than what is published to their configured registry. Sets a `should-publish` GitHub Actions output.
+
+Each package is looked up with `npm info`, run from the workspace root, so registry settings resolve the same way they do for `changeset publish`: `publishConfig.registry` and `publishConfig["@scope:registry"]` in the package's `package.json`, plus scoped registries, default registries, and auth tokens from `.npmrc` and `npm_config_*` environment variables. Packages that are not found (404) are treated as unpublished. Any other registry error, such as an authentication failure, fails the command.
 
 ```sh
 qui-changesets check-versions [options]
