@@ -47,6 +47,11 @@
     "glob": "catalog:",
     "npm-run-all2": "^8.0.4",
     "pretty-ms": "^9.3.0",
-    "shx": "^0.4.0"
+    "shx": "^0.4.0",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "esbuild": ">=0.28.2",
+    "typescript": "^6.0.3"
   }
 }
