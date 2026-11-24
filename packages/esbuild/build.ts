@@ -29,6 +29,16 @@ async function main(argv: string[]) {
     buildOrWatch(
       {
         ...buildOpts,
+        entryPoints: ["src/index.ts"],
+        format: "cjs",
+        logLevel: IS_WATCH ? "error" : "warning",
+        outfile: "dist/index.cjs",
+      },
+      IS_WATCH,
+    ),
+    buildOrWatch(
+      {
+        ...buildOpts,
         entryPoints: ["src/cli.ts"],
         format: "cjs",
         logLevel: IS_WATCH ? "error" : "warning",
